@@ -1,0 +1,144 @@
+ALEX SCHUBACH ATHLETE SITE — HOW TO UPDATE
+==========================================
+Live URL: https://kingseblabs.github.io/alex-schubach-athlete/
+Repo:     https://github.com/KingSebLabs/alex-schubach-athlete
+
+The site rebuilds automatically every night at 1am UTC (10am Japan).
+After any change below, it also rebuilds within 60 seconds of saving.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+RACE RESULTS & CALENDAR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Source: Google Sheet "Big Ass Calendar"
+Sheets used: Races '25 and Races '26
+
+TO ADD A RACE RESULT:
+  Fill in the RACE RESULTS column for that race row.
+  The race moves from the Calendar section to the Results section overnight.
+
+TO ADD AN UPCOMING RACE:
+  Add a new row in Races '26 with the EVENT name and BLACKOUT DATES filled in.
+  Leave RACE RESULTS empty — it will appear as a calendar card.
+
+TO ADD A NEW YEAR (e.g. 2027):
+  1. Create a new sheet tab in Google Sheets called: Races '27
+  2. Open build/build.py on GitHub and add this line inside SHEET_GIDS:
+       "Races '27": "PASTE_GID_HERE",
+     (Find the GID in the URL when you click the new tab: ?gid=XXXXXXXX)
+  3. Save — a new 2027 tab will appear on the site automatically.
+
+TO TRIGGER AN IMMEDIATE REBUILD (don't want to wait until tonight):
+  Go to: https://github.com/KingSebLabs/alex-schubach-athlete/actions
+  Click "Build site daily" → "Run workflow" → "Run workflow"
+  Site updates in about 60 seconds.
+
+OPTIONAL — POSITION COLUMNS:
+  Add two columns to row 2 of Races '26 (and '25):
+    POSITION OVERALL    e.g. 10th / 1,079
+    POSITION AG         e.g. 6th / 213
+  These appear in the stats strip on each race card on the website.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PHOTOS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Gallery photos live in: images/gallery/ on GitHub
+
+TO ADD A PHOTO:
+  Go to: https://github.com/KingSebLabs/alex-schubach-athlete/tree/main/images/gallery
+  Click "Add file" → "Upload files" → drag your JPG in → Commit changes.
+
+TO REMOVE A PHOTO:
+  Click the file → click the trash icon → Commit changes.
+
+TO CONTROL THE ORDER:
+  Photos display alphabetically by filename.
+  Rename files with a number prefix to set the order:
+    01_fuji_summit.jpg   ← appears first
+    02_kenting_race.jpg  ← appears second
+    etc.
+
+PROFILE PHOTO (About section):
+  Replace images/about.jpg on GitHub using the same upload method.
+
+NOTE: Photos are auto-resized to 1200px wide on every build.
+      You can upload large files — they'll be optimised automatically.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TEXT CONTENT (bio, values, mission, social links)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Edit file: content.yaml on GitHub
+  https://github.com/KingSebLabs/alex-schubach-athlete/blob/main/content.yaml
+
+Click the pencil icon (Edit) → make changes → Commit changes.
+
+SECTIONS YOU CAN EDIT:
+  about:       Bio paragraphs and stat numbers (10+, 3, JP, ∞)
+  values:      The four value cards (number, title, description)
+  mission:     The mission quote, body text, and four pillars
+  social:      Instagram, Strava, YouTube, LinkedIn URLs
+  hero:        The tag line and subtitle in the hero banner
+  footer:      Copyright and tagline text
+  indices:     UTMB Index number and ITRA ID
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CONTACT FORM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The form is not yet wired up. To activate it:
+  1. Sign up free at: https://formspree.io
+  2. Create a new form — it gives you an ID like "abcdefgh"
+  3. In content.yaml, find this line:
+       formspree_id: ""
+     Change it to:
+       formspree_id: "abcdefgh"
+  4. Commit — the form will now deliver to alex.schubach@gmail.com
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ANALYTICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+To track visitors, traffic sources, and geographic data:
+  1. Create a free account at: https://analytics.google.com
+  2. Create a new GA4 property — it gives you an ID like "G-XXXXXXXXXX"
+  3. In content.yaml, find this line:
+       ga4_id: ""
+     Change it to:
+       ga4_id: "G-XXXXXXXXXX"
+  4. Commit — analytics will start recording immediately.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+CUSTOM DOMAIN (when you're ready)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+To use alexschubach.com instead of the github.io URL:
+  1. Buy the domain (GoDaddy, Namecheap, Wix Domains — ~$12/year)
+  2. In GitHub repo Settings → Pages → Custom domain → type your domain → Save
+  3. In your registrar's DNS settings, add:
+       4 x A records pointing to:
+         185.199.108.153
+         185.199.109.153
+         185.199.110.153
+         185.199.111.153
+       1 x CNAME record: www → kingseblabs.github.io
+  4. Wait up to 48 hours for DNS to propagate (usually under 2 hours)
+  5. HTTPS is automatic — GitHub handles the certificate.
+  6. Update site.base_url in content.yaml to your new domain.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECURITY REMINDERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  - Enable 2FA on your GitHub account (Settings → Password and authentication)
+    This is the only admin interface for the site. Protect it.
+  - Never commit API keys or passwords to the repo.
+  - The repo is public — anything you push is publicly visible.
