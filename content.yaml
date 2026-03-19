@@ -1,0 +1,94 @@
+site:
+  title: "Alex Schubach — Endurance Athlete"
+  description: "Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure."
+  base_url: "https://kingseblabs.github.io/alex-schubach-athlete"  # Update to custom domain when purchased
+
+# ─── HERO ────────────────────────────────────────────────────────────────────
+hero:
+  tag: "Endurance Athlete · Trail Runner · Hyrox Competitor"
+  name_line1: "ALEX"
+  name_line2: "SCHUBACH"
+  subtitle: "Pushing the limits of human potential through endurance, discipline, and adventure."
+
+# ─── ABOUT ───────────────────────────────────────────────────────────────────
+about:
+  heading: "THE STORY<br>SO FAR"
+  paragraphs:
+    - "I've been an athlete for as long as I can remember. I grew up in the pool as a <strong>competitive swimmer</strong>, then moved to the track during my teenage years. That early foundation built something that has never left me — a deep commitment to <strong>discipline, consistency, and the pursuit of improvement</strong>."
+    - "Today, my focus has shifted to <strong>endurance sports</strong> — trail running, road racing, and hybrid events like Hyrox. I'm drawn to the kind of challenges that test both physical and mental limits. For me, it's never just about the finish line. It's about what you become in the process."
+    - "Beyond racing, I live an <strong>active outdoor lifestyle</strong> rooted in movement, adventure, and connection with nature. Every day is an opportunity to push a little further."
+  stats:
+    - number: "10+"
+      label: "Years Competing"
+    - number: "3"
+      label: "Disciplines"
+    - number: "JP"
+      label: "Based in Japan"
+    - number: "∞"
+      label: "Potential"
+
+# ─── VALUES ──────────────────────────────────────────────────────────────────
+values:
+  - num: "01"
+    title: "TRYING MY BEST"
+    desc: "Giving my full effort in everything I pursue. Not perfection — full commitment."
+  - num: "02"
+    title: "REALISING MY POTENTIAL"
+    desc: "Seeing how far I can push my abilities and discovering what I'm truly capable of."
+  - num: "03"
+    title: "ACTIVE OUTDOOR LIFE"
+    desc: "Movement, adventure, and nature are central parts of how I live every single day."
+  - num: "04"
+    title: "DISCIPLINE & COMMITMENT"
+    desc: "Consistency over time creates real results. Show up every day and trust the process."
+
+# ─── MISSION ─────────────────────────────────────────────────────────────────
+mission:
+  quote: "My mission isn't simply to inspire people to be active. It's to show that <span>ordinary people can achieve extraordinary things</span> when they commit fully."
+  body: "Through my races and my journey, I want to encourage people to realise their potential, find what they're passionate about, and push beyond what they think is possible."
+  pillars:
+    - "Realise your potential"
+    - "Find your passion"
+    - "Commit fully to it"
+    - "Push beyond your limits"
+
+# ─── RACE PERFORMANCE INDICES ─────────────────────────────────────────────────
+indices:
+  utmb: "569"
+  itra_id: "6900188"
+
+# ─── CONTACT ─────────────────────────────────────────────────────────────────
+contact:
+  heading: "LET'S WORK<br>TOGETHER"
+  body: "Whether it's a brand partnership, media opportunity, or collaboration — I'd love to hear from you."
+  # Formspree endpoint — sign up at formspree.io and paste your form ID here
+  formspree_id: ""   # e.g. "abcdefgh"
+  categories:
+    - icon: "🤝"
+      label: "Brand Partnerships"
+    - icon: "📸"
+      label: "Media Inquiries"
+    - icon: "✦"
+      label: "Collaborations"
+
+# ─── SOCIAL LINKS ────────────────────────────────────────────────────────────
+social:
+  instagram: "#"   # e.g. https://instagram.com/alexschubach
+  strava: "#"      # e.g. https://strava.com/athletes/alexschubach
+  youtube: "#"
+  linkedin: "#"
+
+# ─── PDF DOWNLOAD ─────────────────────────────────────────────────────────────
+pdf:
+  enabled: false
+  url: "#"   # Paste Wix/Google Drive/Dropbox PDF link here when ready
+
+# ─── ANALYTICS ───────────────────────────────────────────────────────────────
+analytics:
+  ga4_id: ""        # e.g. "G-XXXXXXXXXX" — get from analytics.google.com
+  plausible_domain: ""  # e.g. "alexschubach.com" — use GA4 OR Plausible, not both
+
+# ─── FOOTER ──────────────────────────────────────────────────────────────────
+footer:
+  copyright: "© 2026 Alex Schubach. All rights reserved."
+  tagline: "Endurance Athlete · Trail Runner · Hyrox Competitor"

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kingseblabs.github.io/alex-schubach-athlete/sitemap.xml

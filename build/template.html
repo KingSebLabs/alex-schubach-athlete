@@ -3,34 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alex Schubach — Endurance Athlete</title>
-<meta name="description" content="Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure.">
+<title>{{ site.title }}</title>
+<meta name="description" content="{{ site.description }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- Open Graph -->
-  <meta property="og:title" content="Alex Schubach — Endurance Athlete">
-  <meta property="og:description" content="Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure.">
-  <meta property="og:image" content="https://kingseblabs.github.io/alex-schubach-athlete/images/about.jpg">
-  <meta property="og:url" content="https://kingseblabs.github.io/alex-schubach-athlete">
-  <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Alex Schubach — Endurance Athlete">
-  <meta name="twitter:description" content="Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure.">
-  <meta name="twitter:image" content="https://kingseblabs.github.io/alex-schubach-athlete/images/about.jpg">
-  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Alex Schubach",
-    "url": "https://kingseblabs.github.io/alex-schubach-athlete",
-    "image": "https://kingseblabs.github.io/alex-schubach-athlete/images/about.jpg",
-    "jobTitle": "Endurance Athlete",
-    "description": "Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure.",
-    "sameAs": []
-  }
-  </script>
-  <!-- Analytics: set ga4_id or plausible_domain in content.yaml -->
+{{ seo_tags }}
+{{ analytics_tags }}
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -541,9 +519,9 @@ footer {
   <div class="hero-bg"></div>
   <div class="hero-grain"></div>
   <div class="hero-content">
-    <div class="hero-tag">Endurance Athlete · Trail Runner · Hyrox Competitor</div>
-    <h1>ALEX<br>SCHUBACH</h1>
-    <p class="hero-subtitle">Pushing the limits of human potential through endurance, discipline, and adventure.</p>
+    <div class="hero-tag">{{ hero.tag }}</div>
+    <h1>{{ hero.name_line1 }}<br>{{ hero.name_line2 }}</h1>
+    <p class="hero-subtitle">{{ hero.subtitle }}</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">Get in Touch ↗</a>
       <a href="#results" class="btn-outline">View Results</a>
@@ -558,36 +536,17 @@ footer {
     <div class="about-grid">
       <div class="about-text reveal">
         <div class="section-label">About</div>
-        <div class="section-title">THE STORY<br>SO FAR</div>
-        
-        <p>I've been an athlete for as long as I can remember. I grew up in the pool as a <strong>competitive swimmer</strong>, then moved to the track during my teenage years. That early foundation built something that has never left me — a deep commitment to <strong>discipline, consistency, and the pursuit of improvement</strong>.</p>
-        
-        <p>Today, my focus has shifted to <strong>endurance sports</strong> — trail running, road racing, and hybrid events like Hyrox. I'm drawn to the kind of challenges that test both physical and mental limits. For me, it's never just about the finish line. It's about what you become in the process.</p>
-        
-        <p>Beyond racing, I live an <strong>active outdoor lifestyle</strong> rooted in movement, adventure, and connection with nature. Every day is an opportunity to push a little further.</p>
-        
+        <div class="section-title">{{ about.heading }}</div>
+        {% for para in about.paragraphs %}
+        <p>{{ para }}</p>
+        {% endfor %}
         <div class="about-stats">
-          
+          {% for stat in about.stats %}
           <div class="stat-item">
-            <div class="stat-number">10+</div>
-            <div class="stat-label">Years Competing</div>
+            <div class="stat-number">{{ stat.number }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
           </div>
-          
-          <div class="stat-item">
-            <div class="stat-number">3</div>
-            <div class="stat-label">Disciplines</div>
-          </div>
-          
-          <div class="stat-item">
-            <div class="stat-number">JP</div>
-            <div class="stat-label">Based in Japan</div>
-          </div>
-          
-          <div class="stat-item">
-            <div class="stat-number">∞</div>
-            <div class="stat-label">Potential</div>
-          </div>
-          
+          {% endfor %}
         </div>
       </div>
       <div class="about-image-col reveal" style="animation-delay:0.2s">
@@ -605,31 +564,13 @@ footer {
       <div class="section-title">MY VALUES</div>
     </div>
     <div class="values-grid">
-      
+      {% for v in values %}
       <div class="value-card reveal">
-        <div class="value-num">01</div>
-        <div class="value-title">TRYING MY BEST</div>
-        <div class="value-desc">Giving my full effort in everything I pursue. Not perfection — full commitment.</div>
+        <div class="value-num">{{ v.num }}</div>
+        <div class="value-title">{{ v.title }}</div>
+        <div class="value-desc">{{ v.desc }}</div>
       </div>
-      
-      <div class="value-card reveal">
-        <div class="value-num">02</div>
-        <div class="value-title">REALISING MY POTENTIAL</div>
-        <div class="value-desc">Seeing how far I can push my abilities and discovering what I'm truly capable of.</div>
-      </div>
-      
-      <div class="value-card reveal">
-        <div class="value-num">03</div>
-        <div class="value-title">ACTIVE OUTDOOR LIFE</div>
-        <div class="value-desc">Movement, adventure, and nature are central parts of how I live every single day.</div>
-      </div>
-      
-      <div class="value-card reveal">
-        <div class="value-num">04</div>
-        <div class="value-title">DISCIPLINE & COMMITMENT</div>
-        <div class="value-desc">Consistency over time creates real results. Show up every day and trust the process.</div>
-      </div>
-      
+      {% endfor %}
     </div>
   </div>
 </section>
@@ -640,18 +581,12 @@ footer {
     <div class="mission-content reveal">
       <div class="section-label">My Mission</div>
       <div class="section-title" style="color:var(--text-dark)">WHY I DO THIS</div>
-      <div class="mission-quote">My mission isn't simply to inspire people to be active. It's to show that <span>ordinary people can achieve extraordinary things</span> when they commit fully.</div>
-      <p class="mission-text">Through my races and my journey, I want to encourage people to realise their potential, find what they're passionate about, and push beyond what they think is possible.</p>
+      <div class="mission-quote">{{ mission.quote }}</div>
+      <p class="mission-text">{{ mission.body }}</p>
       <div class="mission-pillars">
-        
-        <div class="pillar"><span class="pillar-icon">→</span> Realise your potential</div>
-        
-        <div class="pillar"><span class="pillar-icon">→</span> Find your passion</div>
-        
-        <div class="pillar"><span class="pillar-icon">→</span> Commit fully to it</div>
-        
-        <div class="pillar"><span class="pillar-icon">→</span> Push beyond your limits</div>
-        
+        {% for pillar in mission.pillars %}
+        <div class="pillar"><span class="pillar-icon">→</span> {{ pillar }}</div>
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -670,7 +605,7 @@ footer {
         <div class="index-badge-logo">UTMB</div>
         <div class="index-badge-body">
           <div class="index-badge-label">UTMB Index</div>
-          <div class="index-badge-value">569</div>
+          <div class="index-badge-value">{{ indices.utmb }}</div>
         </div>
       </div>
       <div class="index-badge">
@@ -678,13 +613,12 @@ footer {
         <div class="index-badge-body">
           <div class="index-badge-label">ITRA Performance Index</div>
           <div class="index-badge-value">—</div>
-          <div class="index-badge-id">ID: 6900188</div>
+          <div class="index-badge-id">ID: {{ indices.itra_id }}</div>
         </div>
       </div>
     </div>
 
-    <div class="year-tabs reveal"><div class="year-tab active" data-year="2026">2026</div></div>
-<div class="year-panel active" id="panel-2026"><p style="color:var(--grey-mid);padding:2rem 0">Configure SPREADSHEET_ID in build/build.py to auto-populate race results.</p></div>
+    {{ race_tabs_and_panels }}
 
     <p class="race-note reveal">Results updated after each race. Click any race to read the full story.</p>
   </div>
@@ -695,10 +629,10 @@ footer {
   <div class="container">
     <div class="reveal">
       <div class="section-label">Upcoming</div>
-      <div class="section-title">2026 EVENT CALENDAR</div>
+      <div class="section-title">{{ calendar_year }} EVENT CALENDAR</div>
     </div>
     <div class="calendar-grid">
-      <p style="color:var(--grey-mid)">Configure SPREADSHEET_ID in build/build.py to auto-populate the calendar.</p>
+      {{ calendar_cards }}
     </div>
   </div>
 </section>
@@ -711,17 +645,19 @@ footer {
       <div class="section-title">GALLERY</div>
     </div>
     <div class="gallery-grid">
-            <div class="gallery-item reveal"><img src="images/gallery/01_fuji_trail.jpg" alt="Fuji Trail" style="width:100%;height:100%;object-fit:cover;"></div>
-      <div class="gallery-item reveal"><img src="images/gallery/02_fuji_finish.jpg" alt="Fuji Finish" style="width:100%;height:100%;object-fit:cover;"></div>
-      <div class="gallery-item reveal"><img src="images/gallery/03_kenting_trail.jpg" alt="Kenting Trail" style="width:100%;height:100%;object-fit:cover;"></div>
-      <div class="gallery-item reveal"><img src="images/gallery/04_road_race.jpg" alt="Road Race" style="width:100%;height:100%;object-fit:cover;"></div>
-      <div class="gallery-item reveal"><img src="images/gallery/05_track_training.jpg" alt="Track Training" style="width:100%;height:100%;object-fit:cover;"></div>
+      {{ gallery_items }}
     </div>
   </div>
 </section>
 
 <!-- PDF DOWNLOAD -->
-
+{% if pdf.enabled %}
+<section class="pdf-section" id="pdf">
+  <div class="pdf-title">ATHLETE PROFILE</div>
+  <p class="pdf-subtitle">Download my full athlete profile — biography, mission, race results, upcoming calendar, and contact details. Everything you need in one document.</p>
+  <a href="{{ pdf.url }}" class="btn-white">↓ Download PDF</a>
+</section>
+{% endif %}
 
 <!-- CONTACT -->
 <section class="section-dark" id="contact">
@@ -729,35 +665,41 @@ footer {
     <div class="contact-grid">
       <div class="contact-info reveal">
         <div class="section-label">Connect</div>
-        <h3>LET'S WORK<br>TOGETHER</h3>
-        <p>Whether it's a brand partnership, media opportunity, or collaboration — I'd love to hear from you.</p>
+        <h3>{{ contact.heading }}</h3>
+        <p>{{ contact.body }}</p>
         <div class="contact-cats">
-          
+          {% for cat in contact.categories %}
           <div class="contact-cat">
-            <div class="cat-icon">🤝</div>
-            <div class="cat-label">Brand Partnerships</div>
+            <div class="cat-icon">{{ cat.icon }}</div>
+            <div class="cat-label">{{ cat.label }}</div>
           </div>
-          
-          <div class="contact-cat">
-            <div class="cat-icon">📸</div>
-            <div class="cat-label">Media Inquiries</div>
-          </div>
-          
-          <div class="contact-cat">
-            <div class="cat-icon">✦</div>
-            <div class="cat-label">Collaborations</div>
-          </div>
-          
+          {% endfor %}
         </div>
         <div class="social-bar">
-          <a href="#" class="social-link">Instagram</a>
-          <a href="#" class="social-link">Strava</a>
-          <a href="#" class="social-link">YouTube</a>
-          <a href="#" class="social-link">LinkedIn</a>
+          <a href="{{ social.instagram }}" class="social-link">Instagram</a>
+          <a href="{{ social.strava }}" class="social-link">Strava</a>
+          <a href="{{ social.youtube }}" class="social-link">YouTube</a>
+          <a href="{{ social.linkedin }}" class="social-link">LinkedIn</a>
         </div>
       </div>
       <div class="contact-form reveal">
-        
+        {% if contact.formspree_id %}
+        <form action="https://formspree.io/f/{{ contact.formspree_id }}" method="POST">
+          <div class="form-row">
+            <input type="text" name="name" placeholder="Name" required>
+            <input type="email" name="email" placeholder="Email" required>
+          </div>
+          <select name="inquiry_type">
+            <option value="" disabled selected>Inquiry Type</option>
+            <option>Brand Partnership</option>
+            <option>Media Inquiry</option>
+            <option>Collaboration</option>
+            <option>Other</option>
+          </select>
+          <textarea name="message" placeholder="Message"></textarea>
+          <button type="submit">Send Message →</button>
+        </form>
+        {% else %}
         <div class="form-row">
           <input type="text" placeholder="Name">
           <input type="email" placeholder="Email">
@@ -771,7 +713,7 @@ footer {
         </select>
         <textarea placeholder="Message"></textarea>
         <button type="button">Send Message →</button>
-        
+        {% endif %}
       </div>
     </div>
   </div>
@@ -779,8 +721,8 @@ footer {
 
 <!-- FOOTER -->
 <footer>
-  <span>© 2026 Alex Schubach. All rights reserved.</span>
-  <span>Endurance Athlete · Trail Runner · Hyrox Competitor</span>
+  <span>{{ footer.copyright }}</span>
+  <span>{{ footer.tagline }}</span>
 </footer>
 
 <script>
@@ -872,3 +814,4 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
 </script>
 </body>
 </html>
+
