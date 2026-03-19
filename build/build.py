@@ -34,29 +34,41 @@ IMAGES_DIR = ROOT / "images"
 GALLERY_DIR = IMAGES_DIR / "gallery"
 
 # ─── Google Sheets config ─────────────────────────────────────────────────────
-# Paste your Google Sheet ID here (from the URL: /spreadsheets/d/SHEET_ID/edit)
-SPREADSHEET_ID = "YOUR_SPREADSHEET_ID_HERE"
+SPREADSHEET_ID = "1tAQU1-XerBxj4lh_x3omGlaGSP_wRmmg"
 
-# Sheet GIDs — find them in the URL when you click each tab (?gid=NNNNNN)
-# Update these with the actual GIDs from your sheet's URL
+# Sheet GIDs — the number after ?gid= in the URL when you click each tab.
+# Tab names use a curly apostrophe: Races '26, Races '25
 SHEET_GIDS = {
-    "Races 25": "0",          # Update with actual GID
-    "Races 26": "123456789",  # Update with actual GID
-    # Add "Races 27": "GID" when you create that sheet
+    "Races '25": "914437451",
+    "Races '26": "1855090883",
+    # Add "Races '27": "GID" when you create that sheet — year tabs auto-generate
 }
 
-# The name of the most recent year tab (controls which is shown as active by default)
+# The year suffix of the most recent tab (controls which tab is active by default)
 CURRENT_YEAR = "26"
 
 
 def fetch_sheet_csv(spreadsheet_id: str, gid: str) -> list[dict]:
-    """Fetch a Google Sheet tab as CSV and return list of row dicts."""
+    """Fetch a Google Sheet tab as CSV and return list of row dicts.
+
+    The race sheets have a blank row 1 and headers on row 2, so we skip
+    leading blank rows before handing off to DictReader.
+    """
     url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv&gid={gid}"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=15) as resp:
             raw = resp.read().decode("utf-8")
-        reader = csv.DictReader(io.StringIO(raw))
+        rows = list(csv.reader(io.StringIO(raw)))
+        # Skip leading blank rows to find the real header row
+        start = 0
+        for i, row in enumerate(rows):
+            if any(c.strip() for c in row):
+                start = i
+                break
+        # Rebuild CSV string from first non-empty row onwards
+        clean = "\n".join(",".join(f'"{c}"' for c in row) for row in rows[start:])
+        reader = csv.DictReader(io.StringIO(clean))
         return list(reader)
     except Exception as e:
         print(f"  ⚠ Could not fetch sheet GID={gid}: {e}", file=sys.stderr)
@@ -110,10 +122,11 @@ def build_gallery_html() -> str:
 
 def find_col(row: dict, *candidates) -> str:
     """Find first matching column key (case-insensitive, strips whitespace)."""
-    keys_lower = {k.strip().lower(): k for k in row.keys()}
+    keys_lower = {k.strip().lower(): k for k in row.keys() if k is not None}
     for candidate in candidates:
         if candidate.lower() in keys_lower:
-            return row[keys_lower[candidate.lower()]].strip()
+            val = row[keys_lower[candidate.lower()]]
+            return (val or "").strip()
     return ""
 
 
