@@ -55,7 +55,11 @@ mission:
 # ─── RACE PERFORMANCE INDICES ─────────────────────────────────────────────────
 indices:
   utmb: "569"
-  itra_id: "6900188"
+  hyrox_pb: ""
+  road_marathon: ""
+  road_half: ""
+  road_10k: ""
+  road_5k: ""
 
 # ─── CONTACT ─────────────────────────────────────────────────────────────────
 contact:

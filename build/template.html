@@ -230,6 +230,11 @@ section { padding: 6rem 2.5rem; }
 .index-badge-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 0.15rem; }
 .index-badge-value { font-family: var(--font-display); font-size: 1.6rem; color: var(--text-light); line-height: 1; }
 .index-badge-id { font-size: 0.65rem; color: var(--grey-mid); margin-top: 0.2rem; letter-spacing: 0.05em; }
+.index-badge--road { align-items: flex-start; }
+.index-badge-road-rows { display: flex; flex-direction: column; gap: 0.15rem; margin-top: 0.2rem; }
+.index-badge-road-row { display: flex; gap: 0.5rem; align-items: baseline; }
+.index-badge-road-dist { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-mid); min-width: 4rem; }
+.index-badge-road-time { font-family: var(--font-display); font-size: 0.9rem; color: var(--text-light); line-height: 1; }
 
 /* ===== RACE RESULTS ACCORDION ===== */
 .year-tabs { display: flex; gap: 0; margin-top: 2rem; }
@@ -256,7 +261,7 @@ section { padding: 6rem 2.5rem; }
 .race-item:last-child { border-bottom: none; }
 
 .race-table-header {
-  display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr auto;
+  display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr auto;
   padding: 0.5rem 2rem; margin-top: 1.5rem;
   border-bottom: 1px solid rgba(232,73,15,0.4);
 }
@@ -265,13 +270,14 @@ section { padding: 6rem 2.5rem; }
   text-transform: uppercase; color: var(--grey-mid);
 }
 .race-header {
-  display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr auto; align-items: center;
+  display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr auto; align-items: center;
   padding: 1.4rem 2rem; cursor: pointer; transition: background 0.3s;
 }
 .race-header:hover { background: rgba(255,255,255,0.03); }
 .race-item:nth-child(even) { background: rgba(255,255,255,0.022); }
 .race-h-name { font-weight: 700; color: var(--text-light); font-size: 0.95rem; }
 .race-h-sub { font-size: 0.75rem; color: var(--grey-mid); margin-top: 0.2rem; }
+.race-h-loc { font-size: 0.72rem; color: var(--grey-mid); margin-top: 0.1rem; opacity: 0.75; }
 .race-h-type { font-size: 0.82rem; color: var(--grey-mid); white-space: pre-line; line-height: 1.5; }
 .race-h-time { font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
 .race-h-pos { font-size: 0.95rem; font-weight: 600; color: var(--accent); white-space: pre-line; line-height: 1.5; }
@@ -695,7 +701,25 @@ footer {
         <div class="index-badge-body">
           <div class="index-badge-label">ITRA Performance Index</div>
           <div class="index-badge-value">—</div>
-          <div class="index-badge-id">ID: {{ indices.itra_id }}</div>
+        </div>
+      </div>
+      <div class="index-badge">
+        <div class="index-badge-logo">HYROX</div>
+        <div class="index-badge-body">
+          <div class="index-badge-label">Personal Best</div>
+          <div class="index-badge-value">{{ indices.hyrox_pb or "—" }}</div>
+        </div>
+      </div>
+      <div class="index-badge index-badge--road">
+        <div class="index-badge-logo">ROAD</div>
+        <div class="index-badge-body">
+          <div class="index-badge-label">Personal Bests</div>
+          <div class="index-badge-road-rows">
+            <div class="index-badge-road-row"><span class="index-badge-road-dist">Marathon</span><span class="index-badge-road-time">{{ indices.road_marathon or "—" }}</span></div>
+            <div class="index-badge-road-row"><span class="index-badge-road-dist">Half</span><span class="index-badge-road-time">{{ indices.road_half or "—" }}</span></div>
+            <div class="index-badge-road-row"><span class="index-badge-road-dist">10 km</span><span class="index-badge-road-time">{{ indices.road_10k or "—" }}</span></div>
+            <div class="index-badge-road-row"><span class="index-badge-road-dist">5 km</span><span class="index-badge-road-time">{{ indices.road_5k or "—" }}</span></div>
+          </div>
         </div>
       </div>
     </div>

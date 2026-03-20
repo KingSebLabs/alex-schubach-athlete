@@ -116,9 +116,9 @@ def fetch_utmb_index(runner_url: str, fallback: str = "") -> str:
             return fallback
         data = json.loads(m.group(1))
         perf = data["props"]["pageProps"]["performanceIndexes"]
-        numeric = [int(entry["index"]) for entry in perf if isinstance(entry.get("index"), int)]
-        if numeric:
-            best = str(max(numeric))
+        general = next((entry for entry in perf if entry.get("piCategory") == "general"), None)
+        if general and isinstance(general.get("index"), int):
+            best = str(general["index"])
             print(f"  UTMB Index fetched: {best} (raw: {perf})")
             return best
     except Exception as e:
@@ -320,9 +320,12 @@ def build_race_card_html(race: dict) -> str:
 
     body_html = "\n".join(body_parts) if body_parts else "              <p>Race notes coming soon.</p>"
 
+    location = race.get("location", "") or ""
+    loc_html = f'<div class="race-h-loc">{location}</div>' if location and location != "—" else ""
+
     return f'''        <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">{name}</div><div class="race-h-sub">{date}</div></div>
+            <div><div class="race-h-name">{name}</div><div class="race-h-sub">{date}</div>{loc_html}</div>
             <div class="race-h-type">{type_display}</div>
             <div class="race-h-time">{result or "—"}</div>
             <div class="race-h-pos">{pos}</div>

@@ -252,6 +252,11 @@ section { padding: 6rem 2.5rem; }
 .index-badge-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 0.15rem; }
 .index-badge-value { font-family: var(--font-display); font-size: 1.6rem; color: var(--text-light); line-height: 1; }
 .index-badge-id { font-size: 0.65rem; color: var(--grey-mid); margin-top: 0.2rem; letter-spacing: 0.05em; }
+.index-badge--road { align-items: flex-start; }
+.index-badge-road-rows { display: flex; flex-direction: column; gap: 0.15rem; margin-top: 0.2rem; }
+.index-badge-road-row { display: flex; gap: 0.5rem; align-items: baseline; }
+.index-badge-road-dist { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-mid); min-width: 4rem; }
+.index-badge-road-time { font-family: var(--font-display); font-size: 0.9rem; color: var(--text-light); line-height: 1; }
 
 /* ===== RACE RESULTS ACCORDION ===== */
 .year-tabs { display: flex; gap: 0; margin-top: 2rem; }
@@ -278,7 +283,7 @@ section { padding: 6rem 2.5rem; }
 .race-item:last-child { border-bottom: none; }
 
 .race-table-header {
-  display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr auto;
+  display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr auto;
   padding: 0.5rem 2rem; margin-top: 1.5rem;
   border-bottom: 1px solid rgba(232,73,15,0.4);
 }
@@ -287,13 +292,14 @@ section { padding: 6rem 2.5rem; }
   text-transform: uppercase; color: var(--grey-mid);
 }
 .race-header {
-  display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr auto; align-items: center;
+  display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr auto; align-items: center;
   padding: 1.4rem 2rem; cursor: pointer; transition: background 0.3s;
 }
 .race-header:hover { background: rgba(255,255,255,0.03); }
 .race-item:nth-child(even) { background: rgba(255,255,255,0.022); }
 .race-h-name { font-weight: 700; color: var(--text-light); font-size: 0.95rem; }
 .race-h-sub { font-size: 0.75rem; color: var(--grey-mid); margin-top: 0.2rem; }
+.race-h-loc { font-size: 0.72rem; color: var(--grey-mid); margin-top: 0.1rem; opacity: 0.75; }
 .race-h-type { font-size: 0.82rem; color: var(--grey-mid); white-space: pre-line; line-height: 1.5; }
 .race-h-time { font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
 .race-h-pos { font-size: 0.95rem; font-weight: 600; color: var(--accent); white-space: pre-line; line-height: 1.5; }
@@ -752,7 +758,7 @@ footer {
         <div class="index-badge-logo">UTMB</div>
         <div class="index-badge-body">
           <div class="index-badge-label">UTMB Index</div>
-          <div class="index-badge-value">571</div>
+          <div class="index-badge-value">569</div>
         </div>
       </div>
       <div class="index-badge">
@@ -760,7 +766,25 @@ footer {
         <div class="index-badge-body">
           <div class="index-badge-label">ITRA Performance Index</div>
           <div class="index-badge-value">—</div>
-          <div class="index-badge-id">ID: 6900188</div>
+        </div>
+      </div>
+      <div class="index-badge">
+        <div class="index-badge-logo">HYROX</div>
+        <div class="index-badge-body">
+          <div class="index-badge-label">Personal Best</div>
+          <div class="index-badge-value">—</div>
+        </div>
+      </div>
+      <div class="index-badge index-badge--road">
+        <div class="index-badge-logo">ROAD</div>
+        <div class="index-badge-body">
+          <div class="index-badge-label">Personal Bests</div>
+          <div class="index-badge-road-rows">
+            <div class="index-badge-road-row"><span class="index-badge-road-dist">Marathon</span><span class="index-badge-road-time">—</span></div>
+            <div class="index-badge-road-row"><span class="index-badge-road-dist">Half</span><span class="index-badge-road-time">—</span></div>
+            <div class="index-badge-road-row"><span class="index-badge-road-dist">10 km</span><span class="index-badge-road-time">—</span></div>
+            <div class="index-badge-road-row"><span class="index-badge-road-dist">5 km</span><span class="index-badge-road-time">—</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -781,7 +805,7 @@ footer {
       <div class="race-accordion">
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Hyrox Yokohama</div><div class="race-h-sub">9 August</div></div>
+            <div><div class="race-h-name">Hyrox Yokohama</div><div class="race-h-sub">9 August</div><div class="race-h-loc">Japan</div></div>
             <div class="race-h-type">Hyrox
 Men's Single - Open</div>
             <div class="race-h-time">1:13:25</div>
@@ -804,7 +828,7 @@ Age Group: 17th / 48</div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">2nd Mt. Fuji Climb Run</div><div class="race-h-sub">14 September</div></div>
+            <div><div class="race-h-name">2nd Mt. Fuji Climb Run</div><div class="race-h-sub">14 September</div><div class="race-h-loc">Yamanashi, Japan</div></div>
             <div class="race-h-type">Trail 
 12km</div>
             <div class="race-h-time">1:25:31</div>
@@ -826,7 +850,7 @@ Age Group: 17th / 48</div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Spartan New Taipei</div><div class="race-h-sub">October 18</div></div>
+            <div><div class="race-h-name">Spartan New Taipei</div><div class="race-h-sub">October 18</div><div class="race-h-loc">Taiwan</div></div>
             <div class="race-h-type">Spartan
 Beast - 21km</div>
             <div class="race-h-time">2:26:12</div>
@@ -849,7 +873,7 @@ Age Group: 1st / 41</div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Deep Japan Ultra Camp</div><div class="race-h-sub">1 November</div></div>
+            <div><div class="race-h-name">Deep Japan Ultra Camp</div><div class="race-h-sub">1 November</div><div class="race-h-loc">Niigata, Japan</div></div>
             <div class="race-h-type">Training Camp</div>
             <div class="race-h-time">1 Day</div>
             <div class="race-h-pos">—</div>
@@ -870,7 +894,7 @@ Age Group: 1st / 41</div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Nikko Mountain Race</div><div class="race-h-sub">9 November</div></div>
+            <div><div class="race-h-name">Nikko Mountain Race</div><div class="race-h-sub">9 November</div><div class="race-h-loc">Tochigi, Japan</div></div>
             <div class="race-h-type">Trail
 35km</div>
             <div class="race-h-time">4:47:11</div>
@@ -893,7 +917,7 @@ Age Group: 8th / 118</div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">87th Okutama Valley Ekiden Relay Race</div><div class="race-h-sub">7 December</div></div>
+            <div><div class="race-h-name">87th Okutama Valley Ekiden Relay Race</div><div class="race-h-sub">7 December</div><div class="race-h-loc">Ome, Japan</div></div>
             <div class="race-h-type">Road Relay
 44.8km</div>
             <div class="race-h-time">Team: 2:44:06</div>
@@ -915,7 +939,7 @@ Age Group: 8th / 118</div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">45th Gunma Safari Half Marathon</div><div class="race-h-sub">14 December</div></div>
+            <div><div class="race-h-name">45th Gunma Safari Half Marathon</div><div class="race-h-sub">14 December</div><div class="race-h-loc">Tomioka, Japan</div></div>
             <div class="race-h-type">Road
 21.1km
 21.1 km</div>
@@ -939,7 +963,7 @@ Age Group: 2nd / 62</div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">139th Kanto10K Road Race</div><div class="race-h-sub">21 December</div></div>
+            <div><div class="race-h-name">139th Kanto10K Road Race</div><div class="race-h-sub">21 December</div><div class="race-h-loc">Narita, Japan</div></div>
             <div class="race-h-type">Road
 10km
 10 km</div>
