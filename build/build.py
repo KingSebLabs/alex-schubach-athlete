@@ -245,7 +245,7 @@ def build_race_card_html(race: dict) -> str:
     body_html = "\n".join(body_parts) if body_parts else "              <p>Race notes coming soon.</p>"
 
     return f'''        <div class="race-item">
-          <div class="race-header" onclick="toggleRace(this)">
+          <div class="race-header">
             <div><div class="race-h-name">{name}</div><div class="race-h-sub">{date}</div></div>
             <div class="race-h-meta">{race_type}</div>
             <div class="race-h-time">{result}</div>

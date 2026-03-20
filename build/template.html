@@ -414,10 +414,12 @@ section { padding: 6rem 2.5rem; }
 .contact-form input, .contact-form textarea, .contact-form select {
   width: 100%; background: var(--grey-dark); border: 1px solid var(--grey-border);
   color: var(--text-light); padding: 0.9rem 1rem; font-family: var(--font-body);
-  font-size: 0.85rem; transition: border-color 0.3s; outline: none;
+  font-size: 0.85rem; transition: border-color 0.3s;
 }
 .contact-form input:focus, .contact-form textarea:focus, .contact-form select:focus {
   border-color: var(--accent);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .contact-form textarea { min-height: 120px; resize: vertical; }
 .contact-form select { appearance: none; cursor: pointer; }
@@ -686,32 +688,32 @@ footer {
         {% if contact.formspree_id %}
         <form action="https://formspree.io/f/{{ contact.formspree_id }}" method="POST">
           <div class="form-row">
-            <input type="text" name="name" placeholder="Name" required>
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="text" name="name" placeholder="Name" aria-label="Name" required>
+            <input type="email" name="email" placeholder="Email" aria-label="Email" required>
           </div>
-          <select name="inquiry_type">
+          <select name="inquiry_type" aria-label="Inquiry Type">
             <option value="" disabled selected>Inquiry Type</option>
             <option>Brand Partnership</option>
             <option>Media Inquiry</option>
             <option>Collaboration</option>
             <option>Other</option>
           </select>
-          <textarea name="message" placeholder="Message"></textarea>
+          <textarea name="message" placeholder="Message" aria-label="Message"></textarea>
           <button type="submit">Send Message →</button>
         </form>
         {% else %}
         <div class="form-row">
-          <input type="text" placeholder="Name">
-          <input type="email" placeholder="Email">
+          <input type="text" placeholder="Name" aria-label="Name">
+          <input type="email" placeholder="Email" aria-label="Email">
         </div>
-        <select>
+        <select aria-label="Inquiry Type">
           <option value="" disabled selected>Inquiry Type</option>
           <option>Brand Partnership</option>
           <option>Media Inquiry</option>
           <option>Collaboration</option>
           <option>Other</option>
         </select>
-        <textarea placeholder="Message"></textarea>
+        <textarea placeholder="Message" aria-label="Message"></textarea>
         <button type="button">Send Message →</button>
         {% endif %}
       </div>
@@ -737,13 +739,14 @@ document.querySelectorAll('.year-tab').forEach(tab => {
 });
 
 // Race accordion
-function toggleRace(header) {
-  const item = header.closest('.race-item');
-  const wasOpen = item.classList.contains('open');
-  // Close all in same panel
-  item.closest('.year-panel').querySelectorAll('.race-item').forEach(r => r.classList.remove('open'));
-  if (!wasOpen) item.classList.add('open');
-}
+document.querySelectorAll('.race-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.closest('.race-item');
+    const wasOpen = item.classList.contains('open');
+    item.closest('.year-panel').querySelectorAll('.race-item').forEach(r => r.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
 
 // Loader
 window.addEventListener('load', () => {
