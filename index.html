@@ -277,30 +277,42 @@ section { padding: 6rem 2.5rem; }
 .race-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
 .race-item:last-child { border-bottom: none; }
 
+.race-table-header {
+  display: grid; grid-template-columns: 2.2fr 0.8fr 1fr 1fr 0.9fr 0.9fr auto;
+  padding: 0.5rem 2rem; margin-top: 1.5rem;
+  border-bottom: 1px solid rgba(232,73,15,0.4);
+}
+.race-th {
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--grey-mid);
+}
+.race-th-expand { text-align: right; padding-right: 2.5rem; }
+
 .race-header {
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; align-items: center;
+  display: grid; grid-template-columns: 2.2fr 0.8fr 1fr 1fr 0.9fr 0.9fr auto; align-items: center;
   padding: 1.4rem 2rem; cursor: pointer; transition: background 0.3s;
-  position: relative;
 }
 .race-header:hover { background: rgba(255,255,255,0.03); }
-.race-header::after {
-  content: '+'; position: absolute; right: 2rem; top: 50%; transform: translateY(-50%);
-  font-family: var(--font-display); font-size: 1.4rem; color: var(--accent);
-  transition: transform 0.3s;
-}
-.race-item.open .race-header::after { content: '−'; }
+.race-item:nth-child(even) { background: rgba(255,255,255,0.022); }
 .race-h-name { font-weight: 700; color: var(--text-light); font-size: 0.95rem; }
 .race-h-sub { font-size: 0.75rem; color: var(--grey-mid); margin-top: 0.2rem; }
-.race-h-meta { font-size: 0.85rem; color: var(--grey-mid); }
+.race-h-dist { font-size: 0.82rem; color: var(--grey-mid); }
+.race-h-type { font-size: 0.82rem; color: var(--grey-mid); }
 .race-h-time { font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
-.race-h-position { font-family: var(--font-display); font-size: 1.4rem; color: var(--accent); }
+.race-h-pos { font-family: var(--font-display); font-size: 1.3rem; color: var(--accent); }
+.race-h-ag { font-size: 0.85rem; font-weight: 600; color: var(--text-light); }
+.race-h-expand {
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--grey-mid);
+  text-align: right; padding-right: 2.5rem;
+}
 
 .race-body {
   max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
 }
 .race-item.open .race-body { max-height: 2000px; }
 .race-body-inner {
-  padding: 0 2rem 2.5rem 2rem;
+  padding: 2.5rem 2rem 2.5rem 2rem;
   display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;
 }
 .race-narrative { }
@@ -312,24 +324,14 @@ section { padding: 6rem 2.5rem; }
 .race-narrative p { font-size: 0.88rem; line-height: 1.8; color: var(--grey-mid); margin-bottom: 0.75rem; }
 .race-narrative p strong { color: var(--text-light); font-weight: 600; }
 
-.race-stats-strip {
-  display: flex; gap: 2rem; padding: 1.2rem 2rem; background: rgba(255,255,255,0.02);
-  border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);
-  margin-bottom: 0;
-}
-.race-stat-mini { }
-.race-stat-mini-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 0.15rem; }
-.race-stat-mini-val { font-family: var(--font-display); font-size: 1.1rem; color: var(--text-light); }
-
 .race-note { margin-top: 2rem; font-size: 0.8rem; color: var(--grey-mid); font-style: italic; }
 
 /* Mobile accordion */
 @media (max-width: 768px) {
-  .race-header { grid-template-columns: 1fr 1fr; gap: 0.5rem; padding: 1.2rem 1.2rem; padding-right: 2.5rem; }
-  .race-header::after { right: 1rem; }
-  .race-h-name { grid-column: 1 / -1; }
-  .race-body-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 0 1.2rem 2rem; }
-  .race-stats-strip { flex-wrap: wrap; gap: 1rem; padding: 1rem 1.2rem; }
+  .race-header { grid-template-columns: 1fr auto; gap: 0.5rem; padding: 1.2rem 1.2rem; }
+  .race-h-dist, .race-h-type, .race-h-pos, .race-h-ag, .race-h-expand { display: none; }
+  .race-table-header { display: none; }
+  .race-body-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem 1.2rem 2rem; }
   .year-tab { padding: 0.7rem 1.5rem; font-size: 1.3rem; }
 }
 
@@ -345,7 +347,17 @@ section { padding: 6rem 2.5rem; }
   color: var(--accent); margin-bottom: 0.75rem;
 }
 .cal-race { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.03em; margin-bottom: 0.5rem; }
-.cal-details { font-size: 0.8rem; color: var(--grey-mid); line-height: 1.6; }
+.cal-details { font-size: 0.78rem; color: var(--grey-mid); line-height: 1.6; }
+.cal-tbc {
+  font-size: 0.52rem; font-weight: 700; letter-spacing: 0.15em;
+  background: var(--grey-border); color: var(--grey-mid);
+  padding: 0.15rem 0.4rem; text-transform: uppercase; vertical-align: middle; margin-left: 0.4rem;
+}
+.cal-desc {
+  font-size: 0.72rem; color: var(--grey-mid); margin-top: 0.4rem;
+  line-height: 1.5; overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+}
 
 /* ===== BUSINESS ===== */
 .business-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
@@ -725,413 +737,185 @@ footer {
     <div class="year-tabs reveal">
   <div class="year-tab" data-year="2025">2025</div>
   <div class="year-tab active" data-year="2026">2026</div>
+  <div class="year-tab" data-year="2027">2027</div>
 </div>
     <div class="year-panel" id="panel-2025">
+      <div class="race-table-header">
+        <div class="race-th">Race</div>
+        <div class="race-th">Distance</div>
+        <div class="race-th">Type</div>
+        <div class="race-th">Time</div>
+        <div class="race-th">Overall</div>
+        <div class="race-th">Age Group</div>
+        <div class="race-th race-th-expand">Expand</div>
+      </div>
       <div class="race-accordion">
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Namban 5km TT</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">5 km · Road</div>
-            <div class="race-h-time">19min 14sec</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">19min 14sec</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">5 km · Road</div></div>
-          </div>
-          <div class="race-body">
-            <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Wanted to hold 3.45 pace.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well: 
-- Good effort.
-- Didn't go out too hard. Went 3.45 then held it.
-
-Improvements:
-- No warm up or stretching.. Never again.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="race-item">
-          <div class="race-header">
-            <div><div class="race-h-name">Yokohama Hyrox (Japan)</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">Hybrid</div>
+            <div><div class="race-h-name">Hyrox Yokohama, Japan</div><div class="race-h-sub">2009-08-01 00:00:00</div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Hyrox</div>
             <div class="race-h-time">1hr 13min 25</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">1hr 13min 25</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">Hybrid</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Wanted to go 1hr 5min</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well: 
--        4min/km easy to hold.
--        Functional stations felt good. Will get stronger with practice/time.
-
-Improvements:
--        Pay attention while running 1 km.
--        Pay attention/know the functional stations and their distances/laps.
--        Could use a gel or 2 during.
--        Wall balls need work.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Mt Fuji – 0 to summit 20km trail run w Yuuta</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">Trail</div>
-            <div class="race-h-time">4hr 32min.</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">4hr 32min.</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">Trail</div></div>
-          </div>
-          <div class="race-body">
-            <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Start really steady. 
-I heard 4 hours is an insanely good time. Let's see.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well: 
--        Really easy feeling and pace to start. It’s a very long run.
--        Gel and food every 20-30 minutes. Need more food though.
-
-Improvements:
--        Crampfix gels
--        Need more actual food – PB&J sandwiches, onigiri, fruit.
--        Poles if possible.
--        Time on the Stairmaster!</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="race-item">
-          <div class="race-header">
-            <div><div class="race-h-name">Mt Fuji – 0 to 5th station (12km)</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">Trail</div>
-            <div class="race-h-time">85mins 35
+            <div><div class="race-h-name">2nd Mt. Fuji Climb Run</div><div class="race-h-sub">2015-09-01 00:00:00</div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Trail</div>
+            <div class="race-h-time">85mins 35 
 
 36th of 1760.</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">85mins 35
-
-36th of 1760.</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">Trail</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Give it my all. 
-Run fast and easy on the flats (while it's flat).
-Don't ever give up during the climb.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well:
--        1000mg night before and G1M Sport, onigiri and banana the morning of.
--        Caffeinated gel 10 mins before, then a gel every 20mins during the race.
--        Easy but fast run while flat - take advantage of the flat road.
--        Didn’t give up to walk while running on the road. Didn’t really walk much unless there was a blockage. Good.
--        Racing shorts and singlet. Very hot.
--        Big burger and smoothie post-race.
-
-Improvements:
--        Start at the front, where you belong. Not at the back.
--        Trail shoes not road racing shoes. Trail carbon plated racing shoes!!
--        Don’t need sunnies – mostly undercover, looking down, and sweat / body temp too high for sunnies.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Taipei Spartan</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">OCR</div>
-            <div class="race-h-time">2hr 26min 12.
+            <div><div class="race-h-name">Spartan Taipei, Taiwan</div><div class="race-h-sub">October 18 - 19</div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Spartan</div>
+            <div class="race-h-time">2hr 26min 12. 
 
 1st overall.</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">2hr 26min 12.
-
-1st overall.</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">OCR</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Run hard on the mountain / trail section.
-Fast easy pace between obstacles.
-Take the time to reset for 5 seconds before each obstacle.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well:
--        Ran the 10km trail hard – take advantage of the steep trail being hard for everyone but you.
--        Ran steady and fast on the flats between obstacles – 4-4.30 pace.
--        Salomon belt worked well for nutrition and gels. Water was on the course.
--        Airbnb is good. Able to eat consistent breakfasts – oats/eggs. Lunches and dinners out are fine.
-
-Improvements:
--        7 day trip is too long. 4-5 days is ideal this includes 2 travel days there and back, for international races. 1 prep day, 1 race day, 1 optional sightseeing day.
--        1 away race a month is enough – away races are 3-4 days away from home. More takes away from consistent eating, training, sleeping. Racing too often gets in the way of actual progress.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Deep Japan Ultra – 1 Day Training Camp</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">Ultra Trail</div>
+            <div><div class="race-h-name">Deep Japan Ultra: 1 Day Training Camp</div><div class="race-h-sub">November 1 - 2</div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Training Camp</div>
             <div class="race-h-time">Completed.
 45kms in 8hrs 18mins</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">Completed.
-45kms in 8hrs 18mins</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">Ultra Trail</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Complete the mission, take these lessons to race strong and hard during the upcoming trail and ultra trail events.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well:
--        Waterproof rain jacket and pants
--        Waterproof bags
--        Nutrition – gels, bars, actual food (onigiri, sandwiches)
--        Tights
-
-Improvements:
--        Need very strong 1000Lm headtorch
--        Need a hat for the sun/rain
--        Want a clamp to hold the rain pants.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Nikko Mountain Race (35km)</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">5 km · Road</div>
-            <div class="race-h-time">4hr 47min 11.
+            <div><div class="race-h-name">Nikko Mountain Race</div><div class="race-h-sub">2009-11-01 00:00:00</div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Trail</div>
+            <div class="race-h-time">4hr 47min 11. 
 
-18th of 731.
-15th male of 571.
+18th of 731. 
+15th male of 571. 
 8th in 30 age group of 118</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">4hr 47min 11.
-
-18th of 731.
-15th male of 571.
-8th in 30 age group of 118</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">5 km · Road</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Run fast and easy on the flats (while it's flat).
-Short and light steps on the uphills. 
-Fuel early and often.
-Test out all my kit and equipment.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well:
--        Hat
--        Not overdressing for the cold start – body temp 100% will rise, and fast.
--        Vaseline in between the legs.
--        Alternating food and gel every 30mins.
-
-Improvements:
--        Don’t overeat the night before.
--        I want to try a new trail vest.
--        Shoes bag and a drop bag for future races, get changed and warm straight after.
--        1L waterproof/heavy duty bag for portable charger.
--        Crampfix gels.
--        Need ankle support strapping/taping for both ankles for trail racing.
--        Need to check out aid station setups next races.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Okutama Ekiden</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">Road</div>
+            <div><div class="race-h-name">Okutama Ekiden</div><div class="race-h-sub">2007-12-01 00:00:00</div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Relay</div>
             <div class="race-h-time">8.4kms in 30min 34 sec
 
 3.38 pace</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">8.4kms in 30min 34 sec
-
-3.38 pace</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">Road</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Fast down the downhill.
-3km fast and easy, try to hold on as the elevation builds, 2km, 1km, 1km, 1km.
-Shorter and light cadence uphills.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well:
--        Slept well night before, breakfast on the train was good.
--        2 x onigiris an hour before. Hydration and gel 15 mins before race.
--        Race plan to go out fast and easy the first 3km, stay the course through to 5km, then hold on 1 km at a time until the end.
-
-Improvements:
--        No ankle injury and keep up the training.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">45th Gunma Safari Marathon (21.1km)</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">42.2 km · Road</div>
-            <div class="race-h-time">1hr 21min 07 sec
+            <div><div class="race-h-name">45th Gunma Safari Half Marathon</div><div class="race-h-sub">2014-12-01 00:00:00</div></div>
+            <div class="race-h-dist">21.1 km</div>
+            <div class="race-h-type">Road</div>
+            <div class="race-h-time">1hr 21min 07 sec 
 
-6th overall out of 250.
+6th overall out of 250. 
 2nd place out of 62 in 30s age group.</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">1hr 21min 07 sec
-
-6th overall out of 250.
-2nd place out of 62 in 30s age group.</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">42.2 km · Road</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Around 90 minutes would be good.
-Easy first 5km, warm the ankle up. Hold the pace next 5km, testing the ankle. 10-15km lift a little, decide are we racing to the end or not.
-Fast easy legs, no pressure. This is about testing the ankle and seeing how cardiovascularly fit I am.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well:
--        Travelled out there the day before and slept alone and early at a place nearby to the race.
--        Didn’t overeat the day and night before.
--        Saw and memorised the course map, especially the long straight shots and their approx. km markings.
--        Got extra carbs and sugars in, topping off the glycogen the night before. 
--        Bed early and up early for oats and fruit 3 hours before start.
--        Onigiri and sugary dried fruit 1.5-1 hour before start.
--        G1M Sport and Beta Alanine 45-30 mins before start.
--        Easy 15-20 warm up, handful of easy strides, some stretching.
--        Gel 10 mins before start then caffeinated gel at 6km, normal gel at 12km, and last gel at 18km.
--        Stuck to the eating plan.
--        Easy pace first 5km (especially first 2km, go out steady but easy), then hold the same pace for the next 5km. Lift a little next 5km, race begins at 15km, push. Push hard from 18km. All out from 20km.
--        Stuck to the racing plan. The times will drop with consistent training, recovery and racing. LFGG.
-
-Improvements:
--        New racing shoes, the adidas are for training from 2026.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">139th Kanto 10K Road race</div><div class="race-h-sub"></div></div>
-            <div class="race-h-meta">10 km · Road</div>
-            <div class="race-h-time">35min 56sec
+            <div><div class="race-h-name">139th Kanto10K Road Race</div><div class="race-h-sub">2021-12-01 00:00:00</div></div>
+            <div class="race-h-dist">10 km</div>
+            <div class="race-h-type">Road</div>
+            <div class="race-h-time">35min 56sec 
 
 10th out of 33 in age group.</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">35min 56sec
-
-10th out of 33 in age group.</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">10 km · Road</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Sub 37 min would be good. Sub 36 min would be excellent.
-Easy speed first 3km, keep the pace next 3km, lift effort and pace next 2km, 1km at a time the last 2kms - increase cadnece and pumpo the arms, steady push 500m uphill, all out last 500m.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>Worked well:
--        Travelled out there the day of the race. If the race is a later start (9-10am) and within 2 hours of home, travelling out there that morning is ok.
--        Oats and fruit 3 hours from start.
--        Onigiri 1 hour from start.
--        G1M Sport and Beta Alanine 30 mins from start.
--        Caffeinated gel 5 mins from start.
--        3km easy speed, 3km hold, 2 lift, 1 push, 500 fucking push, 500 all out war.
--        Stuck to the eating plan.
--        Stuck to the race plan. The times will come, its all about consistent training, recovery and sticking to a race plan.
-
-Improvements:
--        No sleep overs the night before. No sleep overs from 3 nights before.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="year-panel active" id="panel-2026">
+      <div class="race-table-header">
+        <div class="race-th">Race</div>
+        <div class="race-th">Distance</div>
+        <div class="race-th">Type</div>
+        <div class="race-th">Time</div>
+        <div class="race-th">Overall</div>
+        <div class="race-th">Age Group</div>
+        <div class="race-th race-th-expand">Expand</div>
+      </div>
       <div class="race-accordion">
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Tokyo New Year Half Marathon</div><div class="race-h-sub">Sun 11/1</div></div>
-            <div class="race-h-meta">21.1 km · Road</div>
+            <div><div class="race-h-name">Tokyo New Year Half Marathon</div><div class="race-h-sub">Januarry 11</div></div>
+            <div class="race-h-dist">21.1 km</div>
+            <div class="race-h-type">Road</div>
             <div class="race-h-time">81 mins 11 sec</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">81 mins 11 sec</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">21.1 km · Road</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -1141,15 +925,13 @@ Improvements:
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Shibuya Ekiden</div><div class="race-h-sub">Sun 18/1</div></div>
-            <div class="race-h-meta">Road</div>
+            <div><div class="race-h-name">Shibuya Ekiden</div><div class="race-h-sub">2018-01-01 00:00:00</div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Ekiden</div>
             <div class="race-h-time">9 mins 20 sec</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">9 mins 20 sec</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">Road</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -1159,15 +941,13 @@ Improvements:
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Hyrox Osaka, Japan</div><div class="race-h-sub">Fri 30/1 - Mon 2/2</div></div>
-            <div class="race-h-meta">Hybrid</div>
+            <div><div class="race-h-name">Hyrox Osaka, Japan</div><div class="race-h-sub">January 31 - February 1</div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Hybrid</div>
             <div class="race-h-time">1hr 05mins 02sec - 6 min penalty for not doing the full amount on sled push station</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">1hr 05mins 02sec - 6 min penalty for not doing the full amount on sled push station</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">Hybrid</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -1177,15 +957,13 @@ Improvements:
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Kyoto Marathon</div><div class="race-h-sub">Sat 14/2 - Mon 16/2</div></div>
-            <div class="race-h-meta">42.2 km · Road</div>
+            <div><div class="race-h-name">Kyoto Marathon</div><div class="race-h-sub">Fenruary 15</div></div>
+            <div class="race-h-dist">42.2 km</div>
+            <div class="race-h-type">Road</div>
             <div class="race-h-time">2hr 56mins 19sec</div>
-            <div class="race-h-position">—</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Time</div><div class="race-stat-mini-val">2hr 56mins 19sec</div></div>
-            <div class="race-stat-mini"><div class="race-stat-mini-label">Format</div><div class="race-stat-mini-val">42.2 km · Road</div></div>
+            <div class="race-h-pos">—</div>
+            <div class="race-h-ag">—</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -1193,6 +971,38 @@ Improvements:
             </div>
           </div>
         </div>
+        <div class="race-item">
+          <div class="race-header">
+            <div><div class="race-h-name">UTMB Kenting, Taiwan</div><div class="race-h-sub"></div></div>
+            <div class="race-h-dist">—</div>
+            <div class="race-h-type">Road</div>
+            <div class="race-h-time">2:19:07
+10th overall / 1079 competitors
+6th in mens age group / 213 competitors</div>
+            <div class="race-h-pos">10th / 1079</div>
+            <div class="race-h-ag">6th</div>
+            <div class="race-h-expand">Expand</div>
+          </div>
+          <div class="race-body">
+            <div class="race-body-inner">
+              <p>Race notes coming soon.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="year-panel" id="panel-2027">
+      <div class="race-table-header">
+        <div class="race-th">Race</div>
+        <div class="race-th">Distance</div>
+        <div class="race-th">Type</div>
+        <div class="race-th">Time</div>
+        <div class="race-th">Overall</div>
+        <div class="race-th">Age Group</div>
+        <div class="race-th race-th-expand">Expand</div>
+      </div>
+      <div class="race-accordion">
+        <p style="color:var(--grey-mid);padding:2rem 0">No results recorded yet.</p>
       </div>
     </div>
 
@@ -1209,89 +1019,79 @@ Improvements:
     </div>
     <div class="calendar-grid">
             <div class="cal-card reveal">
-        <div class="cal-month">Fri 6/3 - Tues 10/3</div>
-        <div class="cal-race">UTMB KENTING, TAIWAN</div>
-        <div class="cal-details">Road</div>
-      </div>
-      <div class="cal-card reveal">
-        <div class="cal-month">Sun 29/3</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">18TH HASETSUNE 30K,</div>
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month">Fri 10/4 - Sun 12/4</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">HIROSHIMA TRAIL 2026</div>
         <div class="cal-details">Trail</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month">Thurs 7/5 - Mon 11/5</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">HYROX HONG KONG</div>
         <div class="cal-details">Hybrid</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"></div>
-        <div class="cal-race">CAMPING TRIP WITH YUUTA AND HIKING CREW</div>
-        <div class="cal-details">Road</div>
-      </div>
-      <div class="cal-card reveal">
-        <div class="cal-month">Fri 19/6 - Sun 21/6</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">UTMB YAMANAKA, JAPAN</div>
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month">Thurs 25/6 - Sun 28/6</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">DEEP JAPAN ULTRA</div>
-        <div class="cal-details">Ultra Trail</div>
+        <div class="cal-details">Ultra</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month">Saturday 4/7/26</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">ROUGH WATER SWIM (1.6KM)</div>
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"></div>
+        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
         <div class="cal-race">THE 79TH FUJI MOUNTAIN RACE</div>
         <div class="cal-details">Trail</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month">Thurs 20/8 - Tues 25/8</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">THE MILL (PERTH)</div>
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"></div>
+        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
         <div class="cal-race">MT FUJI – 0 TO 5TH STATION 12KM</div>
         <div class="cal-details">Trail</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month">Saturday 12/9 - Sunday 13/9</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">HAKUBA INTERNATIONAL CLASSIC 2026</div>
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"></div>
+        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
         <div class="cal-race">SPARTAN NIIGATA, JAPAN</div>
         <div class="cal-details">OCR</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month">Fri 23/10 - Mon 26/10</div>
+        <div class="cal-month"> </div>
         <div class="cal-race">SPARTAN PORAC, PHILIPPINES</div>
         <div class="cal-details">OCR</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"></div>
+        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
         <div class="cal-race">NIKKO MOUNTAIN RACE</div>
         <div class="cal-details">Trail</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"></div>
+        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
         <div class="cal-race">UTMB CHIANG MAI, THAILAND</div>
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"></div>
+        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
         <div class="cal-race">ADACHI FRIENDLY HALF MARATHON</div>
-        <div class="cal-details">21.1 km · Road</div>
+        <div class="cal-details">Road</div>
       </div>
     </div>
   </div>

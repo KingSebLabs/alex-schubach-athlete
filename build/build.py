@@ -4,23 +4,17 @@ build.py
 Builds index.html, sitemap.xml, and robots.txt from:
   - build/template.html        (Jinja2 HTML template)
   - content.yaml               (editable site content)
-  - Google Sheets (live)       (race results + calendar)
+  - Dropbox XLSX (live)        (race results + calendar)
   - images/gallery/            (photo files)
 
 Usage:
   python3 build/build.py
-
-Environment variable (optional, for private sheets):
-  SHEETS_URL_OVERRIDE   — if set, uses this URL instead of config
 """
 
-import os
 import sys
-import csv
 import io
-import re
 import datetime
-import urllib.request
+import requests
 from pathlib import Path
 
 import yaml
@@ -33,46 +27,49 @@ BUILD_DIR = ROOT / "build"
 IMAGES_DIR = ROOT / "images"
 GALLERY_DIR = IMAGES_DIR / "gallery"
 
-# ─── Google Sheets config ─────────────────────────────────────────────────────
-SPREADSHEET_ID = "1tAQU1-XerBxj4lh_x3omGlaGSP_wRmmg"
+# ─── Dropbox Excel config ─────────────────────────────────────────────────────
+DROPBOX_XLSX_URL = (
+    "https://www.dropbox.com/scl/fi/v65q8huxv3vkd9ho9eind/Racing-Calendar.xlsx"
+    "?rlkey=lrz8gpnfrrviy5phz8xlcy8wh&st=eun7hj28&dl=1"
+)
+SHEET_NAMES = ["2025", "2026", "2027"]
 
-# Sheet GIDs — the number after ?gid= in the URL when you click each tab.
-# Tab names use a curly apostrophe: Races '26, Races '25
-SHEET_GIDS = {
-    "Races '25": "914437451",
-    "Races '26": "1855090883",
-    # Add "Races '27": "GID" when you create that sheet — year tabs auto-generate
-}
-
-# The year suffix of the most recent tab (controls which tab is active by default)
-CURRENT_YEAR = "26"
+# The year tab active by default on the race results section
+CURRENT_YEAR = "2026"
 
 
-def fetch_sheet_csv(spreadsheet_id: str, gid: str) -> list[dict]:
-    """Fetch a Google Sheet tab as CSV and return list of row dicts.
-
-    The race sheets have a blank row 1 and headers on row 2, so we skip
-    leading blank rows before handing off to DictReader.
-    """
-    url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=csv&gid={gid}"
+def fetch_excel_sheets(url: str) -> dict:
+    """Download XLSX from Dropbox and return {sheet_name: [row_dicts]}."""
+    import openpyxl
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            raw = resp.read().decode("utf-8")
-        rows = list(csv.reader(io.StringIO(raw)))
-        # Skip leading blank rows to find the real header row
-        start = 0
-        for i, row in enumerate(rows):
-            if any(c.strip() for c in row):
-                start = i
-                break
-        # Rebuild CSV string from first non-empty row onwards
-        clean = "\n".join(",".join(f'"{c}"' for c in row) for row in rows[start:])
-        reader = csv.DictReader(io.StringIO(clean))
-        return list(reader)
+        resp = requests.get(url, timeout=30)
+        resp.raise_for_status()
+        wb = openpyxl.load_workbook(io.BytesIO(resp.content), data_only=True)
+        result = {}
+        for name in SHEET_NAMES:
+            if name not in wb.sheetnames:
+                continue
+            ws = wb[name]
+            rows = list(ws.iter_rows(values_only=True))
+            if not rows:
+                result[name] = []
+                continue
+            # Find header row (first non-empty row)
+            header_idx = next((i for i, r in enumerate(rows) if any(c for c in r)), None)
+            if header_idx is None:
+                result[name] = []
+                continue
+            headers = [str(c).strip() if c else "" for c in rows[header_idx]]
+            result[name] = [
+                {headers[i]: (str(v).strip() if v is not None else "")
+                 for i, v in enumerate(row) if i < len(headers)}
+                for row in rows[header_idx + 1:]
+                if any(v for v in row)
+            ]
+        return result
     except Exception as e:
-        print(f"  ⚠ Could not fetch sheet GID={gid}: {e}", file=sys.stderr)
-        return []
+        print(f"  ⚠ Could not fetch Excel from Dropbox: {e}", file=sys.stderr)
+        return {}
 
 
 def optimize_images():
@@ -135,7 +132,7 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
     Split sheet rows into (past_races, upcoming_races).
     A row is a past race if RACE RESULTS is non-empty.
     A row is upcoming if RACE RESULTS is empty but EVENT is non-empty.
-    Filters to rows where REGISTERED contains 'Alex'.
+    Filters to rows where REGISTERED contains 'Alex' OR is empty (TBC upcoming).
     """
     past, upcoming = [], []
     for row in rows:
@@ -144,31 +141,32 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
             continue
         registered = find_col(row, "REGISTERED", "Registered", "REGISTRATION")
         if registered and "alex" not in registered.lower():
-            continue  # skip races not registered for Alex
+            continue  # skip races explicitly not for Alex
 
         result = find_col(row, "RACE RESULTS", "Race Results", "RESULT", "Results", "TIME")
-        date_str = find_col(row, "BLACKOUT DATES", "Blackout Dates", "DATE", "Date", "RACE DATE")
+        date_str = find_col(row, "RACE DATE", "BLACKOUT DATES", "DATE", "Date")
+        race_type = find_col(row, "RACE TYPE", "TYPE") or infer_race_type(event.split("\n")[0].strip())
+        description = find_col(row, "RACE DESCRIPTION", "DESCRIPTION")[:140]
         comments_pre = find_col(row, "COMMENTS PRE", "Comments Pre", "PRE RACE", "GOING IN")
         comments_post = find_col(row, "COMMENTS POST", "Comments Post", "POST RACE", "LOOKING BACK")
         pos_overall = find_col(row, "POSITION OVERALL", "Position Overall", "OVERALL POSITION", "POS OVERALL")
         pos_ag = find_col(row, "POSITION AG", "Position AG", "AG POSITION", "AGE GROUP POS")
 
-        # Parse race name (first line of EVENT cell)
         race_name = event.split("\n")[0].strip()
-        # Try to get date from second line of EVENT or from BLACKOUT DATES
         race_date = date_str.split("\n")[0].strip() if date_str else ""
-        # Try to infer distance/type from race name
-        race_type = infer_race_type(race_name)
 
         entry = {
             "name": race_name,
             "date": race_date,
             "type": race_type,
             "result": result,
+            "description": description,
+            "registered": registered,
             "comments_pre": comments_pre,
             "comments_post": comments_post,
             "pos_overall": pos_overall,
             "pos_ag": pos_ag,
+            "distance": infer_distance(race_name),
         }
 
         if result:
@@ -180,25 +178,57 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
 
 
 def infer_race_type(name: str) -> str:
-    """Guess race type/distance from name."""
+    """Guess race type from name (fallback when RACE TYPE column is absent)."""
     n = name.lower()
     if "hyrox" in n:
         return "Hybrid"
     if "spartan" in n:
         return "OCR"
     if "marathon" in n and "half" not in n:
-        return "42.2 km · Road"
+        return "Road"
     if "half marathon" in n or "half" in n:
-        return "21.1 km · Road"
+        return "Road"
     if "10k" in n or "10km" in n:
-        return "10 km · Road"
+        return "Road"
     if "5k" in n or "5km" in n:
-        return "5 km · Road"
+        return "Road"
     if "ultra" in n or "80k" in n or "100k" in n:
-        return "Ultra Trail"
+        return "Ultra"
     if "trail" in n or "mountain" in n or "fuji" in n or "nikko" in n:
         return "Trail"
     return "Road"
+
+
+def infer_distance(name: str) -> str:
+    """Extract distance label from race name."""
+    n = name.lower()
+    if "marathon" in n and "half" not in n:
+        return "42.2 km"
+    if "half marathon" in n or "half" in n:
+        return "21.1 km"
+    if "80k" in n or "80km" in n:
+        return "80 km"
+    if "50k" in n or "50km" in n:
+        return "50 km"
+    if "35k" in n or "35km" in n:
+        return "35 km"
+    if "30k" in n or "30km" in n:
+        return "30 km"
+    if "27k" in n or "27km" in n:
+        return "27 km"
+    if "25k" in n or "25km" in n:
+        return "25 km"
+    if "21k" in n or "21km" in n:
+        return "21.1 km"
+    if "20k" in n or "20km" in n:
+        return "20 km"
+    if "12k" in n or "12km" in n:
+        return "12 km"
+    if "10k" in n or "10km" in n:
+        return "10 km"
+    if "5k" in n or "5km" in n:
+        return "5 km"
+    return "—"
 
 
 def build_race_card_html(race: dict) -> str:
@@ -207,23 +237,9 @@ def build_race_card_html(race: dict) -> str:
     date = race["date"]
     result = race["result"]
     race_type = race["type"]
+    distance = race.get("distance", "—")
     pos = race["pos_overall"] or "—"
-    pos_ag = race["pos_ag"]
-
-    # Stats strip
-    stat_items = []
-    if race["pos_overall"]:
-        stat_items.append(("Overall", race["pos_overall"]))
-    if pos_ag:
-        stat_items.append(("Age Group", pos_ag))
-    stat_items.append(("Time", result))
-    stat_items.append(("Format", race_type))
-
-    stats_html = "\n".join(
-        f'            <div class="race-stat-mini"><div class="race-stat-mini-label">{label}</div>'
-        f'<div class="race-stat-mini-val">{val}</div></div>'
-        for label, val in stat_items
-    )
+    pos_ag = race.get("pos_ag") or "—"
 
     # Narrative body
     body_parts = []
@@ -247,13 +263,12 @@ def build_race_card_html(race: dict) -> str:
     return f'''        <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">{name}</div><div class="race-h-sub">{date}</div></div>
-            <div class="race-h-meta">{race_type}</div>
-            <div class="race-h-time">{result}</div>
-            <div class="race-h-position">{pos}</div>
-            <div></div>
-          </div>
-          <div class="race-stats-strip">
-{stats_html}
+            <div class="race-h-dist">{distance}</div>
+            <div class="race-h-type">{race_type}</div>
+            <div class="race-h-time">{result or "—"}</div>
+            <div class="race-h-pos">{pos}</div>
+            <div class="race-h-ag">{pos_ag}</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -265,20 +280,35 @@ def build_race_card_html(race: dict) -> str:
 
 def build_calendar_card_html(race: dict) -> str:
     """Build a calendar card for an upcoming race."""
+    tbc = not race.get("registered") or "alex" not in race.get("registered", "").lower()
+    tbc_badge = '<span class="cal-tbc">TBC</span>' if tbc else ""
+    desc_html = f'        <div class="cal-desc">{race["description"]}</div>\n' if race.get("description") else ""
     return (
         f'      <div class="cal-card reveal">\n'
-        f'        <div class="cal-month">{race["date"]}</div>\n'
+        f'        <div class="cal-month">{race["date"]} {tbc_badge}</div>\n'
         f'        <div class="cal-race">{race["name"].upper()}</div>\n'
         f'        <div class="cal-details">{race["type"]}</div>\n'
+        f'{desc_html}'
         f'      </div>'
     )
 
 
-def build_race_tabs_and_panels(sheets_data: dict[str, tuple]) -> tuple[str, str]:
+TABLE_HEADER = '''      <div class="race-table-header">
+        <div class="race-th">Race</div>
+        <div class="race-th">Distance</div>
+        <div class="race-th">Type</div>
+        <div class="race-th">Time</div>
+        <div class="race-th">Overall</div>
+        <div class="race-th">Age Group</div>
+        <div class="race-th race-th-expand">Expand</div>
+      </div>'''
+
+
+def build_race_tabs_and_panels(sheets_data: dict) -> tuple:
     """
     Build the year-tabs + year-panels HTML from all sheets.
-    sheets_data = { "Races 25": (past_races, upcoming), "Races 26": (past_races, upcoming), ... }
-    Returns (tabs_and_panels_html, calendar_cards_html)
+    sheets_data = { "2025": (past_races, upcoming), "2026": (past_races, upcoming), ... }
+    Returns (tabs_and_panels_html, calendar_cards_html, calendar_year)
     """
     # Sort years ascending so tabs appear 2025 → 2026 → ...
     years = sorted(sheets_data.keys())
@@ -288,10 +318,9 @@ def build_race_tabs_and_panels(sheets_data: dict[str, tuple]) -> tuple[str, str]
     all_upcoming = []
 
     for sheet_name in years:
-        year_short = re.sub(r"[^0-9]", "", sheet_name)  # "Races 26" → "26"
-        year_full = f"20{year_short}"
+        year_full = sheet_name  # already "2025", "2026", etc.
         past_races, upcoming_races = sheets_data[sheet_name]
-        is_current = year_short == CURRENT_YEAR
+        is_current = year_full == CURRENT_YEAR
 
         tabs_html += f'  <div class="year-tab{" active" if is_current else ""}" data-year="{year_full}">{year_full}</div>\n'
 
@@ -300,6 +329,7 @@ def build_race_tabs_and_panels(sheets_data: dict[str, tuple]) -> tuple[str, str]
 
         panels_html += (
             f'\n    <div class="year-panel{" active" if is_current else ""}" id="panel-{year_full}">\n'
+            f'{TABLE_HEADER}\n'
             f'      <div class="race-accordion">\n'
             f'{race_cards}\n'
             f'      </div>\n'
@@ -313,9 +343,7 @@ def build_race_tabs_and_panels(sheets_data: dict[str, tuple]) -> tuple[str, str]
     calendar_html = "\n".join(build_calendar_card_html(r) for r in all_upcoming) if all_upcoming else \
         '      <p style="color:var(--grey-mid)">Calendar coming soon.</p>'
 
-    calendar_year = f"20{CURRENT_YEAR}"
-
-    return tabs_html + panels_html, calendar_html, calendar_year
+    return tabs_html + panels_html, calendar_html, CURRENT_YEAR
 
 
 def build_seo_tags(site: dict, social: dict) -> str:
@@ -425,35 +453,28 @@ def main():
     print("Building gallery...")
     gallery_html = build_gallery_html()
 
-    # 4. Fetch Google Sheets data
-    print("Fetching race data from Google Sheets...")
+    # 4. Fetch race data from Dropbox Excel
+    print("Fetching race data from Dropbox Excel...")
+    raw_sheets = fetch_excel_sheets(DROPBOX_XLSX_URL)
     sheets_data = {}
-    if SPREADSHEET_ID == "YOUR_SPREADSHEET_ID_HERE":
-        print("  ⚠ SPREADSHEET_ID not configured — skipping Sheets fetch")
-        print("  → Update SPREADSHEET_ID and SHEET_GIDS in build/build.py")
-        sheets_data = {}
-    else:
-        for sheet_name, gid in SHEET_GIDS.items():
-            print(f"  Fetching '{sheet_name}'...")
-            rows = fetch_sheet_csv(SPREADSHEET_ID, gid)
-            if rows:
-                past, upcoming = parse_race_rows(rows)
-                sheets_data[sheet_name] = (past, upcoming)
-                print(f"    → {len(past)} past races, {len(upcoming)} upcoming")
+    for sheet_name, rows in raw_sheets.items():
+        past, upcoming = parse_race_rows(rows)
+        sheets_data[sheet_name] = (past, upcoming)
+        print(f"  '{sheet_name}' → {len(past)} past, {len(upcoming)} upcoming")
 
     # 5. Build race tabs/panels and calendar
     if sheets_data:
         race_tabs_and_panels, calendar_cards, calendar_year = build_race_tabs_and_panels(sheets_data)
     else:
-        # Fallback: keep existing race content as a placeholder message
+        # Fallback placeholder when Dropbox fetch fails
         race_tabs_and_panels = (
-            '<div class="year-tabs reveal"><div class="year-tab active" data-year="2026">2026</div></div>\n'
-            '<div class="year-panel active" id="panel-2026">'
-            '<p style="color:var(--grey-mid);padding:2rem 0">Configure SPREADSHEET_ID in build/build.py to auto-populate race results.</p>'
+            f'<div class="year-tabs reveal"><div class="year-tab active" data-year="{CURRENT_YEAR}">{CURRENT_YEAR}</div></div>\n'
+            f'<div class="year-panel active" id="panel-{CURRENT_YEAR}">'
+            '<p style="color:var(--grey-mid);padding:2rem 0">Race data temporarily unavailable — check back soon.</p>'
             '</div>'
         )
-        calendar_cards = '<p style="color:var(--grey-mid)">Configure SPREADSHEET_ID in build/build.py to auto-populate the calendar.</p>'
-        calendar_year = f"20{CURRENT_YEAR}"
+        calendar_cards = '<p style="color:var(--grey-mid)">Race calendar temporarily unavailable — check back soon.</p>'
+        calendar_year = CURRENT_YEAR
 
     # 6. Build SEO and analytics tags
     seo_tags = build_seo_tags(site, content.get("social", {}))
@@ -497,8 +518,6 @@ def main():
     print("  ✓ robots.txt written")
 
     print("\n✓ Build complete.")
-    if SPREADSHEET_ID == "YOUR_SPREADSHEET_ID_HERE":
-        print("\n⚠ Next step: open build/build.py and set SPREADSHEET_ID + SHEET_GIDS")
 
 
 if __name__ == "__main__":
