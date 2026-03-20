@@ -62,7 +62,7 @@ contact:
   heading: "LET'S WORK<br>TOGETHER"
   body: "Whether it's a brand partnership, media opportunity, or collaboration — I'd love to hear from you."
   # Formspree endpoint — sign up at formspree.io and paste your form ID here
-  formspree_id: ""   # e.g. "abcdefgh"
+  formspree_id: "mjgazkbq"
   categories:
     - icon: "🤝"
       label: "Brand Partnerships"

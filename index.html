@@ -1233,20 +1233,22 @@ Age Group 6th / ??</div>
       </div>
       <div class="contact-form reveal">
         
-        <div class="form-row">
-          <input type="text" placeholder="Name" aria-label="Name">
-          <input type="email" placeholder="Email" aria-label="Email">
-        </div>
-        <input type="tel" placeholder="Phone Number" aria-label="Phone Number">
-        <select aria-label="Inquiry Type">
-          <option value="" disabled selected>Inquiry Type</option>
-          <option>Brand Partnership</option>
-          <option>Media Inquiry</option>
-          <option>Collaboration</option>
-          <option>Other</option>
-        </select>
-        <textarea placeholder="Message" aria-label="Message"></textarea>
-        <button type="button">Send Message →</button>
+        <form action="https://formspree.io/f/mjgazkbq" method="POST">
+          <div class="form-row">
+            <input type="text" name="name" placeholder="Name" aria-label="Name" required>
+            <input type="email" name="email" placeholder="Email" aria-label="Email" required>
+          </div>
+          <input type="tel" name="phone" placeholder="Phone Number" aria-label="Phone Number">
+          <select name="inquiry_type" aria-label="Inquiry Type">
+            <option value="" disabled selected>Inquiry Type</option>
+            <option>Brand Partnership</option>
+            <option>Media Inquiry</option>
+            <option>Collaboration</option>
+            <option>Other</option>
+          </select>
+          <textarea name="message" placeholder="Message" aria-label="Message"></textarea>
+          <button type="submit">Send Message →</button>
+        </form>
         
       </div>
     </div>
