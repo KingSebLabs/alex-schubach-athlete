@@ -13,6 +13,7 @@ Usage:
 
 import sys
 import io
+import re
 import datetime
 import requests
 from pathlib import Path
@@ -36,6 +37,9 @@ SHEET_NAMES = ["2025", "2026", "2027"]
 
 # The year tab active by default on the race results section
 CURRENT_YEAR = "2026"
+
+# Alex's UTMB runner profile URL — used to auto-fetch the live UTMB Index at build time
+UTMB_RUNNER_URL = "https://utmb.world/en/runner/8058767.alex.schubach"
 
 
 def _fmt_cell(v) -> str:
@@ -80,6 +84,32 @@ def fetch_excel_sheets(url: str) -> dict:
         return {}
 
 
+def fetch_utmb_index(runner_url: str, fallback: str = "") -> str:
+    """Fetch live UTMB Index from runner's utmb.world profile via __NEXT_DATA__ JSON."""
+    import json
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        resp = requests.get(runner_url, timeout=15, headers=headers)
+        resp.raise_for_status()
+        m = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', resp.text, re.DOTALL)
+        if not m:
+            print("  ⚠ UTMB: __NEXT_DATA__ not found in page", file=sys.stderr)
+            return fallback
+        data = json.loads(m.group(1))
+        perf = data["props"]["pageProps"]["performanceIndexes"]
+        numeric = [int(entry["index"]) for entry in perf if isinstance(entry.get("index"), int)]
+        if numeric:
+            best = str(max(numeric))
+            print(f"  UTMB Index fetched: {best} (raw: {perf})")
+            return best
+    except Exception as e:
+        print(f"  ⚠ Could not fetch UTMB index: {e}", file=sys.stderr)
+    return fallback
+
+
 def optimize_images():
     """Resize gallery images to max 1200px wide, quality 82. Modifies in-place."""
     for img_path in GALLERY_DIR.glob("*.jpg"):
@@ -113,12 +143,12 @@ def build_gallery_html() -> str:
     if not images:
         return "<!-- No gallery images found -->"
     items = []
-    for img in images:
+    for i, img in enumerate(images):
         # Use filename (without extension) as alt text, replacing _ with space
         alt = img.stem.lstrip("0123456789").strip("_- ").replace("_", " ").title()
         items.append(
-            f'      <div class="gallery-item reveal">'
-            f'<img src="images/gallery/{img.name}" alt="{alt}" style="width:100%;height:100%;object-fit:cover;"></div>'
+            f'      <div class="gallery-item reveal" data-index="{i}" data-src="images/gallery/{img.name}">'
+            f'<img src="images/gallery/{img.name}" alt="{alt}" loading="lazy"></div>'
         )
     return "\n".join(items)
 
@@ -282,6 +312,7 @@ def build_race_card_html(race: dict) -> str:
             <div class="race-h-time">{result or "—"}</div>
             <div class="race-h-pos">{pos}</div>
             <div class="race-h-ag">{pos_ag}</div>
+            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -316,7 +347,7 @@ TABLE_HEADER = '''      <div class="race-table-header">
         <div class="race-th">Time</div>
         <div class="race-th">Overall</div>
         <div class="race-th">Age Group</div>
-        <div class="race-th race-th-last"></div>
+        <div class="race-th race-th-expand">Expand</div>
       </div>'''
 
 
@@ -461,6 +492,13 @@ def main():
     site = content.get("site", {})
     base_url = site.get("base_url", "").rstrip("/")
 
+    # 1b. Fetch live UTMB index (overrides content.yaml fallback)
+    indices = content.get("indices", {})
+    print("Fetching UTMB index...")
+    live_utmb = fetch_utmb_index(UTMB_RUNNER_URL, fallback=indices.get("utmb", ""))
+    if live_utmb:
+        indices = {**indices, "utmb": live_utmb}
+
     # 2. Optimise images
     print("Optimising images...")
     optimize_images()
@@ -507,7 +545,7 @@ def main():
         about=content.get("about", {}),
         values=content.get("values", []),
         mission=content.get("mission", {}),
-        indices=content.get("indices", {}),
+        indices=indices,
         contact=content.get("contact", {}),
         social=content.get("social", {}),
         pdf=content.get("pdf", {"enabled": False}),
