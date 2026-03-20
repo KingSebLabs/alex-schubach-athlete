@@ -264,13 +264,18 @@ section { padding: 6rem 2.5rem; }
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em;
   text-transform: uppercase; color: var(--grey-mid);
 }
-.race-th-expand { text-align: right; padding-right: 2.5rem; }
+.race-th-last { } /* placeholder for ::after column */
 
 .race-header {
-  display: grid; grid-template-columns: 2.2fr 0.8fr 1fr 1fr 0.9fr 0.9fr auto; align-items: center;
-  padding: 1.4rem 2rem; cursor: pointer; transition: background 0.3s;
+  display: grid; grid-template-columns: 2.2fr 0.8fr 1fr 1fr 0.9fr 0.9fr; align-items: center;
+  padding: 1.4rem 2rem; cursor: pointer; transition: background 0.3s; position: relative;
 }
 .race-header:hover { background: rgba(255,255,255,0.03); }
+.race-header::after {
+  content: '+'; font-family: var(--font-display); font-size: 1.4rem; color: var(--accent);
+  margin-left: 1.5rem; transition: transform 0.3s; line-height: 1;
+}
+.race-item.open .race-header::after { content: '−'; }
 .race-item:nth-child(even) { background: rgba(255,255,255,0.022); }
 .race-h-name { font-weight: 700; color: var(--text-light); font-size: 0.95rem; }
 .race-h-sub { font-size: 0.75rem; color: var(--grey-mid); margin-top: 0.2rem; }
@@ -281,8 +286,7 @@ section { padding: 6rem 2.5rem; }
 .race-h-ag { font-size: 0.85rem; font-weight: 600; color: var(--text-light); }
 .race-h-expand {
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--grey-mid);
-  text-align: right; padding-right: 2.5rem;
+  text-transform: uppercase; color: var(--grey-mid); text-align: right;
 }
 
 .race-body {
@@ -306,8 +310,9 @@ section { padding: 6rem 2.5rem; }
 
 /* Mobile accordion */
 @media (max-width: 768px) {
-  .race-header { grid-template-columns: 1fr auto; gap: 0.5rem; padding: 1.2rem 1.2rem; }
-  .race-h-dist, .race-h-type, .race-h-pos, .race-h-ag, .race-h-expand { display: none; }
+  .race-header { grid-template-columns: 1fr; gap: 0.5rem; padding: 1.2rem 3rem 1.2rem 1.2rem; }
+  .race-h-dist, .race-h-type, .race-h-pos, .race-h-ag { display: none; }
+  .race-header::after { position: absolute; right: 1rem; }
   .race-table-header { display: none; }
   .race-body-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem 1.2rem 2rem; }
   .year-tab { padding: 0.7rem 1.5rem; font-size: 1.3rem; }

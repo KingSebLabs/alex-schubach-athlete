@@ -286,13 +286,18 @@ section { padding: 6rem 2.5rem; }
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.18em;
   text-transform: uppercase; color: var(--grey-mid);
 }
-.race-th-expand { text-align: right; padding-right: 2.5rem; }
+.race-th-last { } /* placeholder for ::after column */
 
 .race-header {
-  display: grid; grid-template-columns: 2.2fr 0.8fr 1fr 1fr 0.9fr 0.9fr auto; align-items: center;
-  padding: 1.4rem 2rem; cursor: pointer; transition: background 0.3s;
+  display: grid; grid-template-columns: 2.2fr 0.8fr 1fr 1fr 0.9fr 0.9fr; align-items: center;
+  padding: 1.4rem 2rem; cursor: pointer; transition: background 0.3s; position: relative;
 }
 .race-header:hover { background: rgba(255,255,255,0.03); }
+.race-header::after {
+  content: '+'; font-family: var(--font-display); font-size: 1.4rem; color: var(--accent);
+  margin-left: 1.5rem; transition: transform 0.3s; line-height: 1;
+}
+.race-item.open .race-header::after { content: '−'; }
 .race-item:nth-child(even) { background: rgba(255,255,255,0.022); }
 .race-h-name { font-weight: 700; color: var(--text-light); font-size: 0.95rem; }
 .race-h-sub { font-size: 0.75rem; color: var(--grey-mid); margin-top: 0.2rem; }
@@ -303,8 +308,7 @@ section { padding: 6rem 2.5rem; }
 .race-h-ag { font-size: 0.85rem; font-weight: 600; color: var(--text-light); }
 .race-h-expand {
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--grey-mid);
-  text-align: right; padding-right: 2.5rem;
+  text-transform: uppercase; color: var(--grey-mid); text-align: right;
 }
 
 .race-body {
@@ -328,8 +332,9 @@ section { padding: 6rem 2.5rem; }
 
 /* Mobile accordion */
 @media (max-width: 768px) {
-  .race-header { grid-template-columns: 1fr auto; gap: 0.5rem; padding: 1.2rem 1.2rem; }
-  .race-h-dist, .race-h-type, .race-h-pos, .race-h-ag, .race-h-expand { display: none; }
+  .race-header { grid-template-columns: 1fr; gap: 0.5rem; padding: 1.2rem 3rem 1.2rem 1.2rem; }
+  .race-h-dist, .race-h-type, .race-h-pos, .race-h-ag { display: none; }
+  .race-header::after { position: absolute; right: 1rem; }
   .race-table-header { display: none; }
   .race-body-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem 1.2rem 2rem; }
   .year-tab { padding: 0.7rem 1.5rem; font-size: 1.3rem; }
@@ -747,18 +752,17 @@ footer {
         <div class="race-th">Time</div>
         <div class="race-th">Overall</div>
         <div class="race-th">Age Group</div>
-        <div class="race-th race-th-expand">Expand</div>
+        <div class="race-th race-th-last"></div>
       </div>
       <div class="race-accordion">
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Hyrox Yokohama, Japan</div><div class="race-h-sub">2009-08-01 00:00:00</div></div>
+            <div><div class="race-h-name">Hyrox Yokohama, Japan</div><div class="race-h-sub">1 Aug 2025</div></div>
             <div class="race-h-dist">—</div>
             <div class="race-h-type">Hyrox</div>
             <div class="race-h-time">1hr 13min 25</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -768,15 +772,12 @@ footer {
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">2nd Mt. Fuji Climb Run</div><div class="race-h-sub">2015-09-01 00:00:00</div></div>
+            <div><div class="race-h-name">2nd Mt. Fuji Climb Run</div><div class="race-h-sub">1 Sep 2015</div></div>
             <div class="race-h-dist">—</div>
             <div class="race-h-type">Trail</div>
-            <div class="race-h-time">85mins 35 
-
-36th of 1760.</div>
-            <div class="race-h-pos">—</div>
+            <div class="race-h-time">85mins 35</div>
+            <div class="race-h-pos">36th / 1760</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -794,7 +795,6 @@ footer {
 1st overall.</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -811,7 +811,6 @@ footer {
 45kms in 8hrs 18mins</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -821,7 +820,7 @@ footer {
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Nikko Mountain Race</div><div class="race-h-sub">2009-11-01 00:00:00</div></div>
+            <div><div class="race-h-name">Nikko Mountain Race</div><div class="race-h-sub">1 Nov 2025</div></div>
             <div class="race-h-dist">—</div>
             <div class="race-h-type">Trail</div>
             <div class="race-h-time">4hr 47min 11. 
@@ -831,7 +830,6 @@ footer {
 8th in 30 age group of 118</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -841,7 +839,7 @@ footer {
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Okutama Ekiden</div><div class="race-h-sub">2007-12-01 00:00:00</div></div>
+            <div><div class="race-h-name">Okutama Ekiden</div><div class="race-h-sub">1 Dec 2025</div></div>
             <div class="race-h-dist">—</div>
             <div class="race-h-type">Relay</div>
             <div class="race-h-time">8.4kms in 30min 34 sec
@@ -849,7 +847,6 @@ footer {
 3.38 pace</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -859,7 +856,7 @@ footer {
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">45th Gunma Safari Half Marathon</div><div class="race-h-sub">2014-12-01 00:00:00</div></div>
+            <div><div class="race-h-name">45th Gunma Safari Half Marathon</div><div class="race-h-sub">1 Dec 2014</div></div>
             <div class="race-h-dist">21.1 km</div>
             <div class="race-h-type">Road</div>
             <div class="race-h-time">1hr 21min 07 sec 
@@ -868,7 +865,6 @@ footer {
 2nd place out of 62 in 30s age group.</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -878,7 +874,7 @@ footer {
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">139th Kanto10K Road Race</div><div class="race-h-sub">2021-12-01 00:00:00</div></div>
+            <div><div class="race-h-name">139th Kanto10K Road Race</div><div class="race-h-sub">1 Dec 2025</div></div>
             <div class="race-h-dist">10 km</div>
             <div class="race-h-type">Road</div>
             <div class="race-h-time">35min 56sec 
@@ -886,7 +882,6 @@ footer {
 10th out of 33 in age group.</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -904,7 +899,7 @@ footer {
         <div class="race-th">Time</div>
         <div class="race-th">Overall</div>
         <div class="race-th">Age Group</div>
-        <div class="race-th race-th-expand">Expand</div>
+        <div class="race-th race-th-last"></div>
       </div>
       <div class="race-accordion">
         <div class="race-item">
@@ -915,7 +910,6 @@ footer {
             <div class="race-h-time">81 mins 11 sec</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -925,13 +919,12 @@ footer {
         </div>
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Shibuya Ekiden</div><div class="race-h-sub">2018-01-01 00:00:00</div></div>
+            <div><div class="race-h-name">Shibuya Ekiden</div><div class="race-h-sub">1 Jan 2018</div></div>
             <div class="race-h-dist">—</div>
             <div class="race-h-type">Ekiden</div>
             <div class="race-h-time">9 mins 20 sec</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -947,7 +940,6 @@ footer {
             <div class="race-h-time">1hr 05mins 02sec - 6 min penalty for not doing the full amount on sled push station</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -963,7 +955,6 @@ footer {
             <div class="race-h-time">2hr 56mins 19sec</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-ag">—</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -981,7 +972,6 @@ footer {
 6th in mens age group / 213 competitors</div>
             <div class="race-h-pos">10th / 1079</div>
             <div class="race-h-ag">6th</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -999,7 +989,7 @@ footer {
         <div class="race-th">Time</div>
         <div class="race-th">Overall</div>
         <div class="race-th">Age Group</div>
-        <div class="race-th race-th-expand">Expand</div>
+        <div class="race-th race-th-last"></div>
       </div>
       <div class="race-accordion">
         <p style="color:var(--grey-mid);padding:2rem 0">No results recorded yet.</p>
@@ -1019,9 +1009,9 @@ footer {
     </div>
     <div class="calendar-grid">
             <div class="cal-card reveal">
-        <div class="cal-month"> </div>
+        <div class="cal-month">29 Mar 2025 </div>
         <div class="cal-race">18TH HASETSUNE 30K,</div>
-        <div class="cal-details">Road</div>
+        <div class="cal-details">Trail · 30km</div>
       </div>
       <div class="cal-card reveal">
         <div class="cal-month"> </div>
@@ -1049,7 +1039,7 @@ footer {
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
+        <div class="cal-month"> </div>
         <div class="cal-race">THE 79TH FUJI MOUNTAIN RACE</div>
         <div class="cal-details">Trail</div>
       </div>
@@ -1059,9 +1049,9 @@ footer {
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
+        <div class="cal-month"> </div>
         <div class="cal-race">MT FUJI – 0 TO 5TH STATION 12KM</div>
-        <div class="cal-details">Trail</div>
+        <div class="cal-details">Trail · 12 km</div>
       </div>
       <div class="cal-card reveal">
         <div class="cal-month"> </div>
@@ -1069,7 +1059,7 @@ footer {
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
+        <div class="cal-month"> </div>
         <div class="cal-race">SPARTAN NIIGATA, JAPAN</div>
         <div class="cal-details">OCR</div>
       </div>
@@ -1079,19 +1069,19 @@ footer {
         <div class="cal-details">OCR</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
+        <div class="cal-month"> </div>
         <div class="cal-race">NIKKO MOUNTAIN RACE</div>
         <div class="cal-details">Trail</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
+        <div class="cal-month"> </div>
         <div class="cal-race">UTMB CHIANG MAI, THAILAND</div>
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
-        <div class="cal-month"> <span class="cal-tbc">TBC</span></div>
+        <div class="cal-month"> </div>
         <div class="cal-race">ADACHI FRIENDLY HALF MARATHON</div>
-        <div class="cal-details">Road</div>
+        <div class="cal-details">Road · 21.1 km</div>
       </div>
     </div>
   </div>

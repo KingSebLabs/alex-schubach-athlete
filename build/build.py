@@ -38,6 +38,15 @@ SHEET_NAMES = ["2025", "2026", "2027"]
 CURRENT_YEAR = "2026"
 
 
+def _fmt_cell(v) -> str:
+    """Convert a cell value to a clean string; formats datetime as '1 Jan 2025'."""
+    if v is None:
+        return ""
+    if hasattr(v, "strftime"):  # datetime / date object from openpyxl
+        return v.strftime("%-d %b %Y").strip()
+    return str(v).strip()
+
+
 def fetch_excel_sheets(url: str) -> dict:
     """Download XLSX from Dropbox and return {sheet_name: [row_dicts]}."""
     import openpyxl
@@ -61,8 +70,7 @@ def fetch_excel_sheets(url: str) -> dict:
                 continue
             headers = [str(c).strip() if c else "" for c in rows[header_idx]]
             result[name] = [
-                {headers[i]: (str(v).strip() if v is not None else "")
-                 for i, v in enumerate(row) if i < len(headers)}
+                {headers[i]: (_fmt_cell(v)) for i, v in enumerate(row) if i < len(headers)}
                 for row in rows[header_idx + 1:]
                 if any(v for v in row)
             ]
@@ -140,13 +148,17 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
         if not event or event.lower().startswith("event"):  # skip header rows
             continue
         registered = find_col(row, "REGISTERED", "Registered", "REGISTRATION")
-        if registered and "alex" not in registered.lower():
-            continue  # skip races explicitly not for Alex
+        reg_lower = registered.lower()
+        # Include if not registered column (older sheets), or "yes"/"tbc" in value
+        if registered and "yes" not in reg_lower and "tbc" not in reg_lower:
+            continue
 
         result = find_col(row, "RACE RESULTS", "Race Results", "RESULT", "Results", "TIME")
         date_str = find_col(row, "RACE DATE", "BLACKOUT DATES", "DATE", "Date")
         race_type = find_col(row, "RACE TYPE", "TYPE") or infer_race_type(event.split("\n")[0].strip())
+        col_distance = find_col(row, "RACE DISTANCE", "DISTANCE")
         description = find_col(row, "RACE DESCRIPTION", "DESCRIPTION")[:140]
+        location = find_col(row, "RACE LOCATION", "LOCATION", "VENUE", "CITY")
         comments_pre = find_col(row, "COMMENTS PRE", "Comments Pre", "PRE RACE", "GOING IN")
         comments_post = find_col(row, "COMMENTS POST", "Comments Post", "POST RACE", "LOOKING BACK")
         pos_overall = find_col(row, "POSITION OVERALL", "Position Overall", "OVERALL POSITION", "POS OVERALL")
@@ -154,6 +166,7 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
 
         race_name = event.split("\n")[0].strip()
         race_date = date_str.split("\n")[0].strip() if date_str else ""
+        distance = col_distance or infer_distance(race_name)
 
         entry = {
             "name": race_name,
@@ -162,11 +175,12 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
             "result": result,
             "description": description,
             "registered": registered,
+            "location": location,
             "comments_pre": comments_pre,
             "comments_post": comments_post,
             "pos_overall": pos_overall,
             "pos_ag": pos_ag,
-            "distance": infer_distance(race_name),
+            "distance": distance,
         }
 
         if result:
@@ -268,7 +282,6 @@ def build_race_card_html(race: dict) -> str:
             <div class="race-h-time">{result or "—"}</div>
             <div class="race-h-pos">{pos}</div>
             <div class="race-h-ag">{pos_ag}</div>
-            <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
             <div class="race-body-inner">
@@ -280,14 +293,17 @@ def build_race_card_html(race: dict) -> str:
 
 def build_calendar_card_html(race: dict) -> str:
     """Build a calendar card for an upcoming race."""
-    tbc = not race.get("registered") or "alex" not in race.get("registered", "").lower()
+    tbc = "tbc" in race.get("registered", "").lower()
     tbc_badge = '<span class="cal-tbc">TBC</span>' if tbc else ""
+    # Build sub-details line: type · distance · location (only non-empty parts)
+    detail_parts = [p for p in [race.get("type"), race.get("distance"), race.get("location")] if p and p != "—"]
+    details = " · ".join(detail_parts)
     desc_html = f'        <div class="cal-desc">{race["description"]}</div>\n' if race.get("description") else ""
     return (
         f'      <div class="cal-card reveal">\n'
         f'        <div class="cal-month">{race["date"]} {tbc_badge}</div>\n'
         f'        <div class="cal-race">{race["name"].upper()}</div>\n'
-        f'        <div class="cal-details">{race["type"]}</div>\n'
+        f'        <div class="cal-details">{details}</div>\n'
         f'{desc_html}'
         f'      </div>'
     )
@@ -300,7 +316,7 @@ TABLE_HEADER = '''      <div class="race-table-header">
         <div class="race-th">Time</div>
         <div class="race-th">Overall</div>
         <div class="race-th">Age Group</div>
-        <div class="race-th race-th-expand">Expand</div>
+        <div class="race-th race-th-last"></div>
       </div>'''
 
 
