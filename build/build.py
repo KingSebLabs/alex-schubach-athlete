@@ -349,7 +349,7 @@ def build_calendar_card_html(race: dict) -> str:
 
 TABLE_HEADER = '''      <div class="race-table-header">
         <div class="race-th">Race</div>
-        <div class="race-th">Distance</div>
+        <div class="race-th">Class / Distance</div>
         <div class="race-th">Type</div>
         <div class="race-th">Time</div>
         <div class="race-th">Overall</div>
