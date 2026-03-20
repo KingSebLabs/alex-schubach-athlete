@@ -374,22 +374,37 @@ section { padding: 6rem 2.5rem; }
 }
 
 /* ===== GALLERY ===== */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 280px);
-  gap: 0.5rem;
+.gallery-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding-bottom: 1rem;
   margin-top: 3rem;
+  /* fade-out hint on right edge */
+  mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+}
+.gallery-scroll-wrapper::-webkit-scrollbar { height: 4px; }
+.gallery-scroll-wrapper::-webkit-scrollbar-track { background: var(--grey-dark); }
+.gallery-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--grey-border); }
+.gallery-grid {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 0.5rem;
+  width: max-content;
 }
 .gallery-item {
+  flex-shrink: 0;
   overflow: hidden; position: relative;
   background: linear-gradient(135deg, #1a1a2e, #0a0a0a);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--grey-mid);
+  scroll-snap-align: start;
   transition: transform 0.4s;
 }
-.gallery-item:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 3; }
+/* Masonry-style alternating sizes */
+.gallery-item:nth-child(3n+1) { width: 280px; height: 380px; }
+.gallery-item:nth-child(3n+2) { width: 220px; height: 280px; }
+.gallery-item:nth-child(3n+3) { width: 260px; height: 340px; }
 .gallery-item:hover { transform: scale(0.98); }
 
 /* ===== PDF DOWNLOAD ===== */
@@ -405,7 +420,7 @@ section { padding: 6rem 2.5rem; }
 .pdf-section * { position: relative; z-index: 1; }
 .pdf-title {
   font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem);
-  color: white; margin-bottom: 1rem;
+  color: white; margin-bottom: 1.5rem;
 }
 .pdf-subtitle { font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 2rem; max-width: 500px; margin-inline: auto; line-height: 1.7; }
 .btn-white {
@@ -415,6 +430,25 @@ section { padding: 6rem 2.5rem; }
   text-decoration: none; transition: all 0.3s;
 }
 .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+.pdf-tabs {
+  display: inline-flex; gap: 0; margin-bottom: 2.5rem;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.pdf-tab {
+  background: transparent; border: none; border-right: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.65); padding: 0.75rem 1.8rem;
+  font-family: var(--font-body); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.25s;
+}
+.pdf-tab:last-child { border-right: none; }
+.pdf-tab.active { background: white; color: var(--accent); }
+.pdf-tab:hover:not(.active) { background: rgba(255,255,255,0.12); color: white; }
+.pdf-panel { display: none; }
+.pdf-panel.active { display: block; }
+
+/* ===== CONTACT FORM: Select placeholder colour ===== */
+.contact-form select { color: var(--grey-mid); }
+.contact-form select.has-value { color: var(--text-light); }
 
 /* ===== CONTACT ===== */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
@@ -484,7 +518,9 @@ footer {
 /* ===== MOBILE ===== */
 @media (max-width: 1024px) {
   .values-grid { grid-template-columns: repeat(2, 1fr); }
-  .gallery-grid { grid-template-rows: repeat(2, 220px); }
+  .gallery-item:nth-child(3n+1) { width: 240px; height: 320px; }
+  .gallery-item:nth-child(3n+2) { width: 200px; height: 240px; }
+  .gallery-item:nth-child(3n+3) { width: 220px; height: 290px; }
 }
 @media (max-width: 768px) {
   section { padding: 4rem 1.5rem; }
@@ -503,8 +539,9 @@ footer {
   .values-grid { grid-template-columns: 1fr; }
   .business-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 200px); }
-  .gallery-item:nth-child(1) { grid-column: 1 / -1; grid-row: auto; }
+  .gallery-item:nth-child(3n+1) { width: 200px; height: 280px; }
+  .gallery-item:nth-child(3n+2) { width: 170px; height: 210px; }
+  .gallery-item:nth-child(3n+3) { width: 190px; height: 250px; }
   .form-row { grid-template-columns: 1fr; }
   .race-table { display: block; overflow-x: auto; }
   .mission-pillars { grid-template-columns: 1fr; }
@@ -518,7 +555,7 @@ footer {
 
 <!-- LOADER -->
 <div class="loader" id="loader">
-  <div class="loader-text">AO</div>
+  <div class="loader-text">AS</div>
 </div>
 
 <!-- NAV -->
@@ -560,7 +597,7 @@ footer {
     <div class="about-grid">
       <div class="about-text reveal">
         <div class="section-label">About</div>
-        <div class="section-title">THE STORY<br>SO FAR</div>
+        <div class="section-title">MY STORY</div>
         
         <p>I've been an athlete for as long as I can remember. I grew up in the pool as a <strong>competitive swimmer</strong>, then moved to the track during my teenage years. That early foundation built something that has never left me — a deep commitment to <strong>discipline, consistency, and the pursuit of improvement</strong>.</p>
         
@@ -576,8 +613,8 @@ footer {
           </div>
           
           <div class="stat-item">
-            <div class="stat-number">3</div>
-            <div class="stat-label">Disciplines</div>
+            <div class="stat-number">Hybrid</div>
+            <div class="stat-label">Athlete Style</div>
           </div>
           
           <div class="stat-item">
@@ -1086,7 +1123,7 @@ Improvements:
       <div class="race-accordion">
         <div class="race-item">
           <div class="race-header">
-            <div><div class="race-h-name">Tokyo New Year Half Marathon 2026 (26th Hi-Tech Half Marathon)</div><div class="race-h-sub">Sun 11/1</div></div>
+            <div><div class="race-h-name">Tokyo New Year Half Marathon</div><div class="race-h-sub">Sun 11/1</div></div>
             <div class="race-h-meta">21.1 km · Road</div>
             <div class="race-h-time">81 mins 11 sec</div>
             <div class="race-h-position">—</div>
@@ -1098,25 +1135,7 @@ Improvements:
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>This is practice for 3hr marathon pace (Kyoto) - not a half PB. 
-Plan is to race at 4.14 min/km pace, finishing in 1hr 29min 19 sec. 
-Maybe lift the last couple kms, see how I'm feeling.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>What went well:
-- Felt strong on the day - normal for me.
-- Good race day fuelling in the morning (standard).
-- Went out in 4.08, energy from the crowd, doing this by choice on a Sunday, and being a year sober lifted my already high spirits. 2nd km in 4.00, and 3rd in 3.45-3.50.
-- Was feeling good so decided to hold 3.45/3.50 pace all the way. Fast course and it was a beautiful day.
-- 3hr marathon in Kyoto is still the goal, maybe 2.50hr soft goal.
-- 2.50 marathon next year is the goal, 2.40 soft goal (80min half pace).
-
-Opportunies to improve:
-- N/A</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
@@ -1134,20 +1153,7 @@ Opportunies to improve:
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Sub 9 minutes for 2.9km leg is the goal.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>What went well:
-- Short race, tried my best considering.
-
-Opportunities to imporve:
-- Proper 20 minute warm-up necessary.
-- Course reconnaissance essential.
-- Slight taper even for fun races is probably appropriate. Not running 70km this week, plus full leg session, plus hill sprints the day before.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
@@ -1165,23 +1171,7 @@ Opportunities to imporve:
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>Race hard without any mistakes, see whattime we get!
-Easy 4min/km on the runs. Running through the stations.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>What went well:
-- Nutrition plan on the day.
-- Carb loading plan in the lead up.
-- Race plan / Hyrox pacing strategy -A1.
-
-Oppotunities to improve:
-- Know the distaces (lengths) for every station and the weights.
-- Technique on sled pull and burpees.
-- Conditioning for lunges, wall balls, and compromised running.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
@@ -1199,41 +1189,7 @@ Oppotunities to improve:
           </div>
           <div class="race-body">
             <div class="race-body-inner">
-              <div class="race-narrative">
-                <div class="race-narrative-label">Going In</div>
-                <p>First ever official marathon.
-3 hours would be excellent.</p>
-              </div>
-              <div class="race-narrative">
-                <div class="race-narrative-label">Looking Back</div>
-                <p>What went well:
-- 5 to 6km shakeout run the morning before.
-- Travelled down the day before. Accommodation 20 minutes from the start line was ideal.
-- Morning nutrition A1: 2 pieces bread with jam, dango, banana. Perfect.
-- G1M Sport with beta alanine in the lead up.
-- 500mg sodium night before and 500mg morning of. Hydrated and electrolytes on point.
-- No warm up needed for marathon. Light walking only.
-- Race fueling mostly strong: 4 gels (2 caffeinated, 2 regular), yokan block, dried peaches, grape gummies.
-- Shorts and singlet correct call for conditions - 12 degrees. Sunglasses good - sun was out and the coolish weather kept sunnies from fogging up from the heat off my face.
-- Splits controlled. Opened 4:13, able to hold 4:05 pace for distance.
-- Post race recovery good. Electrolytes immediately, large meal straight after.
-- No music. Good mental focus.
-
-Opportunities to improve:
-- Own room before major races. Sleep quality significantly better alone. If not possible: earplugs and eye mask mandatory.
-- Consider Airbnb with kitchen/fridge to control pre race meals.
-- Start position unacceptable. Started in K at the back. Now have marathon time. Must start at the front in future races.
-- Cramping last 5 to 6km likely sodium related and sleep related. Forgot to take Fix It gel with 380mg sodium. Must use high sodium gels late race.Consider carrying small soft flask or increase sodium intake mid race.
-- Honey Stinger nut bar not suitable for road marathon. Digestion diverted energy. Better for trail events.
-- Take toilet break before race start. Lost 1:01 mid race.
-- Severe chafing despite short shorts. Implement Vaseline or move to tights/skins for races over 60 minutes.
-- Toes hitting front of shoe. Use top lace hole and heel lock every race.
-- Overall limiter at 35km was fatigue from lack of volume. 50km weeks insufficient for sub 2:50 goal. Increase to ~70km weeks, smart mileage.
-- Poor post race sleep due to adrenaline and cortisol. Manage down regulation better.
-
-Next target:
-- Sub 2:50 marathon. I'm currently capable of 4:05/km pace for full distance but with proper volume can go sub 2:50.</p>
-              </div>
+              <p>Race notes coming soon.</p>
             </div>
           </div>
         </div>
@@ -1255,11 +1211,6 @@ Next target:
             <div class="cal-card reveal">
         <div class="cal-month">Fri 6/3 - Tues 10/3</div>
         <div class="cal-race">UTMB KENTING, TAIWAN</div>
-        <div class="cal-details">Road</div>
-      </div>
-      <div class="cal-card reveal">
-        <div class="cal-month"></div>
-        <div class="cal-race">THEN POWER HIKE UNTIL NEAR THE TOP OF THE HILL OR THE HR LOWERS. CONCENTRATE ON LOWERING THE HR WHEN POWER HIKING AND DESCENDING.</div>
         <div class="cal-details">Road</div>
       </div>
       <div class="cal-card reveal">
@@ -1353,17 +1304,40 @@ Next target:
       <div class="section-label">Media</div>
       <div class="section-title">GALLERY</div>
     </div>
-    <div class="gallery-grid">
-            <div class="gallery-item reveal"><img src="images/gallery/01_fuji_trail.jpg" alt="Fuji Trail" style="width:100%;height:100%;object-fit:cover;"></div>
+    <div class="gallery-scroll-wrapper">
+      <div class="gallery-grid">
+              <div class="gallery-item reveal"><img src="images/gallery/01_fuji_trail.jpg" alt="Fuji Trail" style="width:100%;height:100%;object-fit:cover;"></div>
       <div class="gallery-item reveal"><img src="images/gallery/02_fuji_finish.jpg" alt="Fuji Finish" style="width:100%;height:100%;object-fit:cover;"></div>
       <div class="gallery-item reveal"><img src="images/gallery/03_kenting_trail.jpg" alt="Kenting Trail" style="width:100%;height:100%;object-fit:cover;"></div>
       <div class="gallery-item reveal"><img src="images/gallery/04_road_race.jpg" alt="Road Race" style="width:100%;height:100%;object-fit:cover;"></div>
       <div class="gallery-item reveal"><img src="images/gallery/05_track_training.jpg" alt="Track Training" style="width:100%;height:100%;object-fit:cover;"></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- PDF DOWNLOAD -->
+
+<section class="pdf-section" id="pdf">
+  <div class="pdf-title">DOWNLOADS</div>
+  <div class="pdf-tabs">
+    <button class="pdf-tab active" data-tab="media">Media Kit</button>
+    <button class="pdf-tab" data-tab="training">Training Program</button>
+    <button class="pdf-tab" data-tab="meal">Meal Plan</button>
+  </div>
+  <div class="pdf-panel active" id="pdf-media">
+    <p class="pdf-subtitle">Full athlete profile — biography, mission, race results, upcoming calendar, and contact details.</p>
+    <a href="#" class="btn-white">↓ Download Media Kit</a>
+  </div>
+  <div class="pdf-panel" id="pdf-training">
+    <p class="pdf-subtitle">My current training structure across road, trail, and Hyrox disciplines.</p>
+    <a href="#" class="btn-white">↓ Download Training Program</a>
+  </div>
+  <div class="pdf-panel" id="pdf-meal">
+    <p class="pdf-subtitle">My daily nutrition approach and race-day fuelling protocol.</p>
+    <a href="#" class="btn-white">↓ Download Meal Plan</a>
+  </div>
+</section>
 
 
 <!-- CONTACT -->
@@ -1395,8 +1369,6 @@ Next target:
         <div class="social-bar">
           <a href="#" class="social-link">Instagram</a>
           <a href="#" class="social-link">Strava</a>
-          <a href="#" class="social-link">YouTube</a>
-          <a href="#" class="social-link">LinkedIn</a>
         </div>
       </div>
       <div class="contact-form reveal">
@@ -1405,6 +1377,7 @@ Next target:
           <input type="text" placeholder="Name" aria-label="Name">
           <input type="email" placeholder="Email" aria-label="Email">
         </div>
+        <input type="tel" placeholder="Phone Number" aria-label="Phone Number">
         <select aria-label="Inquiry Type">
           <option value="" disabled selected>Inquiry Type</option>
           <option>Brand Partnership</option>
@@ -1512,6 +1485,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const target = document.querySelector(a.getAttribute('href'));
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+});
+
+// PDF download tabs
+document.querySelectorAll('.pdf-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.pdf-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.pdf-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('pdf-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Contact form: colour select when a real option is chosen
+document.querySelectorAll('.contact-form select').forEach(sel => {
+  sel.addEventListener('change', () => sel.classList.add('has-value'));
 });
 </script>
 </body>

@@ -12,7 +12,7 @@ hero:
 
 # ─── ABOUT ───────────────────────────────────────────────────────────────────
 about:
-  heading: "THE STORY<br>SO FAR"
+  heading: "MY STORY"
   paragraphs:
     - "I've been an athlete for as long as I can remember. I grew up in the pool as a <strong>competitive swimmer</strong>, then moved to the track during my teenage years. That early foundation built something that has never left me — a deep commitment to <strong>discipline, consistency, and the pursuit of improvement</strong>."
     - "Today, my focus has shifted to <strong>endurance sports</strong> — trail running, road racing, and hybrid events like Hyrox. I'm drawn to the kind of challenges that test both physical and mental limits. For me, it's never just about the finish line. It's about what you become in the process."
@@ -20,8 +20,8 @@ about:
   stats:
     - number: "10+"
       label: "Years Competing"
-    - number: "3"
-      label: "Disciplines"
+    - number: "Hybrid"
+      label: "Athlete Style"
     - number: "JP"
       label: "Based in Japan"
     - number: "∞"
@@ -80,8 +80,10 @@ social:
 
 # ─── PDF DOWNLOAD ─────────────────────────────────────────────────────────────
 pdf:
-  enabled: false
-  url: "#"   # Paste Wix/Google Drive/Dropbox PDF link here when ready
+  enabled: true
+  media_kit_url: "#"        # Paste Media Kit PDF link here when ready
+  training_program_url: "#" # Paste Training Program PDF link here when ready
+  meal_plan_url: "#"        # Paste Meal Plan PDF link here when ready
 
 # ─── ANALYTICS ───────────────────────────────────────────────────────────────
 analytics:

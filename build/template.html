@@ -352,22 +352,37 @@ section { padding: 6rem 2.5rem; }
 }
 
 /* ===== GALLERY ===== */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 280px);
-  gap: 0.5rem;
+.gallery-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding-bottom: 1rem;
   margin-top: 3rem;
+  /* fade-out hint on right edge */
+  mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+}
+.gallery-scroll-wrapper::-webkit-scrollbar { height: 4px; }
+.gallery-scroll-wrapper::-webkit-scrollbar-track { background: var(--grey-dark); }
+.gallery-scroll-wrapper::-webkit-scrollbar-thumb { background: var(--grey-border); }
+.gallery-grid {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 0.5rem;
+  width: max-content;
 }
 .gallery-item {
+  flex-shrink: 0;
   overflow: hidden; position: relative;
   background: linear-gradient(135deg, #1a1a2e, #0a0a0a);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--grey-mid);
+  scroll-snap-align: start;
   transition: transform 0.4s;
 }
-.gallery-item:nth-child(1) { grid-column: 1 / 2; grid-row: 1 / 3; }
+/* Masonry-style alternating sizes */
+.gallery-item:nth-child(3n+1) { width: 280px; height: 380px; }
+.gallery-item:nth-child(3n+2) { width: 220px; height: 280px; }
+.gallery-item:nth-child(3n+3) { width: 260px; height: 340px; }
 .gallery-item:hover { transform: scale(0.98); }
 
 /* ===== PDF DOWNLOAD ===== */
@@ -383,7 +398,7 @@ section { padding: 6rem 2.5rem; }
 .pdf-section * { position: relative; z-index: 1; }
 .pdf-title {
   font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem);
-  color: white; margin-bottom: 1rem;
+  color: white; margin-bottom: 1.5rem;
 }
 .pdf-subtitle { font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 2rem; max-width: 500px; margin-inline: auto; line-height: 1.7; }
 .btn-white {
@@ -393,6 +408,25 @@ section { padding: 6rem 2.5rem; }
   text-decoration: none; transition: all 0.3s;
 }
 .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+.pdf-tabs {
+  display: inline-flex; gap: 0; margin-bottom: 2.5rem;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+.pdf-tab {
+  background: transparent; border: none; border-right: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.65); padding: 0.75rem 1.8rem;
+  font-family: var(--font-body); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.25s;
+}
+.pdf-tab:last-child { border-right: none; }
+.pdf-tab.active { background: white; color: var(--accent); }
+.pdf-tab:hover:not(.active) { background: rgba(255,255,255,0.12); color: white; }
+.pdf-panel { display: none; }
+.pdf-panel.active { display: block; }
+
+/* ===== CONTACT FORM: Select placeholder colour ===== */
+.contact-form select { color: var(--grey-mid); }
+.contact-form select.has-value { color: var(--text-light); }
 
 /* ===== CONTACT ===== */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
@@ -462,7 +496,9 @@ footer {
 /* ===== MOBILE ===== */
 @media (max-width: 1024px) {
   .values-grid { grid-template-columns: repeat(2, 1fr); }
-  .gallery-grid { grid-template-rows: repeat(2, 220px); }
+  .gallery-item:nth-child(3n+1) { width: 240px; height: 320px; }
+  .gallery-item:nth-child(3n+2) { width: 200px; height: 240px; }
+  .gallery-item:nth-child(3n+3) { width: 220px; height: 290px; }
 }
 @media (max-width: 768px) {
   section { padding: 4rem 1.5rem; }
@@ -481,8 +517,9 @@ footer {
   .values-grid { grid-template-columns: 1fr; }
   .business-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 200px); }
-  .gallery-item:nth-child(1) { grid-column: 1 / -1; grid-row: auto; }
+  .gallery-item:nth-child(3n+1) { width: 200px; height: 280px; }
+  .gallery-item:nth-child(3n+2) { width: 170px; height: 210px; }
+  .gallery-item:nth-child(3n+3) { width: 190px; height: 250px; }
   .form-row { grid-template-columns: 1fr; }
   .race-table { display: block; overflow-x: auto; }
   .mission-pillars { grid-template-columns: 1fr; }
@@ -496,7 +533,7 @@ footer {
 
 <!-- LOADER -->
 <div class="loader" id="loader">
-  <div class="loader-text">AO</div>
+  <div class="loader-text">AS</div>
 </div>
 
 <!-- NAV -->
@@ -646,8 +683,10 @@ footer {
       <div class="section-label">Media</div>
       <div class="section-title">GALLERY</div>
     </div>
-    <div class="gallery-grid">
-      {{ gallery_items }}
+    <div class="gallery-scroll-wrapper">
+      <div class="gallery-grid">
+        {{ gallery_items }}
+      </div>
     </div>
   </div>
 </section>
@@ -655,9 +694,24 @@ footer {
 <!-- PDF DOWNLOAD -->
 {% if pdf.enabled %}
 <section class="pdf-section" id="pdf">
-  <div class="pdf-title">ATHLETE PROFILE</div>
-  <p class="pdf-subtitle">Download my full athlete profile — biography, mission, race results, upcoming calendar, and contact details. Everything you need in one document.</p>
-  <a href="{{ pdf.url }}" class="btn-white">↓ Download PDF</a>
+  <div class="pdf-title">DOWNLOADS</div>
+  <div class="pdf-tabs">
+    <button class="pdf-tab active" data-tab="media">Media Kit</button>
+    <button class="pdf-tab" data-tab="training">Training Program</button>
+    <button class="pdf-tab" data-tab="meal">Meal Plan</button>
+  </div>
+  <div class="pdf-panel active" id="pdf-media">
+    <p class="pdf-subtitle">Full athlete profile — biography, mission, race results, upcoming calendar, and contact details.</p>
+    <a href="{{ pdf.media_kit_url }}" class="btn-white">↓ Download Media Kit</a>
+  </div>
+  <div class="pdf-panel" id="pdf-training">
+    <p class="pdf-subtitle">My current training structure across road, trail, and Hyrox disciplines.</p>
+    <a href="{{ pdf.training_program_url }}" class="btn-white">↓ Download Training Program</a>
+  </div>
+  <div class="pdf-panel" id="pdf-meal">
+    <p class="pdf-subtitle">My daily nutrition approach and race-day fuelling protocol.</p>
+    <a href="{{ pdf.meal_plan_url }}" class="btn-white">↓ Download Meal Plan</a>
+  </div>
 </section>
 {% endif %}
 
@@ -680,8 +734,6 @@ footer {
         <div class="social-bar">
           <a href="{{ social.instagram }}" class="social-link">Instagram</a>
           <a href="{{ social.strava }}" class="social-link">Strava</a>
-          <a href="{{ social.youtube }}" class="social-link">YouTube</a>
-          <a href="{{ social.linkedin }}" class="social-link">LinkedIn</a>
         </div>
       </div>
       <div class="contact-form reveal">
@@ -691,6 +743,7 @@ footer {
             <input type="text" name="name" placeholder="Name" aria-label="Name" required>
             <input type="email" name="email" placeholder="Email" aria-label="Email" required>
           </div>
+          <input type="tel" name="phone" placeholder="Phone Number" aria-label="Phone Number">
           <select name="inquiry_type" aria-label="Inquiry Type">
             <option value="" disabled selected>Inquiry Type</option>
             <option>Brand Partnership</option>
@@ -706,6 +759,7 @@ footer {
           <input type="text" placeholder="Name" aria-label="Name">
           <input type="email" placeholder="Email" aria-label="Email">
         </div>
+        <input type="tel" placeholder="Phone Number" aria-label="Phone Number">
         <select aria-label="Inquiry Type">
           <option value="" disabled selected>Inquiry Type</option>
           <option>Brand Partnership</option>
@@ -813,6 +867,21 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     const target = document.querySelector(a.getAttribute('href'));
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
+});
+
+// PDF download tabs
+document.querySelectorAll('.pdf-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.pdf-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.pdf-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('pdf-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// Contact form: colour select when a real option is chosen
+document.querySelectorAll('.contact-form select').forEach(sel => {
+  sel.addEventListener('change', () => sel.classList.add('has-value'));
 });
 </script>
 </body>
