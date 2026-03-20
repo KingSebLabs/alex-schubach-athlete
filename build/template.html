@@ -369,19 +369,19 @@ section { padding: 6rem 2.5rem; }
 
 /* ===== GALLERY ===== */
 .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
+  columns: 3;
+  column-gap: 4px;
   margin-top: 3rem;
 }
 .gallery-item {
-  aspect-ratio: 4 / 3;
+  break-inside: avoid;
+  margin-bottom: 4px;
   overflow: hidden; cursor: pointer; position: relative;
-  background: var(--grey-dark);
+  background: var(--grey-dark); display: block;
 }
 .gallery-item img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 0.45s ease; display: block;
+  width: 100%; height: auto; display: block;
+  transition: transform 0.45s ease;
 }
 .gallery-item:hover img { transform: scale(1.04); }
 
@@ -421,7 +421,7 @@ section { padding: 6rem 2.5rem; }
 }
 
 @media (max-width: 768px) {
-  .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 3px; margin-top: 2rem; }
+  .gallery-grid { columns: 2; column-gap: 3px; margin-top: 2rem; }
   .lightbox-prev { left: 0.25rem; }
   .lightbox-next { right: 0.25rem; }
 }
@@ -429,7 +429,7 @@ section { padding: 6rem 2.5rem; }
 /* ===== PDF DOWNLOAD ===== */
 .pdf-section {
   background: var(--accent);
-  position: relative; overflow: hidden;
+  position: relative; overflow: hidden; padding-top: 0;
 }
 .pdf-section::before {
   content: ''; position: absolute; inset: 0;
@@ -438,21 +438,22 @@ section { padding: 6rem 2.5rem; }
 .pdf-section * { position: relative; z-index: 1; }
 .pdf-tabs {
   display: grid; grid-template-columns: 1fr 1fr 1fr;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  background: var(--bg-dark);
+  border-top: 3px solid var(--accent);
   width: 100%;
 }
 .pdf-tab {
-  background: transparent; border: none;
-  border-right: 1px solid rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.55);
+  background: var(--bg-dark); border: none;
+  border-right: 1px solid rgba(255,255,255,0.08);
+  color: white;
   padding: 2rem 1rem;
   font-family: var(--font-body); font-size: 0.78rem; font-weight: 700;
   letter-spacing: 0.15em; text-transform: uppercase;
-  cursor: pointer; transition: all 0.25s; text-align: center;
+  cursor: pointer; transition: background 0.25s; text-align: center;
 }
 .pdf-tab:last-child { border-right: none; }
-.pdf-tab.active { background: rgba(255,255,255,0.14); color: white; }
-.pdf-tab:hover:not(.active) { background: rgba(255,255,255,0.08); color: white; }
+.pdf-tab.active { background: var(--accent); color: white; }
+.pdf-tab:hover:not(.active) { background: rgba(255,255,255,0.05); }
 .pdf-body { padding: 4rem 2.5rem 5rem; text-align: center; }
 .pdf-title {
   font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem);
