@@ -278,7 +278,7 @@ section { padding: 6rem 2.5rem; }
 .race-item:last-child { border-bottom: none; }
 
 .race-table-header {
-  display: grid; grid-template-columns: 2.2fr 0.8fr 1fr 1fr 1fr auto;
+  display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr auto;
   padding: 0.5rem 2rem; margin-top: 1.5rem;
   border-bottom: 1px solid rgba(232,73,15,0.4);
 }
@@ -287,17 +287,16 @@ section { padding: 6rem 2.5rem; }
   text-transform: uppercase; color: var(--grey-mid);
 }
 .race-header {
-  display: grid; grid-template-columns: 2.2fr 0.8fr 1fr 1fr 1fr auto; align-items: center;
+  display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr auto; align-items: center;
   padding: 1.4rem 2rem; cursor: pointer; transition: background 0.3s;
 }
 .race-header:hover { background: rgba(255,255,255,0.03); }
 .race-item:nth-child(even) { background: rgba(255,255,255,0.022); }
 .race-h-name { font-weight: 700; color: var(--text-light); font-size: 0.95rem; }
 .race-h-sub { font-size: 0.75rem; color: var(--grey-mid); margin-top: 0.2rem; }
-.race-h-dist { font-size: 0.82rem; color: var(--grey-mid); }
-.race-h-type { font-size: 0.82rem; color: var(--grey-mid); }
+.race-h-type { font-size: 0.82rem; color: var(--grey-mid); white-space: pre-line; line-height: 1.5; }
 .race-h-time { font-size: 0.95rem; font-weight: 600; color: var(--text-light); }
-.race-h-pos { font-size: 1.05rem; font-weight: 700; color: var(--accent); white-space: pre-line; line-height: 1.5; }
+.race-h-pos { font-size: 0.95rem; font-weight: 600; color: var(--accent); white-space: pre-line; line-height: 1.5; }
 .race-h-expand {
   font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--grey-mid); text-align: right; white-space: nowrap;
@@ -330,7 +329,7 @@ section { padding: 6rem 2.5rem; }
 /* Mobile accordion */
 @media (max-width: 768px) {
   .race-header { grid-template-columns: 1fr auto; gap: 0.5rem; padding: 1.2rem 1.2rem; }
-  .race-h-dist, .race-h-type, .race-h-pos { display: none; }
+  .race-h-type, .race-h-pos { display: none; }
   .race-h-expand { font-size: 0; letter-spacing: 0; }
   .race-h-expand::after { font-size: 1.2rem; }
   .race-table-header { display: none; }
@@ -777,7 +776,6 @@ footer {
     <div class="year-panel" id="panel-2025">
       <div class="race-table-header">
         <div class="race-th">Race</div>
-        <div class="race-th">Class / Distance</div>
         <div class="race-th">Type</div>
         <div class="race-th">Time</div>
         <div class="race-th">Ranking</div>
@@ -787,7 +785,6 @@ footer {
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Hyrox Yokohama</div><div class="race-h-sub">August 9</div></div>
-            <div class="race-h-dist">Men's Open - Singles</div>
             <div class="race-h-type">Hyrox
 Men's Open -Singles</div>
             <div class="race-h-time">1:13:25</div>
@@ -811,7 +808,6 @@ Age Group: 17th / 48</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">2nd Mt. Fuji Climb Run</div><div class="race-h-sub">September 14</div></div>
-            <div class="race-h-dist">12km</div>
             <div class="race-h-type">Trail 
 12km</div>
             <div class="race-h-time">1:25:31</div>
@@ -834,7 +830,6 @@ Age Group: 17th / 48</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Spartan New Taipei</div><div class="race-h-sub">October 18</div></div>
-            <div class="race-h-dist">Beast - 21km</div>
             <div class="race-h-type">Spartan
 Beast - 21km</div>
             <div class="race-h-time">2:26:12</div>
@@ -858,7 +853,6 @@ Age Group: 1st / ??</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Deep Japan Ultra: 1 Day Training Camp</div><div class="race-h-sub">November 1</div></div>
-            <div class="race-h-dist">45km</div>
             <div class="race-h-type">Training Camp</div>
             <div class="race-h-time">Completed.
 3 mountains, 45kms, 8:18.</div>
@@ -881,7 +875,6 @@ Age Group: 1st / ??</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Nikko Mountain Race</div><div class="race-h-sub">November 9</div></div>
-            <div class="race-h-dist">35km</div>
             <div class="race-h-type">Trail
 35km</div>
             <div class="race-h-time">4:47:11</div>
@@ -905,7 +898,6 @@ Age Group: 8th / ??</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Okutama Ekiden</div><div class="race-h-sub">December 7</div></div>
-            <div class="race-h-dist">8,4km</div>
             <div class="race-h-type">Road Relay
 8.4km</div>
             <div class="race-h-time">8.4kms leg in 30:34</div>
@@ -928,9 +920,9 @@ Age Group: 8th / ??</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">45th Gunma Safari Half Marathon</div><div class="race-h-sub">December 14</div></div>
-            <div class="race-h-dist">21km</div>
             <div class="race-h-type">Road
-21km</div>
+21km
+21.1 km</div>
             <div class="race-h-time">1:21:07</div>
             <div class="race-h-pos">Overall: 6th / 250
 Age Group: 2nd / 62</div>
@@ -952,9 +944,9 @@ Age Group: 2nd / 62</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">139th Kanto10K Road Race</div><div class="race-h-sub">December 21</div></div>
-            <div class="race-h-dist">10km</div>
             <div class="race-h-type">Road
-10km</div>
+10km
+10 km</div>
             <div class="race-h-time">0:35:56</div>
             <div class="race-h-pos">Overall: N/A
 Age Group: 10th / 33</div>
@@ -978,7 +970,6 @@ Age Group: 10th / 33</div>
     <div class="year-panel active" id="panel-2026">
       <div class="race-table-header">
         <div class="race-th">Race</div>
-        <div class="race-th">Class / Distance</div>
         <div class="race-th">Type</div>
         <div class="race-th">Time</div>
         <div class="race-th">Ranking</div>
@@ -988,8 +979,8 @@ Age Group: 10th / 33</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Tokyo New Year Half Marathon</div><div class="race-h-sub">Januarry 11</div></div>
-            <div class="race-h-dist">21.1 km</div>
-            <div class="race-h-type">Road</div>
+            <div class="race-h-type">Road
+21.1 km</div>
             <div class="race-h-time">81 mins 11 sec</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-expand">Expand</div>
@@ -1003,7 +994,6 @@ Age Group: 10th / 33</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Shibuya Ekiden</div><div class="race-h-sub">1 Jan 2018</div></div>
-            <div class="race-h-dist">—</div>
             <div class="race-h-type">Ekiden</div>
             <div class="race-h-time">9 mins 20 sec</div>
             <div class="race-h-pos">—</div>
@@ -1018,7 +1008,6 @@ Age Group: 10th / 33</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Hyrox Osaka, Japan</div><div class="race-h-sub">January 31 - February 1</div></div>
-            <div class="race-h-dist">—</div>
             <div class="race-h-type">Hybrid</div>
             <div class="race-h-time">1hr 05mins 02sec - 6 min penalty for not doing the full amount on sled push station</div>
             <div class="race-h-pos">—</div>
@@ -1033,8 +1022,8 @@ Age Group: 10th / 33</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">Kyoto Marathon</div><div class="race-h-sub">Fenruary 15</div></div>
-            <div class="race-h-dist">42.2 km</div>
-            <div class="race-h-type">Road</div>
+            <div class="race-h-type">Road
+42.2 km</div>
             <div class="race-h-time">2hr 56mins 19sec</div>
             <div class="race-h-pos">—</div>
             <div class="race-h-expand">Expand</div>
@@ -1048,7 +1037,6 @@ Age Group: 10th / 33</div>
         <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">UTMB Kenting, Taiwan</div><div class="race-h-sub"></div></div>
-            <div class="race-h-dist">—</div>
             <div class="race-h-type">Road</div>
             <div class="race-h-time">2:19:07
 10th overall / 1079 competitors
@@ -1068,7 +1056,6 @@ Age Group 6th / ??</div>
     <div class="year-panel" id="panel-2027">
       <div class="race-table-header">
         <div class="race-th">Race</div>
-        <div class="race-th">Class / Distance</div>
         <div class="race-th">Type</div>
         <div class="race-th">Time</div>
         <div class="race-th">Ranking</div>

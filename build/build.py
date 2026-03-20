@@ -58,6 +58,15 @@ def _fmt_cell(v) -> str:
     return str(v).strip()
 
 
+def _fmt_narrative(text: str) -> str:
+    """Convert **bold** markdown and newlines to HTML for narrative fields."""
+    if not text:
+        return text
+    text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
+    text = text.replace('\n', '<br>')
+    return text
+
+
 def fetch_excel_sheets(url: str) -> dict:
     """Download XLSX from Dropbox and return {sheet_name: [row_dicts]}."""
     import openpyxl
@@ -290,7 +299,7 @@ def build_race_card_html(race: dict) -> str:
     race_type = race["type"]
     distance = race.get("distance", "—")
     pos = race["pos_overall"] or "—"
-    pos_ag = race.get("pos_ag") or "—"
+    type_display = f"{race_type}\n{distance}" if distance and distance not in ("—", "") else race_type
 
     # Narrative body
     body_parts = []
@@ -298,14 +307,14 @@ def build_race_card_html(race: dict) -> str:
         body_parts.append(
             f'              <div class="race-narrative">\n'
             f'                <div class="race-narrative-label">Going In</div>\n'
-            f'                <p>{race["comments_pre"]}</p>\n'
+            f'                <p>{_fmt_narrative(race["comments_pre"])}</p>\n'
             f'              </div>'
         )
     if race["comments_post"]:
         body_parts.append(
             f'              <div class="race-narrative">\n'
             f'                <div class="race-narrative-label">Looking Back</div>\n'
-            f'                <p>{race["comments_post"]}</p>\n'
+            f'                <p>{_fmt_narrative(race["comments_post"])}</p>\n'
             f'              </div>'
         )
 
@@ -314,8 +323,7 @@ def build_race_card_html(race: dict) -> str:
     return f'''        <div class="race-item">
           <div class="race-header">
             <div><div class="race-h-name">{name}</div><div class="race-h-sub">{date}</div></div>
-            <div class="race-h-dist">{distance}</div>
-            <div class="race-h-type">{race_type}</div>
+            <div class="race-h-type">{type_display}</div>
             <div class="race-h-time">{result or "—"}</div>
             <div class="race-h-pos">{pos}</div>
             <div class="race-h-expand">Expand</div>
@@ -348,7 +356,6 @@ def build_calendar_card_html(race: dict) -> str:
 
 TABLE_HEADER = '''      <div class="race-table-header">
         <div class="race-th">Race</div>
-        <div class="race-th">Class / Distance</div>
         <div class="race-th">Type</div>
         <div class="race-th">Time</div>
         <div class="race-th">Ranking</div>
