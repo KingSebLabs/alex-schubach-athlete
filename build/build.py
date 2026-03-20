@@ -299,7 +299,8 @@ def build_race_card_html(race: dict) -> str:
     race_type = race["type"]
     distance = race.get("distance", "—")
     pos = race["pos_overall"] or "—"
-    type_display = f"{race_type}\n{distance}" if distance and distance not in ("—", "") else race_type
+    dist_already_in_type = distance.lower().replace(" ", "").replace(".", "") in race_type.lower().replace(" ", "").replace(".", "")
+    type_display = f"{race_type}\n{distance}" if distance and distance not in ("—", "") and not dist_already_in_type else race_type
 
     # Narrative body
     body_parts = []
