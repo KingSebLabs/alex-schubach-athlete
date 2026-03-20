@@ -30,8 +30,8 @@ GALLERY_DIR = IMAGES_DIR / "gallery"
 
 # ─── Dropbox Excel config ─────────────────────────────────────────────────────
 DROPBOX_XLSX_URL = (
-    "https://www.dropbox.com/scl/fi/v65q8huxv3vkd9ho9eind/Racing-Calendar.xlsx"
-    "?rlkey=lrz8gpnfrrviy5phz8xlcy8wh&st=eun7hj28&dl=1"
+    "https://www.dropbox.com/scl/fi/eaob1d71j6254uz0oocn8/Racing-Calendar.xlsx"
+    "?rlkey=zczjnw5wnongwf6091jj82lpp&st=50slpji0&dl=1"
 )
 SHEET_NAMES = ["2025", "2026", "2027"]
 
