@@ -470,10 +470,6 @@ section { padding: 6rem 2.5rem; }
   .pdf-tab { padding: 1.5rem 0.5rem; font-size: 0.65rem; letter-spacing: 0.08em; }
 }
 
-/* ===== CONTACT FORM: Select placeholder colour ===== */
-.contact-form select { color: var(--grey-mid); }
-.contact-form select.has-value { color: var(--text-light); }
-
 /* ===== CONTACT ===== */
 .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
 .contact-info h3 {
@@ -502,7 +498,8 @@ section { padding: 6rem 2.5rem; }
   outline-offset: 2px;
 }
 .contact-form textarea { min-height: 120px; resize: vertical; }
-.contact-form select { appearance: none; cursor: pointer; }
+.contact-form select { appearance: none; cursor: pointer; color: var(--grey-mid); }
+.contact-form select.has-value { color: var(--text-light); }
 .contact-form button {
   background: var(--accent); color: white; border: none; padding: 1rem 2rem;
   font-family: var(--font-body); font-size: 0.75rem; font-weight: 700;
@@ -795,6 +792,7 @@ footer {
             <option>Brand Partnership</option>
             <option>Media Inquiry</option>
             <option>Collaboration</option>
+            <option>Self Development</option>
             <option>Other</option>
           </select>
           <textarea name="message" placeholder="Message" aria-label="Message"></textarea>
@@ -812,6 +810,7 @@ footer {
             <option>Brand Partnership</option>
             <option>Media Inquiry</option>
             <option>Collaboration</option>
+            <option>Self Development</option>
             <option>Other</option>
           </select>
           <textarea placeholder="Message" aria-label="Message"></textarea>
