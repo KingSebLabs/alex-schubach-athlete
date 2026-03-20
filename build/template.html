@@ -782,9 +782,9 @@ footer {
           <a href="{{ social.strava }}" class="social-link">Strava</a>
         </div>
       </div>
-      <div class="contact-form reveal">
+      <div class="reveal">
         {% if contact.formspree_id %}
-        <form action="https://formspree.io/f/{{ contact.formspree_id }}" method="POST">
+        <form class="contact-form" action="https://formspree.io/f/{{ contact.formspree_id }}" method="POST">
           <div class="form-row">
             <input type="text" name="name" placeholder="Name" aria-label="Name" required>
             <input type="email" name="email" placeholder="Email" aria-label="Email" required>
@@ -801,20 +801,22 @@ footer {
           <button type="submit">Send Message →</button>
         </form>
         {% else %}
-        <div class="form-row">
-          <input type="text" placeholder="Name" aria-label="Name">
-          <input type="email" placeholder="Email" aria-label="Email">
+        <div class="contact-form">
+          <div class="form-row">
+            <input type="text" placeholder="Name" aria-label="Name">
+            <input type="email" placeholder="Email" aria-label="Email">
+          </div>
+          <input type="tel" placeholder="Phone Number" aria-label="Phone Number">
+          <select aria-label="Inquiry Type">
+            <option value="" disabled selected>Inquiry Type</option>
+            <option>Brand Partnership</option>
+            <option>Media Inquiry</option>
+            <option>Collaboration</option>
+            <option>Other</option>
+          </select>
+          <textarea placeholder="Message" aria-label="Message"></textarea>
+          <button type="button">Send Message →</button>
         </div>
-        <input type="tel" placeholder="Phone Number" aria-label="Phone Number">
-        <select aria-label="Inquiry Type">
-          <option value="" disabled selected>Inquiry Type</option>
-          <option>Brand Partnership</option>
-          <option>Media Inquiry</option>
-          <option>Collaboration</option>
-          <option>Other</option>
-        </select>
-        <textarea placeholder="Message" aria-label="Message"></textarea>
-        <button type="button">Send Message →</button>
         {% endif %}
       </div>
     </div>
