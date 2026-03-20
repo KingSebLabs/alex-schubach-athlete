@@ -318,7 +318,6 @@ def build_race_card_html(race: dict) -> str:
             <div class="race-h-type">{race_type}</div>
             <div class="race-h-time">{result or "—"}</div>
             <div class="race-h-pos">{pos}</div>
-            <div class="race-h-ag">{pos_ag}</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
@@ -352,8 +351,7 @@ TABLE_HEADER = '''      <div class="race-table-header">
         <div class="race-th">Class / Distance</div>
         <div class="race-th">Type</div>
         <div class="race-th">Time</div>
-        <div class="race-th">Overall</div>
-        <div class="race-th">Age Group</div>
+        <div class="race-th">Ranking</div>
         <div class="race-th race-th-expand">Expand</div>
       </div>'''
 
