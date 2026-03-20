@@ -43,10 +43,17 @@ UTMB_RUNNER_URL = "https://utmb.world/en/runner/8058767.alex.schubach"
 
 
 def _fmt_cell(v) -> str:
-    """Convert a cell value to a clean string; formats datetime as '1 Jan 2025'."""
+    """Convert a cell value to a clean string; formats dates as '1 Jan 2025', times as H:MM:SS."""
     if v is None:
         return ""
-    if hasattr(v, "strftime"):  # datetime / date object from openpyxl
+    if isinstance(v, datetime.time):
+        return v.strftime("%-H:%M:%S").strip()
+    if isinstance(v, datetime.timedelta):
+        total = int(v.total_seconds())
+        h, rem = divmod(total, 3600)
+        m, s = divmod(rem, 60)
+        return f"{h}:{m:02d}:{s:02d}"
+    if hasattr(v, "strftime"):  # datetime.datetime or datetime.date
         return v.strftime("%-d %b %Y").strip()
     return str(v).strip()
 
