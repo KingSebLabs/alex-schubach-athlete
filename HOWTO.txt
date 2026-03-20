@@ -11,34 +11,47 @@ After any change below, it also rebuilds within 60 seconds of saving.
 RACE RESULTS & CALENDAR
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-Source: Google Sheet "Big Ass Calendar"
-Sheets used: Races '25 and Races '26
+Source: Dropbox file "Racing-Calendar.xlsx"
+Sheets used: 2025, 2026, 2027
+
+The file must be shared as "Anyone with the link can view" in Dropbox.
+The site rebuilds nightly and pulls the latest version automatically.
 
 TO ADD A RACE RESULT:
   Fill in the RACE RESULTS column for that race row.
   The race moves from the Calendar section to the Results section overnight.
 
 TO ADD AN UPCOMING RACE:
-  Add a new row in Races '26 with the EVENT name and BLACKOUT DATES filled in.
+  Add a new row in the relevant year sheet with EVENT name filled in.
+  Set REGISTERED to "Yes" or "TBC".
   Leave RACE RESULTS empty — it will appear as a calendar card.
 
 TO ADD A NEW YEAR (e.g. 2027):
-  1. Create a new sheet tab in Google Sheets called: Races '27
-  2. Open build/build.py on GitHub and add this line inside SHEET_GIDS:
-       "Races '27": "PASTE_GID_HERE",
-     (Find the GID in the URL when you click the new tab: ?gid=XXXXXXXX)
+  1. Add a new sheet tab in Racing-Calendar.xlsx called: 2027
+  2. Open build/build.py on GitHub and add "2027" to the SHEET_NAMES list:
+       SHEET_NAMES = ["2025", "2026", "2027"]
   3. Save — a new 2027 tab will appear on the site automatically.
+
+TO UPDATE THE DROPBOX FILE LINK (if the file is moved or replaced):
+  1. Get the new Dropbox share link and change ?dl=0 to ?dl=1 at the end.
+  2. Open build/build.py on GitHub and update DROPBOX_XLSX_URL with the new link.
+  3. Commit — the next build will use the new file.
 
 TO TRIGGER AN IMMEDIATE REBUILD (don't want to wait until tonight):
   Go to: https://github.com/KingSebLabs/alex-schubach-athlete/actions
   Click "Build site daily" → "Run workflow" → "Run workflow"
   Site updates in about 60 seconds.
 
-OPTIONAL — POSITION COLUMNS:
-  Add two columns to row 2 of Races '26 (and '25):
-    POSITION OVERALL    e.g. 10th / 1,079
-    POSITION AG         e.g. 6th / 213
-  These appear in the stats strip on each race card on the website.
+COLUMN REFERENCE (row 1 headers in each sheet):
+  RACE DATE         Date of the race
+  EVENT             Race name
+  RACE TYPE         e.g. Trail, Road, Hyrox, Ultra
+  RACE LOCATION     City / Country
+  RACE DISTANCE     Distance or class (e.g. 21km, Men's Open - Singles)
+  REGISTERED        "Yes" or "TBC" — only these rows appear on the site
+  RACE RESULTS      Finish time or result — filling this marks the race as done
+  POSITION OVERALL  e.g. 10th / 1,079
+  POSITION AG       e.g. 6th / 213
 
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
