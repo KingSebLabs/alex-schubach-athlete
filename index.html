@@ -333,18 +333,24 @@ section { padding: 6rem 2.5rem; }
 
 /* Mobile accordion */
 @media (max-width: 768px) {
-  /* Race header: name on row 1 (full width), time on row 2, expand spans both rows */
+  /* Race header: row 1 = name/date/loc + expand button
+                  row 2 = type · time · ranking */
   .race-header {
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    grid-template-rows: auto auto;
     padding: 1rem 1.2rem;
-    gap: 0.2rem 0.75rem;
+    gap: 0.25rem 0.5rem;
+    align-items: center;
   }
-  .race-header > div:first-child { grid-column: 1; grid-row: 1; }
-  .race-h-type { display: none; }
-  .race-h-time { grid-column: 1; grid-row: 2; font-size: 0.85rem; align-self: center; }
-  .race-h-pos { display: none; }
-  .race-h-expand { grid-column: 2; grid-row: 1 / 3; align-self: center; font-size: 0; letter-spacing: 0; }
+  /* Name/date/loc spans data columns in row 1 */
+  .race-header > div:first-child { grid-column: 1 / 4; grid-row: 1; }
+  /* Type, Time, Pos on row 2 — all shown */
+  .race-h-type { display: block; grid-column: 1; grid-row: 2; font-size: 0.72rem; align-self: start; }
+  .race-h-time { grid-column: 2; grid-row: 2; font-size: 0.72rem; align-self: start; }
+  .race-h-pos  { display: block; grid-column: 3; grid-row: 2; font-size: 0.72rem; align-self: start; white-space: normal; }
+  /* Expand spans both rows */
+  .race-h-expand { grid-column: 4; grid-row: 1 / 3; align-self: center; font-size: 0; letter-spacing: 0; }
   .race-h-expand::after { font-size: 1.2rem; }
   .race-table-header { display: none; }
   .race-body-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem 1.2rem 2rem; }
@@ -632,9 +638,12 @@ footer {
   /* Calendar */
   .calendar-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 
-  /* Gallery: let images flow naturally */
-  .gallery-item { width: 100%; height: auto; }
-  .gallery-item img { height: auto; }
+  /* Gallery: override nth-child fixed sizes so images flow naturally */
+  .gallery-item,
+  .gallery-item:nth-child(3n+1),
+  .gallery-item:nth-child(3n+2),
+  .gallery-item:nth-child(3n+3) { width: 100%; height: auto; }
+  .gallery-item img { width: 100%; height: auto; }
 
   /* Contact */
   .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
