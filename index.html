@@ -186,6 +186,8 @@ section { padding: 6rem 2.5rem; }
 .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
 .stat-item { border-left: 2px solid var(--accent); padding-left: 1rem; }
 .stat-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--text-light); line-height: 1; }
+/* Bebas Neue has no ∞ glyph — use body font for the Potential stat so it renders consistently across platforms */
+.stat-item:last-child .stat-number { font-family: var(--font-body); }
 .stat-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey-mid); margin-top: 0.3rem; }
 .about-image-col {
   position: relative; aspect-ratio: 3/4; overflow: hidden;
