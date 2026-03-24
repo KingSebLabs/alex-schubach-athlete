@@ -398,16 +398,31 @@ def build_calendar_card_html(race: dict) -> str:
     """Build a calendar card for an upcoming race."""
     tbc = "tbc" in race.get("registered", "").lower()
     tbc_badge = '<span class="cal-tbc">TBC</span>' if tbc else ""
-    # Build sub-details line: type · distance · location (only non-empty parts)
     detail_parts = [p for p in [race.get("type"), race.get("distance"), race.get("location")] if p and p != "—"]
     details = " · ".join(detail_parts)
-    desc_html = f'        <div class="cal-desc">{race["description"]}</div>\n' if race.get("description") else ""
+
+    desc = race.get("description", "")
+    if desc:
+        desc_html = f'        <div class="cal-desc">{desc}</div>\n'
+        data_attrs = (
+            f' data-desc="{html.escape(desc)}"'
+            f' data-race="{html.escape(race["name"].upper())}"'
+            f' data-date="{html.escape(race["date"])}"'
+            f' data-details="{html.escape(details)}"'
+        )
+        read_more_html = '        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>\n'
+    else:
+        desc_html = ""
+        data_attrs = ""
+        read_more_html = ""
+
     return (
-        f'      <div class="cal-card reveal">\n'
+        f'      <div class="cal-card reveal"{data_attrs}>\n'
         f'        <div class="cal-month">{race["date"]} {tbc_badge}</div>\n'
         f'        <div class="cal-race">{race["name"].upper()}</div>\n'
         f'        <div class="cal-details">{details}</div>\n'
         f'{desc_html}'
+        f'{read_more_html}'
         f'      </div>'
     )
 
