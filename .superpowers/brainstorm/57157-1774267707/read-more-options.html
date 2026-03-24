@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Race Calendar — "Read More" Options</title>
+<style>
+  :root {
+    --bg: #131312;
+    --bg-card: #1c1c1b;
+    --accent: #e8490f;
+    --text: #f0ede8;
+    --grey: #8a8580;
+    --border: rgba(255,255,255,0.08);
+    --font: 'Inter', system-ui, sans-serif;
+    --font-display: 'Barlow Condensed', 'Bebas Neue', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    min-height: 100vh;
+    padding: 2.5rem 2rem 4rem;
+  }
+  h1 {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+  .page-title {
+    font-family: var(--font-display), sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.4rem;
+  }
+  .subtitle {
+    font-size: 0.85rem;
+    color: var(--grey);
+    line-height: 1.6;
+    margin-bottom: 3rem;
+    max-width: 600px;
+  }
+
+  /* ── OPTION CARDS ── */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  .option-card {
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+  }
+  .option-card:hover { border-color: rgba(232,73,15,0.4); transform: translateY(-2px); }
+  .option-card.selected { border-color: var(--accent); }
+  .option-card.selected .option-badge {
+    background: var(--accent); color: white;
+  }
+  .option-badge {
+    position: absolute;
+    top: 1rem; left: 1rem;
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--border);
+    color: var(--grey);
+    padding: 0.25rem 0.6rem;
+    transition: background 0.25s, color 0.25s;
+  }
+  .option-demo {
+    background: #0e0e0d;
+    padding: 2rem 1.5rem 1.5rem;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .option-info {
+    padding: 1.25rem 1.5rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .option-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  .option-desc {
+    font-size: 0.78rem;
+    color: var(--grey);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+  .tags { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .tag {
+    font-size: 0.58rem; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.5rem;
+  }
+  .tag-pro { background: rgba(232,73,15,0.12); color: var(--accent); }
+  .tag-con { background: rgba(255,255,255,0.06); color: var(--grey); }
+
+  /* ── MINI CAL CARD (shared) ── */
+  .mini-cal-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 1.1rem 1.2rem;
+    width: 220px;
+    position: relative;
+  }
+  .mini-month {
+    font-size: 0.52rem; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+  }
+  .mini-race {
+    font-family: var(--font-display), sans-serif;
+    font-size: 1.1rem; letter-spacing: 0.04em; margin-bottom: 0.3rem;
+  }
+  .mini-details {
+    font-size: 0.65rem; color: var(--grey); margin-bottom: 0.5rem; line-height: 1.5;
+  }
+  .mini-desc {
+    font-size: 0.62rem; color: var(--grey);
+    line-height: 1.45;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .read-more-btn {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--accent);
+    background: none; border: none; cursor: pointer;
+    padding: 0; margin-top: 0.6rem;
+    transition: gap 0.2s;
+  }
+  .read-more-btn:hover { gap: 0.5rem; }
+  .read-more-btn svg { width: 10px; height: 10px; }
+
+  /* ── OPTION A: MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(0,0,0,0.88);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-card {
+    background: #1c1c1b;
+    border: 1px solid rgba(232,73,15,0.3);
+    padding: 2.5rem;
+    max-width: 520px; width: 90vw;
+    position: relative;
+    transform: translateY(16px);
+    transition: transform 0.3s;
+  }
+  .modal-overlay.open .modal-card { transform: translateY(0); }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1.25rem;
+    background: none; border: none; color: var(--grey);
+    font-size: 1.4rem; cursor: pointer; line-height: 1;
+    transition: color 0.2s;
+  }
+  .modal-close:hover { color: var(--text); }
+  .modal-month {
+    font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
+  }
+  .modal-race {
+    font-family: var(--font-display), sans-serif;
+    font-size: 1.8rem; letter-spacing: 0.04em; margin-bottom: 0.4rem;
+  }
+  .modal-details {
+    font-size: 0.75rem; color: var(--grey); margin-bottom: 1.25rem; line-height: 1.6;
+  }
+  .modal-label {
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .modal-label::before { content: ''; width: 12px; height: 2px; background: var(--accent); }
+  .modal-text {
+    font-size: 0.82rem; color: var(--grey); line-height: 1.75;
+  }
+
+  /* ── OPTION B: INLINE EXPAND ── */
+  .inline-demo {
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+  }
+  .inline-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    width: 220px;
+    overflow: hidden;
+    transition: border-color 0.25s;
+  }
+  .inline-card.expanded { border-color: rgba(232,73,15,0.3); }
+  .inline-card-top { padding: 1.1rem 1.2rem; }
+  .inline-expand-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s ease;
+    border-top: 0px solid var(--border);
+  }
+  .inline-card.expanded .inline-expand-body {
+    max-height: 300px;
+    border-top: 1px solid var(--border);
+  }
+  .inline-expand-inner {
+    padding: 1rem 1.2rem;
+  }
+  .expand-label {
+    font-size: 0.52rem; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+    display: flex; align-items: center; gap: 0.35rem;
+  }
+  .expand-label::before { content: ''; width: 10px; height: 1.5px; background: var(--accent); }
+  .expand-text {
+    font-size: 0.7rem; color: var(--grey); line-height: 1.65;
+  }
+  .read-less-btn {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    font-size: 0.52rem; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--grey);
+    background: none; border: none; cursor: pointer;
+    padding: 0; margin-top: 0.6rem;
+    transition: color 0.2s;
+  }
+  .read-less-btn:hover { color: var(--text); }
+
+  /* ── OPTION C: SIDE DRAWER ── */
+  .side-demo-wrap {
+    position: relative;
+    width: 280px; height: 200px;
+    overflow: hidden;
+    background: #0e0e0d;
+    display: flex; align-items: center; justify-content: flex-start;
+    padding: 1rem;
+  }
+  .side-mini-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 1.1rem 1.2rem;
+    width: 180px;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    transition: transform 0.35s ease, opacity 0.35s;
+  }
+  .side-mini-card.pushed {
+    transform: translateX(-20px);
+    opacity: 0.4;
+  }
+  .side-drawer {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 200px;
+    background: #242422;
+    border-left: 1px solid rgba(232,73,15,0.3);
+    padding: 1.1rem;
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+    z-index: 2;
+    overflow-y: auto;
+  }
+  .side-drawer.open { transform: translateX(0); }
+  .drawer-close {
+    position: absolute; top: 0.6rem; right: 0.8rem;
+    background: none; border: none; color: var(--grey);
+    font-size: 1rem; cursor: pointer; line-height: 1;
+  }
+  .drawer-month {
+    font-size: 0.5rem; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem;
+  }
+  .drawer-race {
+    font-family: var(--font-display), sans-serif;
+    font-size: 1rem; letter-spacing: 0.04em; margin-bottom: 0.3rem;
+  }
+  .drawer-label {
+    font-size: 0.48rem; font-weight: 700; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--accent); margin: 0.6rem 0 0.3rem;
+    display: flex; align-items: center; gap: 0.3rem;
+  }
+  .drawer-label::before { content: ''; width: 8px; height: 1.5px; background: var(--accent); }
+  .drawer-text {
+    font-size: 0.6rem; color: var(--grey); line-height: 1.6;
+  }
+  .drawer-details {
+    font-size: 0.58rem; color: var(--grey); margin-bottom: 0.4rem; line-height: 1.5;
+  }
+
+  /* ── SELECTED INDICATOR ── */
+  .selection-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(19,19,18,0.97);
+    border-top: 1px solid var(--border);
+    padding: 0.9rem 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    font-size: 0.7rem; color: var(--grey);
+    z-index: 100;
+    transform: translateY(100%);
+    transition: transform 0.3s;
+  }
+  .selection-bar.visible { transform: translateY(0); }
+  .selection-bar strong { color: var(--text); }
+  .selection-name { color: var(--accent); font-weight: 700; }
+
+  /* ── DEMO INTERACTIVE BUTTONS ── */
+  .demo-try {
+    font-size: 0.55rem; font-weight: 700; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--grey);
+    background: rgba(255,255,255,0.05); border: none;
+    padding: 0.35rem 0.8rem; cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    margin-top: 0.5rem;
+    display: block;
+  }
+  .demo-try:hover { background: rgba(232,73,15,0.1); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<h1>2026 Race Calendar</h1>
+<div class="page-title">Choose a "Read More" Design</div>
+<p class="subtitle">The race description text overflows the badge. Below are three approaches for letting visitors read the full text. Click a card to select your preferred option — and try the interactive demos!</p>
+
+<div class="options-grid">
+
+  <!-- ── OPTION A: MODAL OVERLAY ── -->
+  <div class="option-card" data-choice="a" onclick="selectOption(this)">
+    <div class="option-badge">Option A</div>
+    <div class="option-demo" style="flex-direction:column;gap:0.75rem;">
+      <div class="mini-cal-card" style="position:relative;">
+        <div class="mini-month">Mar 2026</div>
+        <div class="mini-race">HYROX SINGAPORE</div>
+        <div class="mini-details">Hybrid · 9 km · Singapore</div>
+        <div class="mini-desc">One of the world's largest fitness racing events combining running and functional workout...</div>
+        <button class="read-more-btn" onclick="event.stopPropagation();openModal()">
+          Read more
+          <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5h6M5 2l3 3-3 3"/></svg>
+        </button>
+      </div>
+      <button class="demo-try" onclick="event.stopPropagation();openModal()">▶ Try the demo</button>
+    </div>
+    <div class="option-info">
+      <div class="option-name">Modal / Lightbox Overlay</div>
+      <div class="option-desc">Clicking "Read more" opens a centered card over a dark backdrop — identical to how gallery photos work. Full description with race details shown in an elevated panel.</div>
+      <div class="tags">
+        <span class="tag tag-pro">Familiar pattern</span>
+        <span class="tag tag-pro">Full focus</span>
+        <span class="tag tag-pro">Works on mobile</span>
+        <span class="tag tag-con">Interrupts browsing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION B: INLINE EXPAND ── -->
+  <div class="option-card" data-choice="b" onclick="selectOption(this)">
+    <div class="option-badge">Option B</div>
+    <div class="option-demo" style="flex-direction:column;gap:0.75rem;">
+      <div class="inline-demo">
+        <div class="inline-card" id="inline-card-b">
+          <div class="inline-card-top">
+            <div class="mini-month">Mar 2026</div>
+            <div class="mini-race">HYROX SINGAPORE</div>
+            <div class="mini-details">Hybrid · 9 km · Singapore</div>
+            <div class="mini-desc">One of the world's largest fitness racing events combining running and...</div>
+            <button class="read-more-btn" id="read-more-b" onclick="event.stopPropagation();toggleInline()">
+              Read more
+              <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5h6M5 2l3 3-3 3"/></svg>
+            </button>
+          </div>
+          <div class="inline-expand-body" id="expand-body-b">
+            <div class="inline-expand-inner">
+              <div class="expand-label">Race Description</div>
+              <div class="expand-text">One of the world's largest fitness racing events combining running and functional workout stations. Athletes complete 8 × 1 km runs alternated with 8 workout stations including rowing, ski erg, sled push/pull, burpees, kettlebell, and wall balls.</div>
+              <button class="read-less-btn" onclick="event.stopPropagation();toggleInline()">↑ Read less</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="option-info">
+      <div class="option-name">Inline Card Expansion</div>
+      <div class="option-desc">The badge smoothly expands downward to reveal the full description. No overlay — the content grows within the grid. "Read less" collapses it back.</div>
+      <div class="tags">
+        <span class="tag tag-pro">Non-disruptive</span>
+        <span class="tag tag-pro">Context preserved</span>
+        <span class="tag tag-con">Shifts other cards</span>
+        <span class="tag tag-con">Less visual focus</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OPTION C: SIDE DRAWER ── -->
+  <div class="option-card" data-choice="c" onclick="selectOption(this)">
+    <div class="option-badge">Option C</div>
+    <div class="option-demo" style="flex-direction:column;gap:0.75rem;padding:1.5rem 0 1rem;">
+      <div class="side-demo-wrap" id="side-demo-wrap">
+        <div class="side-mini-card" id="side-mini-card">
+          <div class="mini-month">Mar 2026</div>
+          <div class="mini-race" style="font-size:0.9rem;">HYROX SINGAPORE</div>
+          <div class="mini-details">Hybrid · 9 km · Singapore</div>
+          <div class="mini-desc">One of the world's largest fitness racing events...</div>
+          <button class="read-more-btn" onclick="event.stopPropagation();openDrawer()" style="font-size:0.5rem;">
+            Read more
+            <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 5h6M5 2l3 3-3 3"/></svg>
+          </button>
+        </div>
+        <div class="side-drawer" id="side-drawer">
+          <button class="drawer-close" onclick="event.stopPropagation();closeDrawer()">×</button>
+          <div class="drawer-month">Mar 2026</div>
+          <div class="drawer-race">HYROX SINGAPORE</div>
+          <div class="drawer-details">Hybrid · 9 km · Singapore</div>
+          <div class="drawer-label">Description</div>
+          <div class="drawer-text">One of the world's largest fitness racing events combining running and functional workout stations. Athletes complete 8 × 1 km runs alternated with 8 workout stations including rowing, ski erg, sled push/pull, burpees, and wall balls.</div>
+        </div>
+      </div>
+      <button class="demo-try" onclick="event.stopPropagation();openDrawer()">▶ Try the demo</button>
+    </div>
+    <div class="option-info">
+      <div class="option-name">Side Panel / Drawer</div>
+      <div class="option-desc">A panel slides in from the right edge of the screen, showing the full race description alongside the calendar. On mobile it slides up from the bottom as a sheet.</div>
+      <div class="tags">
+        <span class="tag tag-pro">Calendar stays visible</span>
+        <span class="tag tag-pro">Modern feel</span>
+        <span class="tag tag-con">More dev work</span>
+        <span class="tag tag-con">Less common pattern</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── MODAL ── -->
+<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="modal-month">Mar 2026 · Hybrid · 9 km · Singapore</div>
+    <div class="modal-race">HYROX SINGAPORE</div>
+    <div class="modal-details">Hybrid · 9 km · Singapore</div>
+    <div class="modal-label">Race Description</div>
+    <div class="modal-text">One of the world's largest fitness racing events combining running and functional workout stations. Athletes complete 8 × 1 km runs alternated with 8 workout stations including rowing, ski erg, sled push/pull, burpee broad jumps, kettlebell carries, and wall balls. The Singapore leg is part of the HYROX World Series.</div>
+  </div>
+</div>
+
+<!-- ── SELECTION BAR ── -->
+<div class="selection-bar" id="sel-bar">
+  <span>Selected: <span class="selection-name" id="sel-name">—</span></span>
+  <span style="color:rgba(255,255,255,0.25)">·</span>
+  <span>Let me know in the terminal if you'd like adjustments or have settled on a direction!</span>
+</div>
+
+<script>
+  // Selection
+  const selBar = document.getElementById('sel-bar');
+  const selName = document.getElementById('sel-name');
+  const names = { a: 'Option A — Modal Overlay', b: 'Option B — Inline Expansion', c: 'Option C — Side Panel' };
+
+  function selectOption(el) {
+    document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    selName.textContent = names[el.dataset.choice];
+    selBar.classList.add('visible');
+    // Emit event
+    if (window.__superpowers_record) window.__superpowers_record(el.dataset.choice, el.querySelector('.option-name').textContent);
+  }
+
+  // Modal
+  function openModal() {
+    document.getElementById('modal-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeDrawer(); } });
+
+  // Inline
+  let inlineOpen = false;
+  function toggleInline() {
+    inlineOpen = !inlineOpen;
+    const card = document.getElementById('inline-card-b');
+    const body = document.getElementById('expand-body-b');
+    const btn = document.getElementById('read-more-b');
+    card.classList.toggle('expanded', inlineOpen);
+    body.style.maxHeight = inlineOpen ? body.scrollHeight + 'px' : '0';
+    btn.style.display = inlineOpen ? 'none' : 'inline-flex';
+  }
+
+  // Drawer
+  function openDrawer() {
+    document.getElementById('side-drawer').classList.add('open');
+    document.getElementById('side-mini-card').classList.add('pushed');
+  }
+  function closeDrawer() {
+    document.getElementById('side-drawer').classList.remove('open');
+    document.getElementById('side-mini-card').classList.remove('pushed');
+  }
+</script>
+</body>
+</html>
