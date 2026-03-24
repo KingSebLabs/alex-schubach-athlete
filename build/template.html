@@ -482,7 +482,7 @@ section { padding: 6rem 2.5rem; }
 }
 .cal-modal-label::before { content: ''; width: 12px; height: 2px; background: var(--accent); }
 .cal-modal-text {
-  font-size: 0.88rem; color: var(--grey-mid); line-height: 1.75;
+  font-size: 0.88rem; color: var(--grey-mid); line-height: 1.75; white-space: pre-wrap;
 }
 .cal-read-more {
   display: block; background: none; border: none;
@@ -1155,8 +1155,9 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     modal.querySelector('.cal-modal-month').textContent = card.dataset.date || '';
     modal.querySelector('.cal-modal-race').textContent = card.dataset.race || '';
     modal.querySelector('.cal-modal-details').textContent = card.dataset.details || '';
-    // innerHTML so any <br> tags from _fmt_narrative render as line breaks
-    modal.querySelector('.cal-modal-text').innerHTML = card.dataset.desc || '';
+    // textContent is safe (no innerHTML injection risk); white-space: pre-wrap in CSS
+    // renders newline characters as visible line breaks without needing <br> tags
+    modal.querySelector('.cal-modal-text').textContent = card.dataset.desc || '';
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
