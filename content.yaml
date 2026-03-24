@@ -1,7 +1,7 @@
 site:
   title: "Alex Schubach — Endurance Athlete"
   description: "Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure."
-  base_url: "https://kingseblabs.github.io/alex-schubach-athlete"  # Update to custom domain when purchased
+  base_url: "https://alexschubach.com"
 
 # ─── HERO ────────────────────────────────────────────────────────────────────
 hero:
