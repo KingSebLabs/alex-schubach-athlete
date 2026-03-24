@@ -563,10 +563,30 @@ section { padding: 6rem 2.5rem; }
 .contact-cat {
   display: flex; align-items: center; gap: 1rem; padding: 1rem;
   border: 1px solid var(--grey-border); transition: border-color 0.3s;
+  cursor: pointer;
 }
 .contact-cat:hover { border-color: var(--accent); }
 .cat-icon { font-size: 1.2rem; width: 2rem; text-align: center; }
 .cat-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.cat-expand {
+  margin-left: auto; flex-shrink: 0;
+  font-family: var(--font-display); font-size: 1.2rem;
+  color: var(--accent); line-height: 1;
+}
+.cat-expand::after { content: '+'; }
+.contact-cat-item.open .cat-expand::after { content: '−'; }
+.cat-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+  padding: 0 1rem;
+  border: 1px solid transparent; border-top: none;
+}
+.contact-cat-item.open .cat-body {
+  max-height: 400px;
+  padding: 0.75rem 1rem 1rem;
+  border-color: var(--grey-border);
+}
+.cat-body p { font-size: 0.85rem; line-height: 1.7; color: var(--grey-mid); margin: 0; }
 
 .contact-form { display: flex; flex-direction: column; gap: 1rem; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -936,9 +956,15 @@ footer {
         <p>{{ contact.body }}</p>
         <div class="contact-cats">
           {% for cat in contact.categories %}
-          <div class="contact-cat">
-            <div class="cat-icon">{{ cat.icon }}</div>
-            <div class="cat-label">{{ cat.label }}</div>
+          <div class="contact-cat-item">
+            <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+              <div class="cat-icon">{{ cat.icon }}</div>
+              <div class="cat-label">{{ cat.label }}</div>
+              <div class="cat-expand"></div>
+            </div>
+            <div class="cat-body">
+              <p>{{ cat.desc }}</p>
+            </div>
           </div>
           {% endfor %}
         </div>

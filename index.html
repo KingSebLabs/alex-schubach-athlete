@@ -585,10 +585,30 @@ section { padding: 6rem 2.5rem; }
 .contact-cat {
   display: flex; align-items: center; gap: 1rem; padding: 1rem;
   border: 1px solid var(--grey-border); transition: border-color 0.3s;
+  cursor: pointer;
 }
 .contact-cat:hover { border-color: var(--accent); }
 .cat-icon { font-size: 1.2rem; width: 2rem; text-align: center; }
 .cat-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+.cat-expand {
+  margin-left: auto; flex-shrink: 0;
+  font-family: var(--font-display); font-size: 1.2rem;
+  color: var(--accent); line-height: 1;
+}
+.cat-expand::after { content: '+'; }
+.contact-cat-item.open .cat-expand::after { content: '−'; }
+.cat-body {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+  padding: 0 1rem;
+  border: 1px solid transparent; border-top: none;
+}
+.contact-cat-item.open .cat-body {
+  max-height: 400px;
+  padding: 0.75rem 1rem 1rem;
+  border-color: var(--grey-border);
+}
+.cat-body p { font-size: 0.85rem; line-height: 1.7; color: var(--grey-mid); margin: 0; }
 
 .contact-form { display: flex; flex-direction: column; gap: 1rem; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -792,11 +812,13 @@ footer {
         <div class="section-label">About</div>
         <div class="section-title">MY STORY</div>
         
-        <p>I've been an athlete for as long as I can remember. I grew up in the pool as a <strong>competitive swimmer</strong>, then moved to the track during my teenage years. That early foundation built something that has never left me — a deep commitment to <strong>discipline, consistency, and the pursuit of improvement</strong>.</p>
+        <p>I've been an athlete for as long as I can remember. I started in the pool as a <strong>competitive swimmer</strong>, then moved to the track in my teenage years. That foundation built something that has never left me. <strong>Discipline, consistency, and a commitment to getting better every day.</strong></p>
         
-        <p>Today, my focus has shifted to <strong>endurance sports</strong> — trail running, road racing, and hybrid events like Hyrox. I'm drawn to the kind of challenges that test both physical and mental limits. For me, it's never just about the finish line. It's about what you become in the process.</p>
+        <p>Now, my focus is endurance. <strong>Trail running, road racing, and hybrid competition like Hyrox.</strong> I'm drawn to environments that demand more, where <strong>physical and mental limits</strong> are constantly tested. I don't see limits as fixed. They are something to be challenged, pushed, and redefined.</p>
         
-        <p>Beyond racing, I live an <strong>active outdoor lifestyle</strong> rooted in movement, adventure, and connection with nature. Every day is an opportunity to push a little further.</p>
+        <p>My approach is simple. <strong>Show up, do the work,</strong> and find out what is actually possible. The outcome matters, but what drives me is <strong>the process.</strong> The chase of going beyond what I thought I was capable of.</p>
+        
+        <p>Outside of competition, I live a lifestyle built around <strong>movement, the outdoors, and purpose.</strong> Training is not something I switch on and off. It is how I live. <strong>Every session, every race, every day</strong> is an opportunity to push further and raise the standard.</p>
         
         <div class="about-stats">
           
@@ -840,26 +862,26 @@ footer {
       
       <div class="value-card reveal">
         <div class="value-num">01</div>
-        <div class="value-title">TRYING MY BEST</div>
-        <div class="value-desc">Giving my full effort in everything I pursue. Not perfection — full commitment.</div>
+        <div class="value-title">FULL SEND</div>
+        <div class="value-desc">Half-effort doesn't exist in my vocabulary. Whatever I take on, I put everything into it. No holding back, no excuses, I'm all in.</div>
       </div>
       
       <div class="value-card reveal">
         <div class="value-num">02</div>
-        <div class="value-title">REALISING MY POTENTIAL</div>
-        <div class="value-desc">Seeing how far I can push my abilities and discovering what I'm truly capable of.</div>
+        <div class="value-title">THE PURSUIT OF MORE</div>
+        <div class="value-desc">We don't know where our limits are until we push past where we thought they were. That chase is what drives me.</div>
       </div>
       
       <div class="value-card reveal">
         <div class="value-num">03</div>
-        <div class="value-title">ACTIVE OUTDOOR LIFE</div>
-        <div class="value-desc">Movement, adventure, and nature are central parts of how I live every single day.</div>
+        <div class="value-title">BUILT FOR THE OUTDOORS</div>
+        <div class="value-desc">I live and breathe movement. Nature isn't just a backdrop — it's where I feel the most alive. The trails, the peaks, the open water. There's always somewhere new to explore.</div>
       </div>
       
       <div class="value-card reveal">
         <div class="value-num">04</div>
-        <div class="value-title">DISCIPLINE & COMMITMENT</div>
-        <div class="value-desc">Consistency over time creates real results. Show up every day and trust the process.</div>
+        <div class="value-title">SHOW UP EVERYDAY</div>
+        <div class="value-desc">Motivation is unreliable. Discipline isn't. The work gets done regardless of how I feel because consistency compounds. And that's what separates the good from the great.</div>
       </div>
       
     </div>
@@ -1496,19 +1518,37 @@ Beast - 21km · Philippines</div>
         <p>Whether it's a brand partnership, media opportunity, or collaboration — I'd love to hear from you.</p>
         <div class="contact-cats">
           
-          <div class="contact-cat">
-            <div class="cat-icon">🤝</div>
-            <div class="cat-label">Brand Partnerships</div>
+          <div class="contact-cat-item">
+            <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+              <div class="cat-icon">🤝</div>
+              <div class="cat-label">Brand Partnerships</div>
+              <div class="cat-expand"></div>
+            </div>
+            <div class="cat-body">
+              <p>I work with brands built on performance, quality, and intent. I'm specifically interested in partnerships across sports & fitness gear, outdoor & adventure, health & nutrition, and lifestyle & apparel. I value brands that are pushing boundaries, not following trends. If your product can hold up under real training, competition, and daily use, that's where I see alignment. I'm focused on long-term partnerships that are integrated, authentic, and built through performance, not just promotion.</p>
+            </div>
           </div>
           
-          <div class="contact-cat">
-            <div class="cat-icon">📸</div>
-            <div class="cat-label">Media Inquiries</div>
+          <div class="contact-cat-item">
+            <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+              <div class="cat-icon">📸</div>
+              <div class="cat-label">Media Inquiries</div>
+              <div class="cat-expand"></div>
+            </div>
+            <div class="cat-body">
+              <p>I'm open to media opportunities that focus on high performance, endurance sport, and the reality of pushing physical and mental limits. This includes interviews, features, podcasts, and performance-driven content. I'm interested in conversations that go beyond surface level, into training, discipline, mindset, and what it actually takes to operate at a high level while building something meaningful.</p>
+            </div>
           </div>
           
-          <div class="contact-cat">
-            <div class="cat-icon">✦</div>
-            <div class="cat-label">Collaborations</div>
+          <div class="contact-cat-item">
+            <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+              <div class="cat-icon">✦</div>
+              <div class="cat-label">Collaborations</div>
+              <div class="cat-expand"></div>
+            </div>
+            <div class="cat-body">
+              <p>I collaborate with athletes, creators, and teams who are serious about what they do. Whether it's performance, storytelling, or building something in sport, travel, or culture, I'm interested in projects that have intent behind them. If you're pushing limits, creating at a high level, or building something with purpose, I'm open to working together.</p>
+            </div>
           </div>
           
         </div>
