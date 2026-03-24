@@ -354,7 +354,7 @@ def build_race_card_html(race: dict) -> str:
         body_parts.append(
             f'              <div class="race-narrative">\n'
             f'                <div class="race-narrative-label">Race Description</div>\n'
-            f'                <p>{_fmt_narrative(race["description"])}</p>\n'
+            f'                <p>{_fmt_narrative(html.escape(race["description"]))}</p>\n'
             f'              </div>'
         )
     if race["comments_pre"]:
