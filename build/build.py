@@ -101,8 +101,9 @@ def _fmt_rich_cell(cell) -> str:
                 # Bare str element inside CellRichText — no .font attribute
                 parts.append(html.escape(str(block)))
         return "".join(parts).replace('\n', '<br>')
-    # Plain string fallback: use _fmt_narrative to keep **markdown** bold and \n→<br>
-    return _fmt_narrative(str(v)) if v else ""
+    # Plain string fallback: escape HTML special chars first so literal '<'/'>'/'&'
+    # in the cell are neutralised before _fmt_narrative applies bold and \n→<br>.
+    return _fmt_narrative(html.escape(str(v))) if v else ""
 
 
 def fetch_excel_sheets(url: str) -> dict:
