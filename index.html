@@ -634,6 +634,26 @@ section { padding: 6rem 2.5rem; }
   transition: background 0.3s, transform 0.2s;
 }
 .contact-form button:hover { background: var(--accent-glow); transform: translateY(-2px); }
+.contact-form button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.form-error-msg { font-size: 0.8rem; color: #e85555; padding: 0.5rem 0; border-top: 1px solid #3a2020; }
+.form-success {
+  padding: 2rem; border: 1px solid var(--grey-border);
+  display: flex; flex-direction: column; gap: 1rem;
+  min-height: 200px; justify-content: center;
+}
+.form-success-bar { width: 3rem; height: 3px; background: var(--accent); }
+.form-success-title { font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; color: var(--text-light); }
+.form-success p { font-size: 0.9rem; color: var(--grey-mid); line-height: 1.7; }
+.submitted-banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  background: var(--accent); color: white;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.9rem 1.5rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+}
+.submitted-banner button {
+  background: none; border: none; color: white;
+  font-size: 1.4rem; cursor: pointer; padding: 0 0.25rem; line-height: 1;
+}
 
 /* ===== SOCIALS ===== */
 .social-bar {
@@ -1562,11 +1582,14 @@ Beast - 21km · Philippines</div>
       <div class="reveal">
         
         <form class="contact-form" action="https://formspree.io/f/mjgazkbq" method="POST">
+          <input type="hidden" name="_subject" value="New message — alexschubach.com">
+          <input type="hidden" name="_next" value="https://alexschubach.com/?submitted=true#contact">
+          <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
           <div class="form-row">
-            <input type="text" name="name" placeholder="Name" aria-label="Name" required>
-            <input type="email" name="email" placeholder="Email" aria-label="Email" required>
+            <input type="text" name="name" placeholder="Name" aria-label="Name" required maxlength="100" autocomplete="name">
+            <input type="email" name="email" placeholder="Email" aria-label="Email" required maxlength="200" autocomplete="email">
           </div>
-          <input type="tel" name="phone" placeholder="Phone Number" aria-label="Phone Number">
+          <input type="tel" name="phone" placeholder="Phone Number" aria-label="Phone Number" maxlength="30" autocomplete="tel">
           <select name="inquiry_type" aria-label="Inquiry Type">
             <option value="" disabled selected>Inquiry Type</option>
             <option>Brand Partnership</option>
@@ -1575,7 +1598,7 @@ Beast - 21km · Philippines</div>
             <option>Self Development</option>
             <option>Other</option>
           </select>
-          <textarea name="message" placeholder="Message" aria-label="Message"></textarea>
+          <textarea name="message" placeholder="Message" aria-label="Message" maxlength="2000"></textarea>
           <button type="submit">Send Message →</button>
         </form>
         
@@ -1680,6 +1703,75 @@ document.querySelectorAll('.pdf-tab').forEach(tab => {
 document.querySelectorAll('.contact-form select').forEach(sel => {
   sel.addEventListener('change', () => sel.classList.add('has-value'));
 });
+
+// Contact form: AJAX submission
+(function () {
+  var form = document.querySelector('form.contact-form');
+  if (!form) return;
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var btn = this.querySelector('button[type="submit"]');
+    var originalText = btn.textContent;
+    btn.textContent = 'Sending\u2026';
+    btn.disabled = true;
+
+    try {
+      var res = await fetch(this.action, {
+        method: 'POST',
+        body: new FormData(this),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        showFormSuccess(this);
+      } else {
+        var data = await res.json().catch(function () { return {}; });
+        showFormError(this, data.error || 'Something went wrong. Please try again.');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    } catch (_) {
+      showFormError(this, 'Could not connect. Please check your connection and try again.');
+      btn.textContent = originalText;
+      btn.disabled = false;
+    }
+  });
+
+  function showFormSuccess(form) {
+    form.reset();
+    form.innerHTML =
+      '<div class="form-success">' +
+        '<div class="form-success-bar"></div>' +
+        '<div class="form-success-title">Message Sent.</div>' +
+        '<p>Thanks for reaching out. I\u2019ll be in touch soon.</p>' +
+      '</div>';
+  }
+
+  function showFormError(form, msg) {
+    var el = form.querySelector('.form-error-msg');
+    if (!el) {
+      el = document.createElement('p');
+      el.className = 'form-error-msg';
+      form.appendChild(el);
+    }
+    el.textContent = msg;
+  }
+}());
+
+// Show success banner when returning from Formspree redirect (?submitted=true)
+(function () {
+  if (new URLSearchParams(window.location.search).get('submitted') !== 'true') return;
+  history.replaceState({}, '', window.location.pathname + '#contact');
+  var form = document.querySelector('form.contact-form');
+  if (form) form.reset();
+  var banner = document.createElement('div');
+  banner.className = 'submitted-banner';
+  banner.innerHTML =
+    '<span>\u2713 Message sent \u2014 I\u2019ll be in touch soon.</span>' +
+    '<button onclick="this.parentElement.remove()" aria-label="Close">\u00d7</button>';
+  document.body.prepend(banner);
+  setTimeout(function () { if (banner.parentElement) banner.remove(); }, 8000);
+}());
 </script>
 
 <!-- Gallery lightbox -->
