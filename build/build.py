@@ -249,7 +249,7 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
         date_str = find_col(row, "RACE DATE", "BLACKOUT DATES", "DATE", "Date")
         race_type = find_col(row, "RACE TYPE", "TYPE") or infer_race_type(event.split("\n")[0].strip())
         col_distance = find_col(row, "RACE DISTANCE", "DISTANCE")
-        description = find_col(row, "RACE DESCRIPTION", "DESCRIPTION")[:140]
+        description = find_col(row, "RACE DESCRIPTION", "DESCRIPTION")
         location = find_col(row, "RACE LOCATION", "LOCATION", "VENUE", "CITY")
         comments_pre = find_col(row, "COMMENTS PRE", "Comments Pre", "PRE RACE", "GOING IN")
         comments_post = find_col(row, "COMMENTS POST", "Comments Post", "POST RACE", "LOOKING BACK")
@@ -350,6 +350,13 @@ def build_race_card_html(race: dict) -> str:
 
     # Narrative body
     body_parts = []
+    if race.get("description"):
+        body_parts.append(
+            f'              <div class="race-narrative">\n'
+            f'                <div class="race-narrative-label">Race Description</div>\n'
+            f'                <p>{_fmt_narrative(race["description"])}</p>\n'
+            f'              </div>'
+        )
     if race["comments_pre"]:
         body_parts.append(
             f'              <div class="race-narrative">\n'
@@ -369,6 +376,7 @@ def build_race_card_html(race: dict) -> str:
 
     location = race.get("location", "") or ""
     loc_html = f'<div class="race-h-loc">{location}</div>' if location and location != "—" else ""
+    has_desc = "has-desc" if race.get("description") else ""
 
     return f'''        <div class="race-item">
           <div class="race-header">
@@ -379,7 +387,7 @@ def build_race_card_html(race: dict) -> str:
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner {has_desc}">
 {body_html}
             </div>
           </div>
