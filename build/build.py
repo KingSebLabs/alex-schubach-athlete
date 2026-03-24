@@ -351,6 +351,9 @@ def build_race_card_html(race: dict) -> str:
     # Narrative body
     body_parts = []
     if race.get("description"):
+        # html.escape runs first so literal '<', '>', '&' are neutralised before
+        # _fmt_narrative applies bold (**word**→<strong>) and \n→<br>.
+        # Asterisks are not affected by html.escape, so markdown bold still works.
         body_parts.append(
             f'              <div class="race-narrative">\n'
             f'                <div class="race-narrative-label">Race Description</div>\n'
@@ -403,7 +406,7 @@ def build_calendar_card_html(race: dict) -> str:
 
     desc = race.get("description", "")
     if desc:
-        desc_html = f'        <div class="cal-desc">{desc}</div>\n'
+        desc_html = f'        <div class="cal-desc">{html.escape(desc)}</div>\n'
         data_attrs = (
             f' data-desc="{html.escape(desc)}"'
             f' data-race="{html.escape(race["name"].upper())}"'
