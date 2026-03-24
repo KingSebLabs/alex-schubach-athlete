@@ -99,7 +99,7 @@ def _fmt_rich_cell(cell) -> str:
                     parts.append(safe)
             else:
                 # Bare str element inside CellRichText — no .font attribute
-                parts.append(str(block))
+                parts.append(html.escape(str(block)))
         return "".join(parts).replace('\n', '<br>')
     # Plain string fallback: use _fmt_narrative to keep **markdown** bold and \n→<br>
     return _fmt_narrative(str(v)) if v else ""
