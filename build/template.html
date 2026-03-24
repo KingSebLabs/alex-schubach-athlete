@@ -182,10 +182,10 @@ section { padding: 6rem 2.5rem; }
 /* ===== VALUES ===== */
 .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 3rem; }
 .value-card {
-  background: var(--grey-dark); padding: 2.5rem 2rem; position: relative; overflow: hidden;
-  transition: background 0.4s;
+  background: var(--bg-light); padding: 2.5rem 2rem 4rem; position: relative; overflow: hidden;
+  transition: background 0.4s, border-color 0.3s; border: 1px solid #e0ddd9;
 }
-.value-card:hover { background: #222; }
+.value-card:hover { background: #fff; border-color: #c8c5c1; }
 .value-card::before {
   content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
   background: var(--accent); transform: scaleX(0); transform-origin: left;
@@ -193,14 +193,16 @@ section { padding: 6rem 2.5rem; }
 }
 .value-card:hover::before { transform: scaleX(1); }
 .value-num {
-  font-family: var(--font-display); font-size: 3rem; color: rgba(255,255,255,0.06);
-  position: absolute; top: 0.5rem; right: 1rem; line-height: 1;
+  font-family: var(--font-display); font-size: 3rem; color: var(--accent); opacity: 0.25;
+  position: absolute; bottom: 0.5rem; right: 1rem; line-height: 1;
+  transition: opacity 0.3s;
 }
+.value-card:hover .value-num { opacity: 0.45; }
 .value-title {
   font-family: var(--font-display); font-size: 1.5rem; letter-spacing: 0.05em;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.75rem; color: var(--text-dark);
 }
-.value-desc { font-size: 0.85rem; line-height: 1.7; color: var(--grey-mid); }
+.value-desc { font-size: 0.85rem; line-height: 1.7; color: #555; }
 
 /* ===== MISSION ===== */
 .mission-content { max-width: 800px; }
