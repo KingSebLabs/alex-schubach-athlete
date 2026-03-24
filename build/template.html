@@ -295,11 +295,12 @@ section { padding: 6rem 2.5rem; }
 .race-body {
   max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
 }
-.race-item.open .race-body { max-height: 2000px; }
+.race-item.open .race-body { max-height: 3000px; }
 .race-body-inner {
   padding: 2.5rem 2rem 2.5rem 2rem;
   display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;
 }
+.race-body-inner.has-desc { grid-template-columns: 1fr 1fr 1fr; }
 .race-narrative { }
 .race-narrative-label {
   font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
@@ -331,6 +332,7 @@ section { padding: 6rem 2.5rem; }
   .race-h-expand::after { font-size: 1.2rem; }
   .race-table-header { display: none; }
   .race-body-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem 1.2rem 2rem; }
+  .race-body-inner.has-desc { grid-template-columns: 1fr; }
   .year-tab { padding: 0.7rem 1.5rem; font-size: 1.3rem; }
 }
 
@@ -435,6 +437,65 @@ section { padding: 6rem 2.5rem; }
   position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
   font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
   text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+
+/* Calendar modal */
+.cal-modal {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.cal-modal.open { opacity: 1; pointer-events: all; }
+.cal-modal-card {
+  background: #1c1c1b;
+  border: 1px solid rgba(232,73,15,0.3);
+  padding: 2.5rem;
+  max-width: 520px; width: 90vw;
+  position: relative;
+  transform: translateY(16px); transition: transform 0.3s;
+}
+.cal-modal.open .cal-modal-card { transform: translateY(0); }
+.cal-modal-close {
+  position: absolute; top: 1rem; right: 1.25rem;
+  background: none; border: none;
+  color: var(--grey-mid); font-size: 1.4rem;
+  cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.cal-modal-close:hover { color: var(--text-light); }
+.cal-modal-month {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
+}
+.cal-modal-race {
+  font-family: var(--font-display); font-size: 1.8rem;
+  letter-spacing: 0.04em; margin-bottom: 0.4rem;
+}
+.cal-modal-details {
+  font-size: 0.75rem; color: var(--grey-mid);
+  margin-bottom: 1.25rem; line-height: 1.6;
+}
+.cal-modal-label {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.cal-modal-label::before { content: ''; width: 12px; height: 2px; background: var(--accent); }
+.cal-modal-text {
+  font-size: 0.88rem; color: var(--grey-mid); line-height: 1.75; white-space: pre-wrap;
+}
+.cal-read-more {
+  display: block; background: none; border: none;
+  color: var(--accent); font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  cursor: pointer; padding: 0; margin-top: 0.75rem;
+  text-align: right; width: 100%; transition: opacity 0.2s;
+}
+.cal-read-more:hover { opacity: 0.75; }
+@media (max-width: 640px) {
+  .cal-modal-card { padding: 2rem 1.5rem; width: 95vw; }
+  .cal-modal-text { font-size: 0.92rem; }
+  .cal-modal-close { top: 0.75rem; right: 1rem; font-size: 1.6rem; }
 }
 
 @media (max-width: 768px) {
@@ -559,7 +620,6 @@ footer {
 .value-title     { font-size: clamp(1.1rem, 3vw, 1.5rem); }
 .value-num       { font-size: clamp(2rem, 6vw, 3rem); }
 .stat-number     { font-size: clamp(1.8rem, 5vw, 2.5rem); }
-.race-h-pos      { font-size: clamp(1rem, 3vw, 1.4rem); }
 .race-h-sub      { font-size: clamp(0.65rem, 2vw, 0.75rem); }
 
 /* Hamburger X animation (CSS-driven — inline JS styles removed in script) */
@@ -1033,6 +1093,16 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
   <button class="lightbox-next" aria-label="Next image">&#8250;</button>
   <div class="lightbox-counter"></div>
 </div>
+<div class="cal-modal" id="cal-modal" aria-hidden="true">
+  <div class="cal-modal-card">
+    <button class="cal-modal-close" aria-label="Close">×</button>
+    <div class="cal-modal-month"></div>
+    <div class="cal-modal-race"></div>
+    <div class="cal-modal-details"></div>
+    <div class="cal-modal-label">Race Description</div>
+    <div class="cal-modal-text"></div>
+  </div>
+</div>
 <script>
 (function() {
   const lightbox = document.getElementById('lightbox');
@@ -1069,6 +1139,47 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') openAt(current - 1);
     if (e.key === 'ArrowRight') openAt(current + 1);
+  });
+})();
+</script>
+<script>
+(function() {
+  const modal = document.getElementById('cal-modal');
+  if (!modal) return;
+
+  let lastTrigger = null;
+
+  function openCalModal(btn) {
+    lastTrigger = btn;
+    const card = btn.closest('.cal-card');
+    modal.querySelector('.cal-modal-month').textContent = card.dataset.date || '';
+    modal.querySelector('.cal-modal-race').textContent = card.dataset.race || '';
+    modal.querySelector('.cal-modal-details').textContent = card.dataset.details || '';
+    // textContent is safe (no innerHTML injection risk); white-space: pre-wrap in CSS
+    // renders newline characters as visible line breaks without needing <br> tags
+    modal.querySelector('.cal-modal-text').textContent = card.dataset.desc || '';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('.cal-modal-close').focus();
+  }
+
+  function closeCalModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+  }
+
+  // Must be on window — inline onclick="openCalModal(this)" needs global access.
+  // Do NOT defer this script or declare it as a module.
+  window.openCalModal = openCalModal;
+
+  modal.querySelector('.cal-modal-close').addEventListener('click', closeCalModal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeCalModal(); });
+  document.addEventListener('keydown', function(e) {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') closeCalModal();
   });
 })();
 </script>

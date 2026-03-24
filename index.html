@@ -317,11 +317,12 @@ section { padding: 6rem 2.5rem; }
 .race-body {
   max-height: 0; overflow: hidden; transition: max-height 0.5s ease;
 }
-.race-item.open .race-body { max-height: 2000px; }
+.race-item.open .race-body { max-height: 3000px; }
 .race-body-inner {
   padding: 2.5rem 2rem 2.5rem 2rem;
   display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem;
 }
+.race-body-inner.has-desc { grid-template-columns: 1fr 1fr 1fr; }
 .race-narrative { }
 .race-narrative-label {
   font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; text-transform: uppercase;
@@ -353,6 +354,7 @@ section { padding: 6rem 2.5rem; }
   .race-h-expand::after { font-size: 1.2rem; }
   .race-table-header { display: none; }
   .race-body-inner { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem 1.2rem 2rem; }
+  .race-body-inner.has-desc { grid-template-columns: 1fr; }
   .year-tab { padding: 0.7rem 1.5rem; font-size: 1.3rem; }
 }
 
@@ -457,6 +459,65 @@ section { padding: 6rem 2.5rem; }
   position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
   font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em;
   text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+
+/* Calendar modal */
+.cal-modal {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(0,0,0,0.92);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.cal-modal.open { opacity: 1; pointer-events: all; }
+.cal-modal-card {
+  background: #1c1c1b;
+  border: 1px solid rgba(232,73,15,0.3);
+  padding: 2.5rem;
+  max-width: 520px; width: 90vw;
+  position: relative;
+  transform: translateY(16px); transition: transform 0.3s;
+}
+.cal-modal.open .cal-modal-card { transform: translateY(0); }
+.cal-modal-close {
+  position: absolute; top: 1rem; right: 1.25rem;
+  background: none; border: none;
+  color: var(--grey-mid); font-size: 1.4rem;
+  cursor: pointer; line-height: 1; transition: color 0.2s;
+}
+.cal-modal-close:hover { color: var(--text-light); }
+.cal-modal-month {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
+}
+.cal-modal-race {
+  font-family: var(--font-display); font-size: 1.8rem;
+  letter-spacing: 0.04em; margin-bottom: 0.4rem;
+}
+.cal-modal-details {
+  font-size: 0.75rem; color: var(--grey-mid);
+  margin-bottom: 1.25rem; line-height: 1.6;
+}
+.cal-modal-label {
+  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.cal-modal-label::before { content: ''; width: 12px; height: 2px; background: var(--accent); }
+.cal-modal-text {
+  font-size: 0.88rem; color: var(--grey-mid); line-height: 1.75; white-space: pre-wrap;
+}
+.cal-read-more {
+  display: block; background: none; border: none;
+  color: var(--accent); font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  cursor: pointer; padding: 0; margin-top: 0.75rem;
+  text-align: right; width: 100%; transition: opacity 0.2s;
+}
+.cal-read-more:hover { opacity: 0.75; }
+@media (max-width: 640px) {
+  .cal-modal-card { padding: 2rem 1.5rem; width: 95vw; }
+  .cal-modal-text { font-size: 0.92rem; }
+  .cal-modal-close { top: 0.75rem; right: 1rem; font-size: 1.6rem; }
 }
 
 @media (max-width: 768px) {
@@ -581,7 +642,6 @@ footer {
 .value-title     { font-size: clamp(1.1rem, 3vw, 1.5rem); }
 .value-num       { font-size: clamp(2rem, 6vw, 3rem); }
 .stat-number     { font-size: clamp(1.8rem, 5vw, 2.5rem); }
-.race-h-pos      { font-size: clamp(1rem, 3vw, 1.4rem); }
 .race-h-sub      { font-size: clamp(0.65rem, 2vw, 0.75rem); }
 
 /* Hamburger X animation (CSS-driven — inline JS styles removed in script) */
@@ -895,14 +955,18 @@ Age Group: 17th / 48</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>International Hyrox event featuring a standardised format of 8km running and 8 x functional fitness stations, competed in the Men’s Open division.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
                 <p>First ever Hyrox race. The goal was to get a benchmark. I wanted to understand where my fitness sits in this kind of racing / competition format, and find out where the strengths are and where the work needs to go. A little bit of crosstraining was done in preparation, but this was always about learning more than racing.<br><br>Target time: 1:05 to 1:15. Run the 1km segments at 4min/km and see what the functional stations throw at me.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>1:13:25. A solid first crack at Hyrox that told me exactly what I needed to know. The running is strong, the functional stations will get stronger with time and practice, and there are some very clear, fixable things to address.<br><br>I ran 500m extra, twice, and did too much on the sled pull because I wasn't paying attention and didn't know the exact station distances and lap counts. That's a preparation gap, not a fitness one. Know your stations before you race them. Wall balls need dedicated work. A gel or two mid-race will help keep energy levels up.<br><br>The 4min/km runs were easy to hold, which means the ceiling on this format is much higher than this result suggests. First race done. The trajectory from here is clear.</p>
+                <p>1:13:25. A solid first crack at Hyrox that told me exactly what I needed to know. The running is strong, the functional stations will get stronger with time and practice, and there are some very clear, fixable things to address.<br><br>I ran 500m extra, twice, and did too much on the sled pull because I wasn&#x27;t paying attention and didn&#x27;t know the exact station distances and lap counts. That&#x27;s a preparation gap, not a fitness one. Know your stations before you race them. Wall balls need dedicated work. A gel or two mid-race will help keep energy levels up.<br><br>The 4min/km runs were easy to hold, which means the ceiling on this format is much higher than this result suggests. First race done. The trajectory from here is clear.</p>
               </div>
             </div>
           </div>
@@ -917,14 +981,18 @@ Age Group: 17th / 48</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>A 12km mountain race ascending Mt. Fuji from Fuji Hokuroku Park to the 5th Station, combining endurance with a sustained elevation gain of 1,300m.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
-                <p>Racing up Mt Fuji. Four words that capture everything about this event. The strategy was straightforward: run fast and easy the first 2km while it's flat, then never give up during the climb - no walking, no stopping, no negotiating with my mind. Full effort from gun to 5th station.<br><br>Fuelling locked in: 1000mg sodium and electrolytes the night before, a good breakfast and then a gel every 20 minutes during the race. LFG.</p>
+                <p>Racing up Mt Fuji. Four words that capture everything about this event. The strategy was straightforward: run fast and easy the first 2km while it&#x27;s flat, then never give up during the climb - no walking, no stopping, no negotiating with my mind. Full effort from gun to 5th station.<br><br>Fuelling locked in: 1000mg sodium and electrolytes the night before, a good breakfast and then a gel every 20 minutes during the race. LFG.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>36th out of 1,760 runners on Japan's most iconic mountain. The fuelling protocol worked perfectly. Capitalised on the flat road section with easy, fast running and refused to walk during the climb unless there was a physical blockage from other runners.<br><br>Two clear lessons: start at the front. I started near the back and lost significant time navigating around slower runners on a single-file trail where there is no space to pass. That won't happen again. And trail carbon-plated racing shoes are non-negotiable for this kind of event. Road shoes on mountain terrain is a mistake I only needed to make once.<br><br>This race showed me what happens when you commit fully to not giving up. The result spoke for itself.</p>
+                <p>36th out of 1,760 runners on Japan&#x27;s most iconic mountain. The fuelling protocol worked perfectly. Capitalised on the flat road section with easy, fast running and refused to walk during the climb unless there was a physical blockage from other runners.<br><br>Two clear lessons: start at the front. I started near the back and lost significant time navigating around slower runners on a single-file trail where there is no space to pass. That won&#x27;t happen again. And trail carbon-plated racing shoes are non-negotiable for this kind of event. Road shoes on mountain terrain is a mistake I only needed to make once.<br><br>This race showed me what happens when you commit fully to not giving up. The result spoke for itself.</p>
               </div>
             </div>
           </div>
@@ -940,14 +1008,18 @@ Age Group: 1st / 41</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>“Beast” (21km) obstacle course race combining trail running with strength and technical challenges. The course features 10km of trail running and then 30 obstacles, testing skill, fitness, and all-around athletic performance.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
                 <p>In Spartan racing, the trail sections are where you can build your lead, and obstacles where you can lose it all. <br><br>The strategy was built around my strengths. Run the 10km mountain trail hard, move fast between obstacles, and take five seconds to reset before each station -  move through each obstacle once, and once only.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>The strategy worked exactly as planned. Attacked the 10km trail section hard, maintained 4:00 to 4:30 pace on the flats between obstacles, and the Salomon belt worked perfectly for carrying nutrition on the move. <br><br>The Airbnb setup and consistent breakfasts, made a real difference in controlling pre-race meals. That's the accommodation model going forward for international races.<br><br>The key learning from this trip was about logistics. Seven days away is too long for a single international race. It disrupts eating, training, and sleep. Four to five days is the sweet spot: two travel days, one prep day, one race day, one optional recovery day. <br><br>And one big race /international race a month is the ceiling. More than that and the consistency that drives long-term progress starts to erode.</p>
+                <p>The strategy worked exactly as planned. Attacked the 10km trail section hard, maintained 4:00 to 4:30 pace on the flats between obstacles, and the Salomon belt worked perfectly for carrying nutrition on the move. <br><br>The Airbnb setup and consistent breakfasts, made a real difference in controlling pre-race meals. That&#x27;s the accommodation model going forward for international races.<br><br>The key learning from this trip was about logistics. Seven days away is too long for a single international race. It disrupts eating, training, and sleep. Four to five days is the sweet spot: two travel days, one prep day, one race day, one optional recovery day. <br><br>And one big race /international race a month is the ceiling. More than that and the consistency that drives long-term progress starts to erode.</p>
               </div>
             </div>
           </div>
@@ -961,7 +1033,11 @@ Age Group: 1st / 41</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>An immersive endurance training experience designed to simulate ultra-distance racing in the Japanese Alps. Focused on running resilience and technical trail skills.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
                 <p>Complete the mission (training camp), take these lessons to race strong and hard during the upcoming trail and ultra trail events.</p>
@@ -984,10 +1060,14 @@ Age Group: 8th / 118</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>Competed in the 35km middle-distance race in Nikko, covering a course with approximately 2,300m of elevation gain. The route combines long climbs and technical trail sections through a UNESCO World Heritage region.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
-                <p>First real trail race ever. Run fast and easy on the flats (while it's flat). Short and light steps on the uphills. Fuel early and often. Test out all my kit and equipment (first time with a full madatory equipment list). Target time sub 4:15.</p>
+                <p>First real trail race ever. Run fast and easy on the flats (while it&#x27;s flat). Short and light steps on the uphills. Fuel early and often. Test out all my kit and equipment (first time with a full madatory equipment list). Target time sub 4:15.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
@@ -1006,14 +1086,18 @@ Age Group: 8th / 118</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>A traditional Japanese relay race held in the Okutama region, running along winding mountain roads. A well-known and highly competitive event, it brings together large numbers of university teams, reflecting the depth of Japan’s ekiden culture.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
                 <p>Fast start and make the most of the early (only)downhill. First 3km fast and controlled, then hold pace as the elevation builds - 3km, 2km, 1km, 1km, 500m, 500m. Stay light and incrrease cadence on the steady inclines.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>30:34 for 8.4km. 3:38/km pace. Happy with that, especially on a leg with sustained elevation and no real flat to reset on. The race plan held up: fast out of the downhill, controlled through the first 3km, and the single-kilometre breakdown worked for staying mentally in the race through the grinding middle section.<br><br>Preparation was solid across the board. No ankle issues. The continued build is the goal, and that's exactly what this race served.</p>
+                <p>30:34 for 8.4km. 3:38/km pace. Happy with that, especially on a leg with sustained elevation and no real flat to reset on. The race plan held up: fast out of the downhill, controlled through the first 3km, and the single-kilometre breakdown worked for staying mentally in the race through the grinding middle section.<br><br>Preparation was solid across the board. No ankle issues. The continued build is the goal, and that&#x27;s exactly what this race served.</p>
               </div>
             </div>
           </div>
@@ -1029,14 +1113,18 @@ Age Group: 2nd / 62</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>A long-running regional road race in Gunma Prefecture, now in its 45th edition. Held in a region known for its onsen culture and konjac production, it attracts a solid field of domestic competitors.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
                 <p>Easy through the first 5km to warm up the ankle. Hold pace over the next 5km while continuing to test it. From 10–15km, lift slightly and decide whether to really race or keep it controlled. At 15km, let it rip or hold steady to the finish. Keep the legs moving light and fast, no pressure. This is about testing the ankle and checking fitness. Target time: 90 minutes.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>1:21:07. 6th overall out of 250, 2nd in the 30s age group out of 62. The ankle held. The plan was executed clean from start to finish. The phased approach worked again, and course reconnaissance the night before, even just reviewing a map, made a real difference in reading the race.</p>
+                <p>1:21:07. 6th overall out of 250, 2nd in the 30s age group out of 62. The ankle held. The plan was executed clean from start to finish. The phased approach worked again, and course reconnaissance the night before, even just reviewing a map, made a real difference in reading the race.<br></p>
               </div>
             </div>
           </div>
@@ -1052,14 +1140,18 @@ Age Group: 10th / 33</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>An established 10km race with a long history in the Kanto region. Known for its highly competitive field, it regularly features top high school and university teams.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
-                <p>Sub-37 would be good, sub-36 would be excellent. Easy speed through the first 3km, then just lock into pace for the next 3km. Lift the effort over the next 2km, then take it 1km at a time for the last 2km. Build cadence and pump the arms to maintain the pace. Stay steady on the 500m uphill, don't jump the gun pushing too hard too early. Then, let it rip - all out war the final 500m.</p>
+                <p>Sub-37 would be good, sub-36 would be excellent. Easy speed through the first 3km, then just lock into pace for the next 3km. Lift the effort over the next 2km, then take it 1km at a time for the last 2km. Build cadence and pump the arms to maintain the pace. Stay steady on the 500m uphill, don&#x27;t jump the gun pushing too hard too early. Then, let it rip - all out war the final 500m.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>35:56. Under the ambitious target. The race plan executed almost perfectly. The phased approach works, and I've learned to trust the structure. The times will come with consistent training, recovery, and sticking to a plan. That's the formula and this race proved it again.</p>
+                <p>35:56. Under the ambitious target. The race plan executed almost perfectly. The phased approach works, and I&#x27;ve learned to trust the structure. The times will come with consistent training, recovery, and sticking to a plan. That&#x27;s the formula and this race proved it again.</p>
               </div>
             </div>
           </div>
@@ -1085,14 +1177,18 @@ Age Group: 10th / 33</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>The perfect way to kick off a new year — a flat, fast half marathon through Tokyo with a big, buzzing field and the kind of January energy that makes you feel like anything is possible. Part festive, part serious. In 2026 this doubled as a Kyoto marathon prep race, using it to dial in marathon pace and see where the fitness was sitting after the holiday period.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
-                <p>This wasn't a PB attempt. It was a dry run for Kyoto. The plan was to hold 4:14/km and come across the line in 1:29:19, simulating the effort level of a sub-3hr marathon without blowing up three weeks before the main event. Maybe lift in the final kilometres if it felt right.<br><br>Easy morning routine, standard fuelling, no pressure.</p>
+                <p><strong>This wasn&#x27;t a PB attempt</strong>. It was a dry run for Kyoto. The plan was to hold 4:14/km and come across the line in 1:29:19, simulating the effort level of a sub-3hr marathon without blowing up three weeks before the main event. Maybe lift in the final kilometres if it felt right.<br><br>Easy morning routine, standard fuelling, no pressure.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>The race took over in the best possible way. Went out in 4:08. The crowd, the atmosphere, a year sober, a Sunday morning in Tokyo doing exactly what I want to be doing. Second kilometre in 4:00. Third in 3:45 to 3:50. I felt strong and made the call to hold that pace all the way to the finish. Fast course, perfect weather, 1:21:11.<br><br>The Kyoto sub-3 goal was already in reach before this race. After this one, the soft goal shifted to 2:50. That's where the head is now.</p>
+                <p>The race took over in the best possible way. Went out in 4:08. The crowd, the atmosphere, a year sober, a Sunday morning in Tokyo doing exactly what I want to be doing. Second kilometre in 4:00. Third in 3:45 to 3:50. I felt strong and made the call to hold that pace all the way to the finish. Fast course, perfect weather, 1:21:11.<br><br>The Kyoto sub-3 goal was already in reach before this race. After this one, the soft goal shifted to 2:50. That&#x27;s where the head is now.</p>
               </div>
             </div>
           </div>
@@ -1106,7 +1202,11 @@ Age Group: 10th / 33</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>A fun, fast city ekiden through Yoyogi Park. Short legs, big energy, serious crowds, and the kind of race where you hand a sash to a teammate and immediately wonder if you could have gone harder. Racing with the Namban crew makes it something special.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
                 <p>Sub-9 minutes for the 2.9km leg is the goal. Short race, low pressure, just run fast and enjoy it. The plan was to go out hard and hold on. Simple.</p>
@@ -1129,14 +1229,18 @@ Age Group: 16th / 410</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>The Osaka edition of the global Hyrox series, competed in the Men&#x27;s Open division. Eight 1km runs, eight functional fitness stations, one continuous grind. After the Yokohama benchmark, this was the first real crack at going fast and clean through a full Hyrox race.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
                 <p>Race hard without any mistakes, see what time we get!<br>Easy 4min/km on the runs. Running through the stations.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>1:05:02, copped  a 6-minute penalty for not completing the full distance on the sled push station. Honest headline: I didn't know the exact distance required. That's a preparation failure, not a fitness failure.<br><br>Race pacing strategy wroed really well. The 4min/km runs were controlled and comfortable. What needs fixing is precision. I need to know the exact distances and weights for every single station before I stand behind the start line. Sled pull technique needs work. Burpee efficiency needs work. Lunges, wall balls, and compromised running under fatigue all need building.</p>
+                <p>1:05:02, copped  a 6-minute penalty for not completing the full distance on the sled push station. Honest headline: I didn&#x27;t know the exact distance required. That&#x27;s a preparation failure, not a fitness failure.<br><br>Race pacing strategy wroed really well. The 4min/km runs were controlled and comfortable. What needs fixing is precision. I need to know the exact distances and weights for every single station before I stand behind the start line. Sled pull technique needs work. Burpee efficiency needs work. Lunges, wall balls, and compromised running under fatigue all need building.</p>
               </div>
             </div>
           </div>
@@ -1152,14 +1256,18 @@ Age: 73rd / 1182</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>One of Japan&#x27;s most iconic marathon courses, winding through the streets, temples, and riverside paths of Kyoto. A sold-out race with a deep field and incredible atmosphere. My first ever official marathon distance, and the A-race of the first half of 2026.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
                 <p>First ever official marathon.<br>3 hours would be excellent.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>2:56:19. Under three hours on debut — but this race was messier than the time suggests.<br>Started in block K, dead last in a nearly 13,000-person field. The first 13km was less racing and more navigating, constantly weaving and overtaking, burning energy on movement that had nothing to do with running fast. Avoidable and entirely my fault for not having a qualifying time yet. Around 13km the crowd thinned and I finally found my groove, settled into easy 4:00/km and held it comfortably for the next 10 to 15km. That stretch felt good. Then the last 7km happened. The legs just went. Not gradually — they went. Cramped, heavy, nothing left. I jogged to the line and held it together long enough to cross.<br>The honest reason: not enough weekly volume, not enough long runs, not enough base to back up 35km at that pace. The fitness was there. The mileage wasn't. Also lost 1:01 to a mid-race toilet stop, forgot the high-sodium gel in the back half and cramped for it, and chafed badly enough that Vaseline is now permanently on the pre-race checklist. Good lessons, all fixable.<br>Volume goes to 70km weeks and stays there. Sub-2:50 is next. After Kyoto, it already feels close.</p>
+                <p>2:56:19. Under three hours on debut — but this race was messier than the time suggests.<br>Started in block K, dead last in a nearly 13,000-person field. The first 13km was less racing and more navigating, constantly weaving and overtaking, burning energy on movement that had nothing to do with running fast. Avoidable and entirely my fault for not having a qualifying time yet. Around 13km the crowd thinned and I finally found my groove, settled into easy 4:00/km and held it comfortably for the next 10 to 15km. That stretch felt good. Then the last 7km happened. The legs just went. Not gradually — they went. Cramped, heavy, nothing left. I jogged to the line and held it together long enough to cross.<br>The honest reason: not enough weekly volume, not enough long runs, not enough base to back up 35km at that pace. The fitness was there. The mileage wasn&#x27;t. Also lost 1:01 to a mid-race toilet stop, forgot the high-sodium gel in the back half and cramped for it, and chafed badly enough that Vaseline is now permanently on the pre-race checklist. Good lessons, all fixable.<br>Volume goes to 70km weeks and stays there. Sub-2:50 is next. After Kyoto, it already feels close.</p>
               </div>
             </div>
           </div>
@@ -1174,14 +1282,18 @@ Age Group 6th / 213</div>
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner has-desc">
+              <div class="race-narrative">
+                <div class="race-narrative-label">Race Description</div>
+                <p>My first UTMB series race, held in the stunning Kenting National Park at the southern tip of Taiwan. A 27km course with only 600m of elevation gain, which sounds gentle until you&#x27;re navigating dry riverbeds, rocky single-track, and back-to-back peak sections in tropical heat. Part road, part jungle, fully worth it.</p>
+              </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
-                <p>First ever UTMB series race and I was genuinely excited. The previous year's winner went 2:05, so two hours felt like a real, reachable target with smart pacing. <br><br>With only 600m of elevation the race was going to be won and lost on reading pace and effort, not just surviving the climb.<br><br>Plan: easy 4 to 4:15 on the flat opening 5km, attack the peaks, fly the descents, power hike when the HR spikes on the second set of climbs, then threshold pace  all the way home from 22km.</p>
+                <p>First ever UTMB series race and I was genuinely excited. The previous year&#x27;s winner went 2:05, so two hours felt like a real, reachable target with smart pacing. <br><br>With only 600m of elevation the race was going to be won and lost on reading pace and effort, not just surviving the climb.<br><br>Plan: easy 4 to 4:15 on the flat opening 5km, attack the peaks, fly the descents, power hike when the HR spikes on the second set of climbs, then threshold pace  all the way home from 22km.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
-                <p>2:19:07. 10th overall out of 1,079 runners. 6th in men's age group. Not the two hours I was chasing, but a result I'm proud of and one that shows exactly where I need to go next.<br><br>The race preparation was as close to perfect as I've done. Arrival timing, Saturday reconnaissance, morning routine, ankle taping, all of it worked. The Salomon vest was dialled, nutrition brought from Japan performed well, and the race strategy on the trails was executed cleanly.<br><br>The gaps are clear though. Still packing gear at 10:30pm the night before. Lights out by 9pm is non-negotiable from here. Had to buy mandatory gear in Taiwan because I hadn't checked the list before leaving Japan. Fixable. Carb requirements need to be calculated more precisely. The biggest limiter was running volume. The technical rocky riverbeds required more experience and confidence than I had. More trail time. More mountain conditioning. More single-leg strength work. The result told me I belong in these races. The prep will now match that.</p>
+                <p>2:19:07. 10th overall out of 1,079 runners. 6th in men&#x27;s age group. Not the two hours I was chasing, but a result I&#x27;m proud of and one that shows exactly where I need to go next.<br><br>The race preparation was as close to perfect as I&#x27;ve done. Arrival timing, Saturday reconnaissance, morning routine, ankle taping, all of it worked. The Salomon vest was dialled, nutrition brought from Japan performed well, and the race strategy on the trails was executed cleanly.<br><br>The gaps are clear though. Still packing gear at 10:30pm the night before. Lights out by 9pm is non-negotiable from here. Had to buy mandatory gear in Taiwan because I hadn&#x27;t checked the list before leaving Japan. Fixable. Carb requirements need to be calculated more precisely. The biggest limiter was running volume. The technical rocky riverbeds required more experience and confidence than I had. More trail time. More mountain conditioning. More single-leg strength work. The result told me I belong in these races. The prep will now match that.</p>
               </div>
             </div>
           </div>
@@ -1213,98 +1325,116 @@ Age Group 6th / 213</div>
       <div class="section-title">2026 EVENT CALENDAR</div>
     </div>
     <div class="calendar-grid">
-            <div class="cal-card reveal">
+            <div class="cal-card reveal" data-desc="One of the most famous and respected trail races in Japan, and for good reason. The Hasetsune Cup has been running for nearly three decades and draws some of the best trail runners in the country. 30km through the mountains of Akiruno with over 2,000m of climbing, minimal aid, and zero room for a bad day. No crew, no shortcuts, just you and the mountain. First time on this start line, and the reputation of this race has been well earned. A serious bucket list tick." data-race="18TH HATSUNE 30K CUP" data-date="1 Mar 2029" data-details="Trail · 30 km · Akiruno City, Japan">
         <div class="cal-month">1 Mar 2029 </div>
         <div class="cal-race">18TH HATSUNE 30K CUP</div>
         <div class="cal-details">Trail · 30 km · Akiruno City, Japan</div>
-        <div class="cal-desc">One of the most famous and respected trail races in Japan, and for good reason. The Hasetsune Cup has been running for nearly three decades </div>
+        <div class="cal-desc">One of the most famous and respected trail races in Japan, and for good reason. The Hasetsune Cup has been running for nearly three decades and draws some of the best trail runners in the country. 30km through the mountains of Akiruno with over 2,000m of climbing, minimal aid, and zero room for a bad day. No crew, no shortcuts, just you and the mountain. First time on this start line, and the reputation of this race has been well earned. A serious bucket list tick.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="First crack at the 50km distance. The Hiroshima Trail race takes you through the forested mountains surrounding Hiroshima, with a solid mix of runnable ridge lines, technical descents, and the kind of sustained climbing that separates the people who trained for it from the people who thought they did. A big step up in distance from Nikko." data-race="HIROSHIMA TRAIL - 50K" data-date="1 Apr 2011" data-details="Trail / Ultra · 50 km · Japan">
         <div class="cal-month">1 Apr 2011 </div>
         <div class="cal-race">HIROSHIMA TRAIL - 50K</div>
         <div class="cal-details">Trail / Ultra · 50 km · Japan</div>
-        <div class="cal-desc">First crack at the 50km distance. The Hiroshima Trail race takes you through the forested mountains surrounding Hiroshima, with a solid mix </div>
+        <div class="cal-desc">First crack at the 50km distance. The Hiroshima Trail race takes you through the forested mountains surrounding Hiroshima, with a solid mix of runnable ridge lines, technical descents, and the kind of sustained climbing that separates the people who trained for it from the people who thought they did. A big step up in distance from Nikko.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="The Hong Kong leg of the global Hyrox circuit, and the first international Hyrox on the 2026 calendar. Racing with Seb, which adds an extra layer of motivation to not get beaten by your training partner. After the Osaka penalty lesson, this one is about running a clean, precise race and seeing what a proper preparation produces." data-race="HYROX HONG KONG" data-date="1 May 2009" data-details="Hyrox
+Men&#x27;s Single - Open · Hong Kong">
         <div class="cal-month">1 May 2009 </div>
         <div class="cal-race">HYROX HONG KONG</div>
         <div class="cal-details">Hyrox
 Men's Single - Open · Hong Kong</div>
-        <div class="cal-desc">The Hong Kong leg of the global Hyrox circuit, and the first international Hyrox on the 2026 calendar. Racing with Seb, which adds an extra </div>
+        <div class="cal-desc">The Hong Kong leg of the global Hyrox circuit, and the first international Hyrox on the 2026 calendar. Racing with Seb, which adds an extra layer of motivation to not get beaten by your training partner. After the Osaka penalty lesson, this one is about running a clean, precise race and seeing what a proper preparation produces.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="The Kaga Spa 20K, part of the UTMB World Series, set in the hot spring resort town of Yamanaka in Ishikawa Prefecture. Running with Seb on this one. A shorter, sharper UTMB race in a beautiful setting, where the goal is to go faster and smarter than Kenting. The experience is already there. Now it&#x27;s about applying it." data-race="UTMB YAMANAKA, KAGA SPA 20K" data-date="1 Jun 2020" data-details="Trail · 20 km · Yamanaka, Japan">
         <div class="cal-month">1 Jun 2020 </div>
         <div class="cal-race">UTMB YAMANAKA, KAGA SPA 20K</div>
         <div class="cal-details">Trail · 20 km · Yamanaka, Japan</div>
-        <div class="cal-desc">The Kaga Spa 20K, part of the UTMB World Series, set in the hot spring resort town of Yamanaka in Ishikawa Prefecture. Running with Seb on t</div>
+        <div class="cal-desc">The Kaga Spa 20K, part of the UTMB World Series, set in the hot spring resort town of Yamanaka in Ishikawa Prefecture. Running with Seb on this one. A shorter, sharper UTMB race in a beautiful setting, where the goal is to go faster and smarter than Kenting. The experience is already there. Now it&#x27;s about applying it.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="The big one. 80km through the mountains of Uonuma in Niigata, an ITRA-rated ultra trail race set in the same region as the Deep Japan training camp that taught me so much back in 2025. This is the race that camp was building toward. A full day in the mountains, navigating everything the Japanese Alps can throw at you across two days of racing." data-race="DEEP JAPAN ULTRA - UONUMA 80KM" data-date="June 26 - 27" data-details="Trail / Ultra · 80 km · Niigata, Japan">
         <div class="cal-month">June 26 - 27 </div>
         <div class="cal-race">DEEP JAPAN ULTRA - UONUMA 80KM</div>
         <div class="cal-details">Trail / Ultra · 80 km · Niigata, Japan</div>
-        <div class="cal-desc">The big one. 80km through the mountains of Uonuma in Niigata, an ITRA-rated ultra trail race set in the same region as the Deep Japan traini</div>
+        <div class="cal-desc">The big one. 80km through the mountains of Uonuma in Niigata, an ITRA-rated ultra trail race set in the same region as the Deep Japan training camp that taught me so much back in 2025. This is the race that camp was building toward. A full day in the mountains, navigating everything the Japanese Alps can throw at you across two days of racing.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="An open water swim race off Zaimokuza Beach in Kamakura. Something a bit different in the calendar, a 1.6km ocean swim that&#x27;s as much about staying calm in a washing machine of arms and salt water as it is about being fast. Good cross-training, good fun, and a legitimate reason to spend a morning at the beach in summer." data-race="ROUGH WATER SWIM - 1.6KM" data-date="1 Jul 2004" data-details="Open Water Swim · Kamakura, Japan">
         <div class="cal-month">1 Jul 2004 </div>
         <div class="cal-race">ROUGH WATER SWIM - 1.6KM</div>
         <div class="cal-details">Open Water Swim · Kamakura, Japan</div>
-        <div class="cal-desc">An open water swim race off Zaimokuza Beach in Kamakura. Something a bit different in the calendar, a 1.6km ocean swim that's as much about </div>
+        <div class="cal-desc">An open water swim race off Zaimokuza Beach in Kamakura. Something a bit different in the calendar, a 1.6km ocean swim that&#x27;s as much about staying calm in a washing machine of arms and salt water as it is about being fast. Good cross-training, good fun, and a legitimate reason to spend a morning at the beach in summer.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="The full Fuji Mountain Race, from the base all the way to the 3,776m summit. 21km and roughly 3,000m of elevation gain, straight up Japan&#x27;s highest and most iconic mountain. Entry opens March 28. This is the step up from the 5th Station race: same mountain, twice the distance, twice the elevation, and a completely different beast above the treeline." data-race="THE 79TH FUJI MOUNTAIN RACE" data-date="1 Jul 2024" data-details="Trail · Yamanashi, Japan">
         <div class="cal-month">1 Jul 2024 </div>
         <div class="cal-race">THE 79TH FUJI MOUNTAIN RACE</div>
         <div class="cal-details">Trail · Yamanashi, Japan</div>
-        <div class="cal-desc">The full Fuji Mountain Race, from the base all the way to the 3,776m summit. 21km and roughly 3,000m of elevation gain, straight up Japan's </div>
+        <div class="cal-desc">The full Fuji Mountain Race, from the base all the way to the 3,776m summit. 21km and roughly 3,000m of elevation gain, straight up Japan&#x27;s highest and most iconic mountain. Entry opens March 28. This is the step up from the 5th Station race: same mountain, twice the distance, twice the elevation, and a completely different beast above the treeline.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="A Special Forces Selection-inspired training camp in Perth, run by The Mill. Three days of physical and mental stress testing, designed to push you past the point where your body wants to stop and find out what&#x27;s actually left. This isn&#x27;t a race. It&#x27;s harder than a race. Going to Australia for a weekend of voluntary suffering, and absolutely cannot wait." data-race="THE MILL - CADRE CAMP" data-date="August 21 - 23" data-details="Camp · Perth, Australia">
         <div class="cal-month">August 21 - 23 </div>
         <div class="cal-race">THE MILL - CADRE CAMP</div>
         <div class="cal-details">Camp · Perth, Australia</div>
-        <div class="cal-desc">A Special Forces Selection-inspired training camp in Perth, run by The Mill. Three days of physical and mental stress testing, designed to p</div>
+        <div class="cal-desc">A Special Forces Selection-inspired training camp in Perth, run by The Mill. Three days of physical and mental stress testing, designed to push you past the point where your body wants to stop and find out what&#x27;s actually left. This isn&#x27;t a race. It&#x27;s harder than a race. Going to Australia for a weekend of voluntary suffering, and absolutely cannot wait.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="Back to where it all started. The 12km race from Fuji Hokuroku Park up to the 5th Station. Two years ago this was a major goal race. Now it&#x27;s part of the annual calendar, a chance to measure progress against the same course, same mountain, and see how much has changed. The lessons from 2025 are locked in: start at the front, wear trail carbon plates, and never walk unless blocked." data-race="3RD MT. FUJI CLIMB RUN" data-date="September TBC" data-details="Trail · Yamanashi, Japan">
         <div class="cal-month">September TBC </div>
         <div class="cal-race">3RD MT. FUJI CLIMB RUN</div>
         <div class="cal-details">Trail · Yamanashi, Japan</div>
-        <div class="cal-desc">Back to where it all started. The 12km race from Fuji Hokuroku Park up to the 5th Station. Two years ago this was a major goal race. Now it'</div>
+        <div class="cal-desc">Back to where it all started. The 12km race from Fuji Hokuroku Park up to the 5th Station. Two years ago this was a major goal race. Now it&#x27;s part of the annual calendar, a chance to measure progress against the same course, same mountain, and see how much has changed. The lessons from 2025 are locked in: start at the front, wear trail carbon plates, and never walk unless blocked.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="Part of the Nippon Trail Running Grand Prix Series, held in the iconic Hakuba Valley in the Northern Japanese Alps. A 29km course at altitude with serious climbing, stunning scenery, and a field that reflects just how strong Japan&#x27;s trail running scene has become. One of the most visually spectacular race venues in Japan." data-race="HAKUBA INTERNATIONAL CLASSIC 2026 - 29KM" data-date="1 Sep 2013" data-details="Trail · Japan">
         <div class="cal-month">1 Sep 2013 </div>
         <div class="cal-race">HAKUBA INTERNATIONAL CLASSIC 2026 - 29KM</div>
         <div class="cal-details">Trail · Japan</div>
-        <div class="cal-desc">Part of the Nippon Trail Running Grand Prix Series, held in the iconic Hakuba Valley in the Northern Japanese Alps. A 29km course at altitud</div>
+        <div class="cal-desc">Part of the Nippon Trail Running Grand Prix Series, held in the iconic Hakuba Valley in the Northern Japanese Alps. A 29km course at altitude with serious climbing, stunning scenery, and a field that reflects just how strong Japan&#x27;s trail running scene has become. One of the most visually spectacular race venues in Japan.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="A Spartan Beast in Niigata, the same format that produced the 1st overall in Taipei. 21km of trail running and obstacles through the mountains of Niigata Prefecture. By this point in the year the trail legs will be well and truly built, and the goal will be simple: race aggressively, execute on the obstacles, and go after the overall result." data-race="SPARTAN NIIGATA" data-date="September TBC" data-details="Spartan
+Beast - 21km · Japan">
         <div class="cal-month">September TBC </div>
         <div class="cal-race">SPARTAN NIIGATA</div>
         <div class="cal-details">Spartan
 Beast - 21km · Japan</div>
-        <div class="cal-desc">A Spartan Beast in Niigata, the same format that produced the 1st overall in Taipei. 21km of trail running and obstacles through the mountai</div>
+        <div class="cal-desc">A Spartan Beast in Niigata, the same format that produced the 1st overall in Taipei. 21km of trail running and obstacles through the mountains of Niigata Prefecture. By this point in the year the trail legs will be well and truly built, and the goal will be simple: race aggressively, execute on the obstacles, and go after the overall result.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="The Spartan Beast in Porac, Philippines. An international race in a hot, humid, physically demanding environment with a course that&#x27;s notorious for its volcanic terrain and creative obstacle placements. After Taipei 2025, international Spartan Beasts are now a fixture in the calendar. The aim is always the same: get to the front and stay there." data-race="SPARTAN PORAC" data-date="1 Oct 2024" data-details="Spartan
+Beast - 21km · Philippines">
         <div class="cal-month">1 Oct 2024 </div>
         <div class="cal-race">SPARTAN PORAC</div>
         <div class="cal-details">Spartan
 Beast - 21km · Philippines</div>
-        <div class="cal-desc">The Spartan Beast in Porac, Philippines. An international race in a hot, humid, physically demanding environment with a course that's notori</div>
+        <div class="cal-desc">The Spartan Beast in Porac, Philippines. An international race in a hot, humid, physically demanding environment with a course that&#x27;s notorious for its volcanic terrain and creative obstacle placements. After Taipei 2025, international Spartan Beasts are now a fixture in the calendar. The aim is always the same: get to the front and stay there.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="A return to Nikko, the race that started everything in trail running. 35km, 2,300m of elevation, through the UNESCO World Heritage mountain landscape. In 2025 it was a first-time learning experience that involved two ankle rolls and a hard education in what trail racing actually demands. In 2026, it&#x27;s a race, not a lesson. The goal is a significant improvement on 18th." data-race="NIKKO MOUNTAIN RACE - 35KM" data-date="November TBC" data-details="Trail · 35 km · Tochigi, Japan">
         <div class="cal-month">November TBC </div>
         <div class="cal-race">NIKKO MOUNTAIN RACE - 35KM</div>
         <div class="cal-details">Trail · 35 km · Tochigi, Japan</div>
-        <div class="cal-desc">A return to Nikko, the race that started everything in trail running. 35km, 2,300m of elevation, through the UNESCO World Heritage mountain </div>
+        <div class="cal-desc">A return to Nikko, the race that started everything in trail running. 35km, 2,300m of elevation, through the UNESCO World Heritage mountain landscape. In 2025 it was a first-time learning experience that involved two ankle rolls and a hard education in what trail racing actually demands. In 2026, it&#x27;s a race, not a lesson. The goal is a significant improvement on 18th.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="The Chiang Mai leg of the UTMB World Series, a 50km trail race through the mountains of northern Thailand. Third UTMB race of the year, and the longest yet. By November the mileage and mountain experience accumulated across the year should make this feel like the natural next step. Chiang Mai is one of the great trail running destinations in Asia and a race I&#x27;ve been looking forward to since the calendar was set." data-race="UTMB CHIANG MAI 50K" data-date="December TBC" data-details="Trail / Ultra · 50 km · Thailand">
         <div class="cal-month">December TBC </div>
         <div class="cal-race">UTMB CHIANG MAI 50K</div>
         <div class="cal-details">Trail / Ultra · 50 km · Thailand</div>
-        <div class="cal-desc">The Chiang Mai leg of the UTMB World Series, a 50km trail race through the mountains of northern Thailand. Third UTMB race of the year, and </div>
+        <div class="cal-desc">The Chiang Mai leg of the UTMB World Series, a 50km trail race through the mountains of northern Thailand. Third UTMB race of the year, and the longest yet. By November the mileage and mountain experience accumulated across the year should make this feel like the natural next step. Chiang Mai is one of the great trail running destinations in Asia and a race I&#x27;ve been looking forward to since the calendar was set.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal">
+      <div class="cal-card reveal" data-desc="A friendly end-of-year 10km road race in Adachi, Tokyo. After a big year of trail and ultra racing, this is the kind of race that brings it back to basics: lace up, find a pace, and see what the legs have left after twelve months of work. A chance to close out the year fast, on the road, with a clear head and fresh motivation for 2027." data-race="ADACHI FRIENDLY HALF MARATHON" data-date="December TBC" data-details="Road · 21.1 km · Japan">
         <div class="cal-month">December TBC </div>
         <div class="cal-race">ADACHI FRIENDLY HALF MARATHON</div>
         <div class="cal-details">Road · 21.1 km · Japan</div>
-        <div class="cal-desc">A friendly end-of-year 10km road race in Adachi, Tokyo. After a big year of trail and ultra racing, this is the kind of race that brings it </div>
+        <div class="cal-desc">A friendly end-of-year 10km road race in Adachi, Tokyo. After a big year of trail and ultra racing, this is the kind of race that brings it back to basics: lace up, find a pace, and see what the legs have left after twelve months of work. A chance to close out the year fast, on the road, with a clear head and fresh motivation for 2027.</div>
+        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
     </div>
   </div>
@@ -1515,6 +1645,16 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
   <button class="lightbox-next" aria-label="Next image">&#8250;</button>
   <div class="lightbox-counter"></div>
 </div>
+<div class="cal-modal" id="cal-modal" aria-hidden="true">
+  <div class="cal-modal-card">
+    <button class="cal-modal-close" aria-label="Close">×</button>
+    <div class="cal-modal-month"></div>
+    <div class="cal-modal-race"></div>
+    <div class="cal-modal-details"></div>
+    <div class="cal-modal-label">Race Description</div>
+    <div class="cal-modal-text"></div>
+  </div>
+</div>
 <script>
 (function() {
   const lightbox = document.getElementById('lightbox');
@@ -1551,6 +1691,47 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') openAt(current - 1);
     if (e.key === 'ArrowRight') openAt(current + 1);
+  });
+})();
+</script>
+<script>
+(function() {
+  const modal = document.getElementById('cal-modal');
+  if (!modal) return;
+
+  let lastTrigger = null;
+
+  function openCalModal(btn) {
+    lastTrigger = btn;
+    const card = btn.closest('.cal-card');
+    modal.querySelector('.cal-modal-month').textContent = card.dataset.date || '';
+    modal.querySelector('.cal-modal-race').textContent = card.dataset.race || '';
+    modal.querySelector('.cal-modal-details').textContent = card.dataset.details || '';
+    // textContent is safe (no innerHTML injection risk); white-space: pre-wrap in CSS
+    // renders newline characters as visible line breaks without needing <br> tags
+    modal.querySelector('.cal-modal-text').textContent = card.dataset.desc || '';
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    modal.querySelector('.cal-modal-close').focus();
+  }
+
+  function closeCalModal() {
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lastTrigger) { lastTrigger.focus(); lastTrigger = null; }
+  }
+
+  // Must be on window — inline onclick="openCalModal(this)" needs global access.
+  // Do NOT defer this script or declare it as a module.
+  window.openCalModal = openCalModal;
+
+  modal.querySelector('.cal-modal-close').addEventListener('click', closeCalModal);
+  modal.addEventListener('click', function(e) { if (e.target === modal) closeCalModal(); });
+  document.addEventListener('keydown', function(e) {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') closeCalModal();
   });
 })();
 </script>

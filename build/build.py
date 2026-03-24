@@ -14,6 +14,7 @@ Usage:
 import sys
 import io
 import re
+import html
 import datetime
 import requests
 from pathlib import Path
@@ -21,6 +22,7 @@ from pathlib import Path
 import yaml
 from jinja2 import Environment, FileSystemLoader, Undefined
 from PIL import Image
+from openpyxl.cell.rich_text import CellRichText, TextBlock
 
 # ─── Paths ───────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).parent.parent
@@ -58,6 +60,13 @@ def _fmt_cell(v) -> str:
     return str(v).strip()
 
 
+# Columns whose native Excel bold formatting should render as <strong> in HTML
+RICH_TEXT_COLS = {
+    "COMMENTS PRE", "COMMENTS POST", "GOING IN", "LOOKING BACK",
+    "PRE RACE", "POST RACE"
+}
+
+
 def _fmt_narrative(text: str) -> str:
     """Convert **bold** markdown and newlines to HTML for narrative fields."""
     if not text:
@@ -67,32 +76,70 @@ def _fmt_narrative(text: str) -> str:
     return text
 
 
+def _fmt_rich_cell(cell) -> str:
+    """Convert a Cell to HTML, preserving native Excel bold as <strong>.
+
+    openpyxl returns a CellRichText object when the cell contains inline
+    formatting (e.g. some words bolded). Elements in that object can be
+    either TextBlock (has .font) or plain str (no .font). We must guard
+    with isinstance before accessing .font.
+    """
+    v = cell.value
+    if v is None:
+        return ""
+    if isinstance(v, CellRichText):
+        parts = []
+        for block in v:
+            if isinstance(block, TextBlock):
+                text = str(block.text)
+                safe = html.escape(text)
+                if block.font and getattr(block.font, 'b', False):
+                    parts.append(f"<strong>{safe}</strong>")
+                else:
+                    parts.append(safe)
+            else:
+                # Bare str element inside CellRichText — no .font attribute
+                parts.append(html.escape(str(block)))
+        return "".join(parts).replace('\n', '<br>')
+    # Plain string fallback: escape HTML special chars first so literal '<'/'>'/'&'
+    # in the cell are neutralised before _fmt_narrative applies bold and \n→<br>.
+    return _fmt_narrative(html.escape(str(v))) if v else ""
+
+
 def fetch_excel_sheets(url: str) -> dict:
     """Download XLSX from Dropbox and return {sheet_name: [row_dicts]}."""
     import openpyxl
     try:
         resp = requests.get(url, timeout=30)
         resp.raise_for_status()
-        wb = openpyxl.load_workbook(io.BytesIO(resp.content), data_only=True)
+        wb = openpyxl.load_workbook(io.BytesIO(resp.content), data_only=True, rich_text=True)
         result = {}
         for name in SHEET_NAMES:
             if name not in wb.sheetnames:
                 continue
             ws = wb[name]
-            rows = list(ws.iter_rows(values_only=True))
+            rows = list(ws.iter_rows())
             if not rows:
                 result[name] = []
                 continue
             # Find header row (first non-empty row)
-            header_idx = next((i for i, r in enumerate(rows) if any(c for c in r)), None)
+            header_idx = next((i for i, r in enumerate(rows) if any(c.value for c in r)), None)
             if header_idx is None:
                 result[name] = []
                 continue
-            headers = [str(c).strip() if c else "" for c in rows[header_idx]]
+            headers = [str(c.value).strip() if c.value else "" for c in rows[header_idx]]
             result[name] = [
-                {headers[i]: (_fmt_cell(v)) for i, v in enumerate(row) if i < len(headers)}
+                {
+                    headers[i]: (
+                        _fmt_rich_cell(cell)
+                        if headers[i].upper() in RICH_TEXT_COLS
+                        else _fmt_cell(cell.value)
+                    )
+                    for i, cell in enumerate(row)
+                    if i < len(headers)
+                }
                 for row in rows[header_idx + 1:]
-                if any(v for v in row)
+                if any(cell.value for cell in row)
             ]
         return result
     except Exception as e:
@@ -203,7 +250,7 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
         date_str = find_col(row, "RACE DATE", "BLACKOUT DATES", "DATE", "Date")
         race_type = find_col(row, "RACE TYPE", "TYPE") or infer_race_type(event.split("\n")[0].strip())
         col_distance = find_col(row, "RACE DISTANCE", "DISTANCE")
-        description = find_col(row, "RACE DESCRIPTION", "DESCRIPTION")[:140]
+        description = find_col(row, "RACE DESCRIPTION", "DESCRIPTION")
         location = find_col(row, "RACE LOCATION", "LOCATION", "VENUE", "CITY")
         comments_pre = find_col(row, "COMMENTS PRE", "Comments Pre", "PRE RACE", "GOING IN")
         comments_post = find_col(row, "COMMENTS POST", "Comments Post", "POST RACE", "LOOKING BACK")
@@ -304,6 +351,16 @@ def build_race_card_html(race: dict) -> str:
 
     # Narrative body
     body_parts = []
+    if race.get("description"):
+        # html.escape runs first so literal '<', '>', '&' are neutralised before
+        # _fmt_narrative applies bold (**word**→<strong>) and \n→<br>.
+        # Asterisks are not affected by html.escape, so markdown bold still works.
+        body_parts.append(
+            f'              <div class="race-narrative">\n'
+            f'                <div class="race-narrative-label">Race Description</div>\n'
+            f'                <p>{_fmt_narrative(html.escape(race["description"]))}</p>\n'
+            f'              </div>'
+        )
     if race["comments_pre"]:
         body_parts.append(
             f'              <div class="race-narrative">\n'
@@ -323,6 +380,7 @@ def build_race_card_html(race: dict) -> str:
 
     location = race.get("location", "") or ""
     loc_html = f'<div class="race-h-loc">{location}</div>' if location and location != "—" else ""
+    has_desc_class = (" has-desc" if race.get("description") else "")
 
     return f'''        <div class="race-item">
           <div class="race-header">
@@ -333,7 +391,7 @@ def build_race_card_html(race: dict) -> str:
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner">
+            <div class="race-body-inner{has_desc_class}">
 {body_html}
             </div>
           </div>
@@ -344,16 +402,31 @@ def build_calendar_card_html(race: dict) -> str:
     """Build a calendar card for an upcoming race."""
     tbc = "tbc" in race.get("registered", "").lower()
     tbc_badge = '<span class="cal-tbc">TBC</span>' if tbc else ""
-    # Build sub-details line: type · distance · location (only non-empty parts)
     detail_parts = [p for p in [race.get("type"), race.get("distance"), race.get("location")] if p and p != "—"]
     details = " · ".join(detail_parts)
-    desc_html = f'        <div class="cal-desc">{race["description"]}</div>\n' if race.get("description") else ""
+
+    desc = race.get("description", "")
+    if desc:
+        desc_html = f'        <div class="cal-desc">{html.escape(desc)}</div>\n'
+        data_attrs = (
+            f' data-desc="{html.escape(desc)}"'
+            f' data-race="{html.escape(race["name"].upper())}"'
+            f' data-date="{html.escape(race["date"])}"'
+            f' data-details="{html.escape(details)}"'
+        )
+        read_more_html = '        <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>\n'
+    else:
+        desc_html = ""
+        data_attrs = ""
+        read_more_html = ""
+
     return (
-        f'      <div class="cal-card reveal">\n'
+        f'      <div class="cal-card reveal"{data_attrs}>\n'
         f'        <div class="cal-month">{race["date"]} {tbc_badge}</div>\n'
         f'        <div class="cal-race">{race["name"].upper()}</div>\n'
         f'        <div class="cal-details">{details}</div>\n'
         f'{desc_html}'
+        f'{read_more_html}'
         f'      </div>'
     )
 
