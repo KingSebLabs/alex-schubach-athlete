@@ -376,7 +376,7 @@ def build_race_card_html(race: dict) -> str:
 
     location = race.get("location", "") or ""
     loc_html = f'<div class="race-h-loc">{location}</div>' if location and location != "—" else ""
-    has_desc = "has-desc" if race.get("description") else ""
+    has_desc_class = (" has-desc" if race.get("description") else "")
 
     return f'''        <div class="race-item">
           <div class="race-header">
@@ -387,7 +387,7 @@ def build_race_card_html(race: dict) -> str:
             <div class="race-h-expand">Expand</div>
           </div>
           <div class="race-body">
-            <div class="race-body-inner {has_desc}">
+            <div class="race-body-inner{has_desc_class}">
 {body_html}
             </div>
           </div>
