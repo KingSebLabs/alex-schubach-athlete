@@ -14,6 +14,7 @@ Usage:
 import sys
 import io
 import re
+import html
 import datetime
 import requests
 from pathlib import Path
@@ -21,6 +22,7 @@ from pathlib import Path
 import yaml
 from jinja2 import Environment, FileSystemLoader, Undefined
 from PIL import Image
+from openpyxl.cell.rich_text import CellRichText, TextBlock
 
 # ─── Paths ───────────────────────────────────────────────────────────────────
 ROOT = Path(__file__).parent.parent
@@ -82,7 +84,6 @@ def _fmt_rich_cell(cell) -> str:
     either TextBlock (has .font) or plain str (no .font). We must guard
     with isinstance before accessing .font.
     """
-    from openpyxl.cell.rich_text import CellRichText, TextBlock
     v = cell.value
     if v is None:
         return ""
@@ -91,10 +92,11 @@ def _fmt_rich_cell(cell) -> str:
         for block in v:
             if isinstance(block, TextBlock):
                 text = str(block.text)
+                safe = html.escape(text)
                 if block.font and getattr(block.font, 'b', False):
-                    parts.append(f"<strong>{text}</strong>")
+                    parts.append(f"<strong>{safe}</strong>")
                 else:
-                    parts.append(text)
+                    parts.append(safe)
             else:
                 # Bare str element inside CellRichText — no .font attribute
                 parts.append(str(block))
@@ -129,7 +131,7 @@ def fetch_excel_sheets(url: str) -> dict:
                 {
                     headers[i]: (
                         _fmt_rich_cell(cell)
-                        if headers[i].strip().upper() in RICH_TEXT_COLS
+                        if headers[i].upper() in RICH_TEXT_COLS
                         else _fmt_cell(cell.value)
                     )
                     for i, cell in enumerate(row)
