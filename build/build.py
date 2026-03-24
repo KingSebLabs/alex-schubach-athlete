@@ -58,6 +58,13 @@ def _fmt_cell(v) -> str:
     return str(v).strip()
 
 
+# Columns whose native Excel bold formatting should render as <strong> in HTML
+RICH_TEXT_COLS = {
+    "COMMENTS PRE", "COMMENTS POST", "GOING IN", "LOOKING BACK",
+    "PRE RACE", "POST RACE"
+}
+
+
 def _fmt_narrative(text: str) -> str:
     """Convert **bold** markdown and newlines to HTML for narrative fields."""
     if not text:
@@ -67,32 +74,69 @@ def _fmt_narrative(text: str) -> str:
     return text
 
 
+def _fmt_rich_cell(cell) -> str:
+    """Convert a Cell to HTML, preserving native Excel bold as <strong>.
+
+    openpyxl returns a CellRichText object when the cell contains inline
+    formatting (e.g. some words bolded). Elements in that object can be
+    either TextBlock (has .font) or plain str (no .font). We must guard
+    with isinstance before accessing .font.
+    """
+    from openpyxl.cell.rich_text import CellRichText, TextBlock
+    v = cell.value
+    if v is None:
+        return ""
+    if isinstance(v, CellRichText):
+        parts = []
+        for block in v:
+            if isinstance(block, TextBlock):
+                text = str(block.text)
+                if block.font and getattr(block.font, 'b', False):
+                    parts.append(f"<strong>{text}</strong>")
+                else:
+                    parts.append(text)
+            else:
+                # Bare str element inside CellRichText — no .font attribute
+                parts.append(str(block))
+        return "".join(parts).replace('\n', '<br>')
+    # Plain string fallback: use _fmt_narrative to keep **markdown** bold and \n→<br>
+    return _fmt_narrative(str(v)) if v else ""
+
+
 def fetch_excel_sheets(url: str) -> dict:
     """Download XLSX from Dropbox and return {sheet_name: [row_dicts]}."""
     import openpyxl
     try:
         resp = requests.get(url, timeout=30)
         resp.raise_for_status()
-        wb = openpyxl.load_workbook(io.BytesIO(resp.content), data_only=True)
+        wb = openpyxl.load_workbook(io.BytesIO(resp.content), data_only=True, rich_text=True)
         result = {}
         for name in SHEET_NAMES:
             if name not in wb.sheetnames:
                 continue
             ws = wb[name]
-            rows = list(ws.iter_rows(values_only=True))
+            rows = list(ws.iter_rows())
             if not rows:
                 result[name] = []
                 continue
             # Find header row (first non-empty row)
-            header_idx = next((i for i, r in enumerate(rows) if any(c for c in r)), None)
+            header_idx = next((i for i, r in enumerate(rows) if any(c.value for c in r)), None)
             if header_idx is None:
                 result[name] = []
                 continue
-            headers = [str(c).strip() if c else "" for c in rows[header_idx]]
+            headers = [str(c.value).strip() if c.value else "" for c in rows[header_idx]]
             result[name] = [
-                {headers[i]: (_fmt_cell(v)) for i, v in enumerate(row) if i < len(headers)}
+                {
+                    headers[i]: (
+                        _fmt_rich_cell(cell)
+                        if headers[i].strip().upper() in RICH_TEXT_COLS
+                        else _fmt_cell(cell.value)
+                    )
+                    for i, cell in enumerate(row)
+                    if i < len(headers)
+                }
                 for row in rows[header_idx + 1:]
-                if any(v for v in row)
+                if any(cell.value for cell in row)
             ]
         return result
     except Exception as e:
