@@ -490,7 +490,9 @@ def build_seo_tags(site: dict, social: dict) -> str:
     instagram = social.get("instagram", "#")
     strava = social.get("strava", "#")
 
-    og = f'''  <!-- Open Graph -->
+    og = f'''  <!-- Keywords -->
+  <meta name="keywords" content="Alex Schubach, Alexander Schubach, Alex the Athlete, alexschubach, alexschubach.com, endurance athlete, trail runner, Hyrox, ultra running, UTMB">
+  <!-- Open Graph -->
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}">
   <meta property="og:image" content="{base_url}/images/about.jpg">
@@ -510,6 +512,7 @@ def build_seo_tags(site: dict, social: dict) -> str:
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Alex Schubach",
+    "alternateName": ["Alexander Schubach", "Alex the Athlete", "alexschubach"],
     "url": "{base_url}",
     "image": "{base_url}/images/about.jpg",
     "jobTitle": "Endurance Athlete",

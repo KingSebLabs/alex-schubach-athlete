@@ -3,22 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alex Schubach — Endurance Athlete</title>
-<meta name="description" content="Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure.">
+<title>Alex Schubach — Endurance Athlete, Trail Runner & Hyrox Competitor</title>
+<meta name="description" content="Alex Schubach (Alexander Schubach) — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure. Follow Alex the Athlete at alexschubach.com.">
 <link rel="canonical" href="https://alexschubach.com/">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://formspree.io https://plausible.io; form-action https://formspree.io;">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Keywords -->
+  <meta name="keywords" content="Alex Schubach, Alexander Schubach, Alex the Athlete, alexschubach, alexschubach.com, endurance athlete, trail runner, Hyrox, ultra running, UTMB">
   <!-- Open Graph -->
-  <meta property="og:title" content="Alex Schubach — Endurance Athlete">
-  <meta property="og:description" content="Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure.">
+  <meta property="og:title" content="Alex Schubach — Endurance Athlete, Trail Runner & Hyrox Competitor">
+  <meta property="og:description" content="Alex Schubach (Alexander Schubach) — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure. Follow Alex the Athlete at alexschubach.com.">
   <meta property="og:image" content="https://alexschubach.com/images/about.jpg">
   <meta property="og:url" content="https://alexschubach.com">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Alex Schubach — Endurance Athlete">
-  <meta name="twitter:description" content="Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure.">
+  <meta name="twitter:title" content="Alex Schubach — Endurance Athlete, Trail Runner & Hyrox Competitor">
+  <meta name="twitter:description" content="Alex Schubach (Alexander Schubach) — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure. Follow Alex the Athlete at alexschubach.com.">
   <meta name="twitter:image" content="https://alexschubach.com/images/about.jpg">
   <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -26,10 +28,11 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Alex Schubach",
+    "alternateName": ["Alexander Schubach", "Alex the Athlete", "alexschubach"],
     "url": "https://alexschubach.com",
     "image": "https://alexschubach.com/images/about.jpg",
     "jobTitle": "Endurance Athlete",
-    "description": "Alex Schubach — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure.",
+    "description": "Alex Schubach (Alexander Schubach) — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure. Follow Alex the Athlete at alexschubach.com.",
     "sameAs": []
   }
   </script>
@@ -64,9 +67,11 @@ body { font-family: var(--font-body); background: var(--bg-dark); color: var(--t
 .loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .loader-text {
   font-family: var(--font-display); font-size: clamp(2rem, 6vw, 5rem);
-  letter-spacing: 0.3em; color: var(--accent);
+  letter-spacing: 0.3em; color: var(--text-light);
   animation: pulse 1.2s ease-in-out infinite;
+  display: flex; align-items: center;
 }
+.loader-spark { flex-shrink: 0; transform: rotate(12deg); margin: 0 0.18em 0 0; position: relative; top: -0.04em; }
 @keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
 
 /* ===== NAV ===== */
@@ -79,8 +84,8 @@ nav {
   transition: transform 0.3s ease;
 }
 nav.nav-hidden { transform: translateY(-100%); }
-.nav-logo { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.2em; color: var(--text-light); text-decoration: none; }
-.nav-logo span { color: var(--accent); }
+.nav-logo { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.2em; color: var(--text-light); text-decoration: none; display: inline-flex; align-items: center; }
+.logo-spark { flex-shrink: 0; transform: rotate(12deg); margin: 0 4px 0 0; position: relative; top: -1px; }
 .nav-links { display: flex; gap: 2rem; align-items: center; }
 .nav-links a {
   font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
@@ -790,12 +795,12 @@ footer {
 
 <!-- LOADER -->
 <div class="loader" id="loader">
-  <div class="loader-text">AS</div>
+  <div class="loader-text">A<svg class="loader-spark" width="0.55em" height="0.85em" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="7,0 3,8 6,8 3,17 10,7 7,7" fill="#e8490f"/></svg>S</div>
 </div>
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="nav-logo">ALEX<span>.</span>SCHUBACH</a>
+  <a href="#hero" class="nav-logo">ALEX<svg class="logo-spark" width="8" height="14" viewBox="0 0 10 17" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="7,0 3,8 6,8 3,17 10,7 7,7" fill="#e8490f"/></svg>SCHUBACH</a>
   <div class="nav-links" id="navLinks">
     <a href="#about">About</a>
     <a href="#values">Values</a>
