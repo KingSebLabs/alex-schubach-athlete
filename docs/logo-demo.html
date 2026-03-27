@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo — Bolt Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --accent: #e8490f;
+  --bg-dark: #0a0a0a;
+  --text-light: #f5f3f0;
+  --grey-mid: #888;
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body: 'Instrument Sans', sans-serif;
+}
+body { font-family: var(--font-body); background: #070707; color: var(--text-light); }
+.page-header { text-align: center; padding: 3rem 2rem 2rem; border-bottom: 1px solid #1a1a1a; }
+.page-header h1 { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+.page-header p { font-size: 0.78rem; color: var(--grey-mid); letter-spacing: 0.1em; text-transform: uppercase; }
+.block { padding: 4rem 2rem 5rem; border-bottom: 1px solid #141414; max-width: 1100px; margin: 0 auto; }
+.block:last-child { border-bottom: none; }
+.lbl { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+.ttl { font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+.dsc { font-size: 0.8rem; color: var(--grey-mid); margin-bottom: 3rem; max-width: 520px; line-height: 1.6; }
+.ctx-lbl { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #444; margin-bottom: 0.75rem; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: #141414; }
+.ctx { background: var(--bg-dark); padding: 2rem; }
+.ctx-c { background: var(--bg-dark); padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 240px; }
+.nav { display: flex; align-items: center; justify-content: space-between; background: rgba(10,10,10,0.9); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 1rem 1.5rem; }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links span { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey-mid); }
+.nav-links span.cta { background: var(--accent); color: #fff; padding: 0.35rem 0.9rem; }
+.logo { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.2em; color: var(--text-light); text-decoration: none; display: inline-flex; align-items: center; }
+@keyframes pulse { 0%,100%{opacity:0.3} 50%{opacity:1} }
+.pulse { animation: pulse 1.4s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>SPARK — LIGHTNING BOLT</h1>
+  <p>Redrawn from scratch &nbsp;·&nbsp; Nav · Loader · Close-up</p>
+</div>
+
+<!--
+  BOLT — drawn from scratch to match the reference image.
+
+  The shape is a 6-point Z-polygon:
+
+    A (13, 0)  — top corner, upper-right
+    B (19, 20) — right outer edge (widest right point)
+    C (12, 20) — step LEFT 7 units → right side of notch
+        ↓ waist (8 units tall)
+    D (8, 28)  — step RIGHT of lower notch
+    E (1, 28)  — left outer edge (widest left point)
+    F (7, 48)  — bottom point, lower-left
+
+  The 35% horizontal step (B→C and D→E) creates the classic
+  lightning bolt kink. The blades are ~22% of the viewBox wide.
+  The waist narrows to ~13% — thin but visible at all sizes.
+-->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="bolt" viewBox="0 0 20 48" preserveAspectRatio="xMidYMid meet">
+      <polygon points="13,0 19,20 12,20 8,28 1,28 7,48" fill="#e8490f"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ── NAV + LOADER + CLOSE-UP ── -->
+<div class="block">
+  <div class="lbl">Spark — Redrawn</div>
+  <div class="ttl">LIGHTNING BOLT</div>
+  <div class="dsc">35% horizontal step, ~22% blade width, thin waist. Classic Z-shape matching the reference image.</div>
+
+  <div class="grid3">
+    <div class="ctx">
+      <div class="ctx-lbl">Nav bar</div>
+      <div class="nav">
+        <a class="logo" href="#">
+          ALEX<svg style="width:9px;height:22px;flex-shrink:0;transform:rotate(8deg);margin:0 4px 0 0;position:relative;top:-1px"><use href="#bolt"/></svg>SCHUBACH
+        </a>
+        <div class="nav-links">
+          <span>About</span><span>Results</span><span>Gallery</span>
+          <span class="cta">Get in Touch</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ctx-c">
+      <div class="ctx-lbl" style="text-align:center;margin-bottom:1.5rem">Loader mark</div>
+      <div class="pulse" style="display:inline-flex;align-items:center;font-family:var(--font-display);font-size:clamp(3rem,7vw,5rem);letter-spacing:0.15em;color:var(--text-light)">
+        A<svg style="width:0.42em;height:1em;flex-shrink:0;transform:rotate(8deg);margin:0 0.14em 0 0;position:relative;top:-0.04em"><use href="#bolt"/></svg>S
+      </div>
+    </div>
+
+    <div class="ctx-c">
+      <div class="ctx-lbl" style="text-align:center;margin-bottom:1.5rem">Close-up</div>
+      <div style="display:inline-flex;align-items:center;font-family:var(--font-display);font-size:7rem;letter-spacing:0.1em;color:var(--text-light)">
+        A<svg style="width:37px;height:89px;flex-shrink:0;transform:rotate(8deg);margin:0 10px 0 2px;position:relative;top:-4px"><use href="#bolt"/></svg>S
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── BOLT ISOLATED ── -->
+<div class="block">
+  <div class="lbl">Shape check</div>
+  <div class="ttl">BOLT AT MULTIPLE SIZES</div>
+  <div class="dsc">Orange on dark — inspect the shape at each scale.</div>
+
+  <div style="display:flex;align-items:flex-end;gap:2.5rem;background:var(--bg-dark);padding:2.5rem 2rem;flex-wrap:wrap">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem">
+      <svg style="width:9px;height:22px" viewBox="0 0 20 48"><polygon points="13,0 19,20 12,20 8,28 1,28 7,48" fill="#e8490f"/></svg>
+      <span style="font-size:0.58rem;color:#444;letter-spacing:.12em;text-transform:uppercase">Nav</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem">
+      <svg style="width:20px;height:48px" viewBox="0 0 20 48"><polygon points="13,0 19,20 12,20 8,28 1,28 7,48" fill="#e8490f"/></svg>
+      <span style="font-size:0.58rem;color:#444;letter-spacing:.12em;text-transform:uppercase">Loader</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem">
+      <svg style="width:37px;height:89px" viewBox="0 0 20 48"><polygon points="13,0 19,20 12,20 8,28 1,28 7,48" fill="#e8490f"/></svg>
+      <span style="font-size:0.58rem;color:#444;letter-spacing:.12em;text-transform:uppercase">Large</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem">
+      <svg style="width:60px;height:144px" viewBox="0 0 20 48"><polygon points="13,0 19,20 12,20 8,28 1,28 7,48" fill="#e8490f"/></svg>
+      <span style="font-size:0.58rem;color:#444;letter-spacing:.12em;text-transform:uppercase">XL</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:0.6rem">
+      <svg style="width:85px;height:204px" viewBox="0 0 20 48"><polygon points="13,0 19,20 12,20 8,28 1,28 7,48" fill="#e8490f"/></svg>
+      <span style="font-size:0.58rem;color:#444;letter-spacing:.12em;text-transform:uppercase">XXL</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── FULL WORDMARK ── -->
+<div class="block">
+  <div class="lbl">Full wordmark</div>
+  <div class="ttl">ALEX · SCHUBACH IN NAV</div>
+  <div class="dsc">Full nav bar at the actual site font size.</div>
+
+  <div style="background:var(--bg-dark)">
+    <div class="nav" style="padding:1.2rem 2rem">
+      <a class="logo" href="#" style="font-size:1.4rem;letter-spacing:0.2em">
+        ALEX<svg style="width:9px;height:22px;flex-shrink:0;transform:rotate(8deg);margin:0 4px 0 0;position:relative;top:-1px"><use href="#bolt"/></svg>SCHUBACH
+      </a>
+      <div class="nav-links">
+        <span>About</span><span>Values</span><span>Mission</span>
+        <span>Results</span><span>Gallery</span>
+        <span class="cta">Get in Touch</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
