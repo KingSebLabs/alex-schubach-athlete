@@ -24,5 +24,18 @@
 - For columns not in `RICH_TEXT_COLS`, escape at render time: `_fmt_narrative(html.escape(value))`
 - `RICH_TEXT_COLS` values are passed through `_fmt_narrative` a second time at render in `build_race_card_html` — this is a known double-process (harmless, tracked as follow-up)
 
+## SVG & logo assets
+- `images/logo.svg` is the loading screen logo (Canva export); letter fills use `#f5f3f0` (not black) for dark background
+- Bolt shape is defined once as `<symbol id="bolt">` in a hidden `<svg><defs>` block immediately after `<body>`, referenced via `<use href="#bolt">` in both the loader and nav
+- Canva exports bolt as `#ff751f` — always normalise to site accent `#e8490f`
+- To animate only part of an inline SVG (e.g. bolt-only pulse), embed SVG inline (not `<img>`) and apply the animation class to the specific `<g>`, not the wrapper
+- Inline SVG clip-path IDs must be unique in the document — prefix loader IDs (e.g. `ll-bolt1`) to avoid collisions with other embedded SVGs
+
+## CSS specificity gotcha
+- `.nav-links a` (0,1,1) overrides `.nav-cta` (0,1,0) — use `.nav-links .nav-cta` to reliably override nav CTA colours
+
+## Content
+- Social links live in `content.yaml` under `social:` — not in `template.html`
+
 ## CSS quirk
 - `.cal-modal.open` and the gallery lightbox use `pointer-events: all` (non-standard but intentional) — don't change to `auto`
