@@ -90,8 +90,8 @@ social:
 pdf:
   enabled: true
   media_kit_url: "#"        # Paste Media Kit PDF link here when ready
-  training_program_url: "#" # Paste Training Program PDF link here when ready
-  meal_plan_url: "#"        # Paste Meal Plan PDF link here when ready
+  training_program_url: "downloads/training-program.pdf" # Paste Training Program PDF link here when ready
+  meal_plan_url: "downloads/meal-plan.pdf"              # Paste Meal Plan PDF link here when ready
 
 # ─── ANALYTICS ───────────────────────────────────────────────────────────────
 analytics:
