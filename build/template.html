@@ -202,8 +202,14 @@ section { padding: 6rem 2.5rem; }
 }
 .value-desc { font-size: 0.85rem; line-height: 1.7; color: #555; }
 
+/* ===== VALUES gap ===== */
+#values { padding-top: 2rem; }
+
 /* ===== MISSION ===== */
-.mission-content { max-width: 800px; }
+.mission-grid {
+  display: grid; grid-template-columns: 3fr 2fr; gap: 4rem; align-items: center;
+}
+.mission-content { max-width: none; }
 .mission-quote {
   font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem);
   line-height: 1.2; margin-bottom: 2rem; letter-spacing: 0.02em;
@@ -215,9 +221,24 @@ section { padding: 6rem 2.5rem; }
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; max-width: 600px;
 }
 .pillar {
-  display: flex; align-items: flex-start; gap: 0.75rem; font-size: 0.9rem; color: #444;
+  display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: #444;
 }
-.pillar-icon { color: var(--accent); font-size: 1.1rem; margin-top: 0.15rem; flex-shrink: 0; }
+.pillar-icon { color: var(--accent); font-size: 1.1rem; flex-shrink: 0; }
+.mission-quote-tile {
+  background: var(--bg-dark);
+  border: 1px solid rgba(232,73,15,0.25);
+  padding: 2.5rem;
+  align-self: stretch;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.mission-qt-mark {
+  font-family: var(--font-display); font-size: 5rem; line-height: 0.8;
+  color: var(--accent); margin-bottom: 1.25rem; display: block;
+}
+.mission-qt-text {
+  font-family: var(--font-body); font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-style: italic; line-height: 1.65; color: var(--text-light); margin: 0; quotes: none;
+}
 
 /* ===== INDEX BADGES ===== */
 .index-badges { display: flex; gap: 1rem; margin-top: 2rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
@@ -239,6 +260,9 @@ section { padding: 6rem 2.5rem; }
 .index-badge-road-row { display: flex; gap: 0.5rem; align-items: baseline; }
 .index-badge-road-dist { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey-mid); min-width: 4rem; }
 .index-badge-road-time { font-family: var(--font-display); font-size: 0.9rem; color: var(--text-light); line-height: 1; }
+.index-badge--road { min-width: 260px; padding: 1rem 2rem; }
+.index-badge--road .index-badge-road-rows { gap: 0.35rem; }
+.index-badge--road .index-badge-road-dist { min-width: 5rem; }
 
 /* ===== RACE RESULTS ACCORDION ===== */
 .year-tabs { display: flex; gap: 0; margin-top: 2rem; }
@@ -453,8 +477,9 @@ section { padding: 6rem 2.5rem; }
 .cal-modal-card {
   background: #1c1c1b;
   border: 1px solid rgba(232,73,15,0.3);
-  padding: 2.5rem;
-  max-width: 520px; width: 90vw;
+  padding: 3.5rem;
+  max-width: 880px; width: 92vw;
+  max-height: 85vh; overflow-y: auto;
   position: relative;
   transform: translateY(16px); transition: transform 0.3s;
 }
@@ -496,7 +521,7 @@ section { padding: 6rem 2.5rem; }
 }
 .cal-read-more:hover { opacity: 0.75; }
 @media (max-width: 640px) {
-  .cal-modal-card { padding: 2rem 1.5rem; width: 95vw; }
+  .cal-modal-card { padding: 2.5rem 2rem; width: 95vw; }
   .cal-modal-text { font-size: 0.92rem; }
   .cal-modal-close { top: 0.75rem; right: 1rem; font-size: 1.6rem; }
 }
@@ -717,6 +742,7 @@ footer {
 
   /* Mission */
   .business-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .mission-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .mission-pillars { grid-template-columns: 1fr; }
 
   /* Race stats */
@@ -879,15 +905,21 @@ footer {
 <!-- MISSION -->
 <section class="section-light" id="mission">
   <div class="container">
-    <div class="mission-content reveal">
-      <div class="section-label">My Mission</div>
-      <div class="section-title" style="color:var(--text-dark)">WHY I DO THIS</div>
-      <div class="mission-quote">{{ mission.quote }}</div>
-      <p class="mission-text">{{ mission.body }}</p>
-      <div class="mission-pillars">
-        {% for pillar in mission.pillars %}
-        <div class="pillar"><span class="pillar-icon">→</span> {{ pillar }}</div>
-        {% endfor %}
+    <div class="mission-grid reveal">
+      <div class="mission-content">
+        <div class="section-label">My Mission</div>
+        <div class="section-title" style="color:var(--text-dark)">WHY I DO THIS</div>
+        <div class="mission-quote">{{ mission.quote }}</div>
+        <p class="mission-text">{{ mission.body }}</p>
+        <div class="mission-pillars">
+          {% for pillar in mission.pillars %}
+          <div class="pillar"><span class="pillar-icon">→</span> {{ pillar }}</div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="mission-quote-tile">
+        <span class="mission-qt-mark">"</span>
+        <blockquote class="mission-qt-text">Who you become in the pursuit of your goals is the actual goal</blockquote>
       </div>
     </div>
   </div>
@@ -912,7 +944,7 @@ footer {
       <div class="index-badge">
         <div class="index-badge-logo">ITRA</div>
         <div class="index-badge-body">
-          <div class="index-badge-label">ITRA Performance Index</div>
+          <div class="index-badge-label">ITRA Index</div>
           <div class="index-badge-value">—</div>
         </div>
       </div>
@@ -984,11 +1016,11 @@ footer {
       <a href="{{ pdf.media_kit_url }}" class="btn-white">↓ Download Media Kit</a>
     </div>
     <div class="pdf-panel" id="pdf-training">
-      <p class="pdf-subtitle">My current training structure across road, trail, and Hyrox disciplines.</p>
+      <p class="pdf-subtitle">This training split is designed to build a powerful engine, strong legs, full-body strength, and unstoppable hybrid conditioning.</p>
       <a href="{{ pdf.training_program_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Training Program</a>
     </div>
     <div class="pdf-panel" id="pdf-meal">
-      <p class="pdf-subtitle">My daily nutrition approach and race-day fuelling protocol.</p>
+      <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
       <a href="{{ pdf.meal_plan_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Meal Plan</a>
     </div>
   </div>
@@ -1018,8 +1050,8 @@ footer {
           {% endfor %}
         </div>
         <div class="social-bar">
-          <a href="{{ social.instagram }}" class="social-link">Instagram</a>
-          <a href="{{ social.strava }}" class="social-link">Strava</a>
+          <a href="{{ social.instagram }}" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="{{ social.strava }}" class="social-link" target="_blank" rel="noopener noreferrer">Strava</a>
         </div>
       </div>
       <div class="reveal">
