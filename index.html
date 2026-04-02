@@ -252,22 +252,20 @@ section { padding: 6rem 2.5rem; }
 .mission-quote-tile {
   background: var(--bg-dark);
   border: 1px solid rgba(232,73,15,0.25);
-  padding: 2rem 2.25rem 2rem;
+  padding: 2rem 2.25rem;
   align-self: center;
-  display: flex; flex-direction: column; justify-content: center;
-}
-.mission-qt-mark {
-  font-family: var(--font-display); font-size: 3rem; line-height: 1;
-  color: var(--accent); display: block; margin-bottom: 0.25rem;
+  display: flex; align-items: center; justify-content: center;
 }
 .mission-qt-text {
-  font-family: var(--font-body); font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+  font-family: var(--font-body); font-size: clamp(1rem, 1.4vw, 1.25rem);
   font-style: italic; line-height: 1.6; color: var(--text-light); margin: 0; quotes: none;
 }
-.mission-qt-close {
-  font-family: var(--font-display); font-size: 1.6rem; line-height: 0;
-  color: var(--accent); vertical-align: middle; margin-left: 0.1em;
+.mission-qt-mark {
+  font-family: var(--font-display); font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1; color: var(--accent); vertical-align: baseline;
 }
+.mission-qt-mark.open { margin-right: 0.1em; }
+.mission-qt-mark.close { margin-left: 0.1em; }
 
 /* ===== INDEX BADGES ===== */
 .index-badges { display: flex; gap: 1rem; margin-top: 2rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
@@ -992,8 +990,7 @@ footer {
         </div>
       </div>
       <div class="mission-quote-tile">
-        <span class="mission-qt-mark">"</span>
-        <blockquote class="mission-qt-text">Who you become in the pursuit of your goals is the actual goal<span class="mission-qt-close">"</span></blockquote>
+        <blockquote class="mission-qt-text"><span class="mission-qt-mark open">"</span>Who you become in the pursuit of your goals is the actual goal<span class="mission-qt-mark close">"</span></blockquote>
       </div>
     </div>
   </div>
