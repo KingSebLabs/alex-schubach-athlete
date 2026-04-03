@@ -162,7 +162,7 @@ section { padding: 6rem 2.5rem; }
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
 .about-text p { font-size: 1rem; line-height: 1.8; color: var(--grey-mid); margin-bottom: 1.5rem; }
 .about-text p strong { color: var(--text-light); font-weight: 600; }
-.about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 3rem; }
+.about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; }
 .stat-item { border-left: 2px solid var(--accent); padding-left: 1rem; }
 .stat-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--text-light); line-height: 1; }
 /* Bebas Neue has no ∞ glyph — use body font for last stat so ∞ renders consistently across platforms */
@@ -467,9 +467,9 @@ section { padding: 6rem 2.5rem; }
 .cal-modal-card {
   background: #1c1c1b;
   border: 1px solid rgba(232,73,15,0.3);
-  padding: 3.5rem;
-  max-width: 880px; width: 92vw;
-  max-height: 85vh; overflow-y: auto;
+  padding: 2.5rem;
+  width: min(600px, 85vw); aspect-ratio: 1 / 1;
+  overflow-y: auto;
   position: relative;
   transform: translateY(16px); transition: transform 0.3s;
 }
@@ -511,7 +511,7 @@ section { padding: 6rem 2.5rem; }
 }
 .cal-read-more:hover { opacity: 0.75; }
 @media (max-width: 640px) {
-  .cal-modal-card { padding: 2.5rem 2rem; width: 95vw; }
+  .cal-modal-card { padding: 2rem 1.5rem; width: 92vw; aspect-ratio: auto; max-height: 85vh; }
   .cal-modal-text { font-size: 0.92rem; }
   .cal-modal-close { top: 0.75rem; right: 1rem; font-size: 1.6rem; }
 }
@@ -582,6 +582,7 @@ section { padding: 6rem 2.5rem; }
 }
 .contact-cat:hover { border-color: var(--accent); }
 .cat-icon { font-size: 1.2rem; width: 2rem; text-align: center; }
+.cat-icon-img { width: 2rem; height: 2rem; object-fit: contain; filter: invert(1); mix-blend-mode: screen; flex-shrink: 0; }
 .cat-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
 .cat-expand {
   margin-left: auto; flex-shrink: 0;
@@ -725,6 +726,7 @@ footer {
   /* About */
   .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .about-image-col { width: 100%; max-height: none; overflow: hidden; }
+  .about-stats { grid-template-columns: repeat(2, 1fr); }
 
   /* Values */
   .values-grid { grid-template-columns: 1fr; }
@@ -869,7 +871,7 @@ footer {
         </div>
       </div>
       <div class="about-image-col reveal" style="animation-delay:0.2s">
-        <img src="images/about.jpg" alt="Alex Schubach" style="width:100%;height:100%;object-fit:cover;">
+        <img src="images/about.jpg" alt="Alex Schubach" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;">
       </div>
     </div>
   </div>
@@ -951,7 +953,6 @@ footer {
       <div class="index-badge index-badge--road">
         <div class="index-badge-logo">ROAD</div>
         <div class="index-badge-body">
-          <div class="index-badge-label">Personal Bests</div>
           <div class="index-badge-road-rows">
             <div class="index-badge-road-row"><span class="index-badge-road-dist">Marathon</span><span class="index-badge-road-time">{{ indices.road_marathon or "—" }}</span></div>
             <div class="index-badge-road-row"><span class="index-badge-road-dist">Half</span><span class="index-badge-road-time">{{ indices.road_half or "—" }}</span></div>
@@ -1032,7 +1033,13 @@ footer {
           {% for cat in contact.categories %}
           <div class="contact-cat-item">
             <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+              {% if cat.label == "Brand Partnerships" %}
+              <img src="images/handshake_icon.png" class="cat-icon-img" alt="">
+              {% elif cat.label == "Media Inquiries" %}
+              <img src="images/camera_icon.jpg" class="cat-icon-img" alt="">
+              {% else %}
               <div class="cat-icon">{{ cat.icon }}</div>
+              {% endif %}
               <div class="cat-label">{{ cat.label }}</div>
               <div class="cat-expand"></div>
             </div>

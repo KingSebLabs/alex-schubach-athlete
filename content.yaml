@@ -19,12 +19,12 @@ about:
     - "My approach is simple. Show up everyday, do the work, and find out what's actually possible. The outcome matters, but what drives me is the process - the relentless chase of going beyond what I thought I was capable of."
     - "Training is not something I switch on and off. It's how I live. Every session, every race, every day is an opportunity to do and be my best, and raise the standard."
   stats:
+    - number: "JP"
+      label: "Based in Japan"
     - number: "10+"
       label: "Years Competing"
     - number: "Hybrid"
       label: "Athlete Style"
-    - number: "JP"
-      label: "Based in Japan"
     - number: "∞"
       label: "Potential"
 
