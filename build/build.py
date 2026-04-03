@@ -201,19 +201,32 @@ def optimize_images():
 
 
 def build_gallery_html() -> str:
-    """Scan images/gallery/ and build gallery item HTML."""
+    """Scan images/gallery/ and build gallery item HTML in explicit column containers."""
     images = sorted(GALLERY_DIR.glob("*.jpg")) + sorted(GALLERY_DIR.glob("*.jpeg")) + sorted(GALLERY_DIR.glob("*.png"))
     if not images:
         return "<!-- No gallery images found -->"
-    items = []
-    for i, img in enumerate(images):
-        # Use filename (without extension) as alt text, replacing _ with space
-        alt = img.stem.lstrip("0123456789").strip("_- ").replace("_", " ").title()
-        items.append(
-            f'      <div class="gallery-item reveal" data-index="{i}" data-src="images/gallery/{img.name}">'
-            f'<img src="images/gallery/{img.name}" alt="{alt}" loading="lazy"></div>'
-        )
-    return "\n".join(items)
+    n_cols = 3
+    # Distribute images sequentially across columns so stacking order is deterministic
+    # regardless of viewport/image height (avoids CSS columns balancing unpredictability).
+    # ceil(n / n_cols) images per column, last column may have fewer.
+    per_col = -(-len(images) // n_cols)  # ceiling division
+    cols = [images[i * per_col:(i + 1) * per_col] for i in range(n_cols)]
+    # Track global index for lightbox data-index
+    global_index = 0
+    col_htmls = []
+    for col_imgs in cols:
+        if not col_imgs:
+            continue
+        items = []
+        for img in col_imgs:
+            alt = img.stem.lstrip("0123456789").strip("_- ").replace("_", " ").title()
+            items.append(
+                f'        <div class="gallery-item reveal" data-index="{global_index}" data-src="images/gallery/{img.name}">'
+                f'<img src="images/gallery/{img.name}" alt="{alt}" loading="lazy"></div>'
+            )
+            global_index += 1
+        col_htmls.append('      <div class="gallery-col">\n' + "\n".join(items) + '\n      </div>')
+    return "\n".join(col_htmls)
 
 
 # ─── Excel/Sheets column name helpers ────────────────────────────────────────

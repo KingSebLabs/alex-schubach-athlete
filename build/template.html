@@ -405,13 +405,19 @@ section { padding: 6rem 2.5rem; }
 
 /* ===== GALLERY ===== */
 .gallery-grid {
-  columns: 3;
-  column-gap: 4px;
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
   margin-top: 3rem;
 }
+.gallery-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 .gallery-item {
-  break-inside: avoid;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   overflow: hidden; cursor: pointer; position: relative;
   background: var(--grey-dark); display: block;
 }
@@ -467,40 +473,44 @@ section { padding: 6rem 2.5rem; }
 .cal-modal-card {
   background: #1c1c1b;
   border: 1px solid rgba(232,73,15,0.3);
-  padding: 2.5rem;
-  width: min(600px, 85vw); aspect-ratio: 1 / 1;
+  padding: 3.5rem;
+  width: min(720px, 85vw);
   overflow-y: auto;
   position: relative;
+  display: flex; flex-direction: column;
   transform: translateY(16px); transition: transform 0.3s;
 }
 .cal-modal.open .cal-modal-card { transform: translateY(0); }
 .cal-modal-close {
-  position: absolute; top: 1rem; right: 1.25rem;
+  position: absolute; top: 1.25rem; right: 1.5rem;
   background: none; border: none;
-  color: var(--grey-mid); font-size: 1.4rem;
+  color: var(--grey-mid); font-size: 2rem;
   cursor: pointer; line-height: 1; transition: color 0.2s;
 }
 .cal-modal-close:hover { color: var(--text-light); }
 .cal-modal-month {
-  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.25em;
+  font-size: 0.85rem; font-weight: 700; letter-spacing: 0.3em;
   text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem;
 }
 .cal-modal-race {
-  font-family: var(--font-display); font-size: 1.8rem;
-  letter-spacing: 0.04em; margin-bottom: 0.4rem;
+  font-family: var(--font-display); font-size: 3.5rem;
+  letter-spacing: 0.04em; line-height: 1; margin-bottom: 0.6rem;
 }
 .cal-modal-details {
-  font-size: 0.75rem; color: var(--grey-mid);
-  margin-bottom: 1.25rem; line-height: 1.6;
+  font-size: 1rem; color: var(--grey-mid);
+  line-height: 1.6;
 }
 .cal-modal-label {
-  font-size: 0.55rem; font-weight: 700; letter-spacing: 0.25em;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
-  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--accent);
+  display: flex; align-items: center; gap: 0.5rem;
+  flex-shrink: 0;
+  border-top: 1px solid var(--grey-border);
+  padding-top: 1.75rem; margin-top: 1.75rem; margin-bottom: 0.75rem;
 }
-.cal-modal-label::before { content: ''; width: 12px; height: 2px; background: var(--accent); }
+.cal-modal-label::before { content: ''; width: 16px; height: 2px; background: var(--accent); flex-shrink: 0; }
 .cal-modal-text {
-  font-size: 0.88rem; color: var(--grey-mid); line-height: 1.75; white-space: pre-wrap;
+  font-size: 1.15rem; color: #aaa; line-height: 1.8; white-space: pre-wrap; flex: 1; overflow-y: auto;
 }
 .cal-read-more {
   display: block; background: none; border: none;
@@ -511,13 +521,17 @@ section { padding: 6rem 2.5rem; }
 }
 .cal-read-more:hover { opacity: 0.75; }
 @media (max-width: 640px) {
-  .cal-modal-card { padding: 2rem 1.5rem; width: 92vw; aspect-ratio: auto; max-height: 85vh; }
-  .cal-modal-text { font-size: 0.92rem; }
+  .cal-modal-card { padding: 2rem 1.5rem; width: 92vw; max-height: 85vh; }
+  .cal-modal-race { font-size: 2.4rem; }
+  .cal-modal-text { font-size: 1rem; }
   .cal-modal-close { top: 0.75rem; right: 1rem; font-size: 1.6rem; }
 }
 
 @media (max-width: 768px) {
-  .gallery-grid { columns: 2; column-gap: 3px; margin-top: 2rem; }
+  /* Switch gallery to 2-column CSS columns by making col divs transparent */
+  .gallery-grid { display: block; columns: 2; column-gap: 3px; margin-top: 2rem; }
+  .gallery-col { display: contents; }
+  .gallery-item { break-inside: avoid; margin-bottom: 3px; }
   .lightbox-prev { left: 0.25rem; }
   .lightbox-next { right: 0.25rem; }
 }
@@ -582,7 +596,7 @@ section { padding: 6rem 2.5rem; }
 }
 .contact-cat:hover { border-color: var(--accent); }
 .cat-icon { font-size: 1.2rem; width: 2rem; text-align: center; }
-.cat-icon-img { width: 2rem; height: 2rem; object-fit: contain; filter: invert(1); mix-blend-mode: screen; flex-shrink: 0; }
+.cat-icon-img { width: 2rem; height: 2rem; object-fit: contain; flex-shrink: 0; }
 .cat-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
 .cat-expand {
   margin-left: auto; flex-shrink: 0;
@@ -690,9 +704,6 @@ footer {
 /* ===== MOBILE ===== */
 @media (max-width: 1024px) {
   .values-grid { grid-template-columns: repeat(2, 1fr); }
-  .gallery-item:nth-child(3n+1) { width: 240px; height: 320px; }
-  .gallery-item:nth-child(3n+2) { width: 200px; height: 240px; }
-  .gallery-item:nth-child(3n+3) { width: 220px; height: 290px; }
 }
 @media (max-width: 768px) {
   section { padding: 4rem 1.5rem; }
@@ -746,11 +757,7 @@ footer {
   /* Calendar */
   .calendar-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 
-  /* Gallery: override nth-child fixed sizes so images flow naturally */
-  .gallery-item,
-  .gallery-item:nth-child(3n+1),
-  .gallery-item:nth-child(3n+2),
-  .gallery-item:nth-child(3n+3) { width: 100%; height: auto; }
+  /* Gallery */
   .gallery-item img { width: 100%; height: auto; }
 
   /* Contact */
@@ -1034,9 +1041,9 @@ footer {
           <div class="contact-cat-item">
             <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
               {% if cat.label == "Brand Partnerships" %}
-              <img src="images/handshake_icon.png" class="cat-icon-img" alt="">
+              <img src="images/handshake_icon.svg" class="cat-icon-img" alt="">
               {% elif cat.label == "Media Inquiries" %}
-              <img src="images/camera_icon.jpg" class="cat-icon-img" alt="">
+              <img src="images/camera_icon.svg" class="cat-icon-img" alt="">
               {% else %}
               <div class="cat-icon">{{ cat.icon }}</div>
               {% endif %}
