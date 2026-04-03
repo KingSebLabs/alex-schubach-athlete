@@ -1041,11 +1041,11 @@ footer {
           <div class="contact-cat-item">
             <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
               {% if cat.label == "Brand Partnerships" %}
-              <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/handshake_icon.png" alt="" style="width:4.5rem;height:4.5rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+              <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/handshake_icon.svg" alt="" style="width:4.5rem;height:4.5rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
               {% elif cat.label == "Media Inquiries" %}
               <img src="images/camera_icon.svg" class="cat-icon-img" alt="" style="width:1.75rem;height:1.75rem;">
               {% else %}
-              <div class="cat-icon" style="font-size:1.6rem;">{{ cat.icon }}</div>
+              <div style="width:1.75rem;height:1.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.6rem;">{{ cat.icon }}</div>
               {% endif %}
               <div class="cat-label">{{ cat.label }}</div>
               <div class="cat-expand"></div>
