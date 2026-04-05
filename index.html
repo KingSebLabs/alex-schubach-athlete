@@ -429,25 +429,47 @@ section { padding: 6rem 2.5rem; }
 
 
 /* ===== GALLERY ===== */
-.gallery-grid {
-  display: flex;
-  gap: 4px;
-  align-items: flex-start;
+.filmstrip-wrapper {
+  position: relative;
   margin-top: 3rem;
 }
-.gallery-col {
-  flex: 1;
+.filmstrip-arrow {
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  z-index: 10;
+  width: 48px; height: 48px;
+  background: rgba(10,10,10,0.85);
+  border: 1px solid var(--grey-border);
+  color: var(--text-light);
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  font-family: var(--font-display);
+  user-select: none;
+  line-height: 1;
+}
+.filmstrip-arrow:hover { background: var(--accent); border-color: var(--accent); }
+.filmstrip-prev { left: 0; }
+.filmstrip-next { right: 0; }
+.filmstrip-arrow.at-edge { background: rgba(10,10,10,0.55); color: rgba(255,255,255,0.3); }
+.filmstrip-arrow.at-edge:hover { background: rgba(10,10,10,0.85); color: var(--text-light); border-color: var(--grey-border); }
+.filmstrip-track {
   display: flex;
-  flex-direction: column;
   gap: 4px;
+  height: 440px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding: 0 52px;
 }
 .gallery-item {
-  margin-bottom: 0;
+  flex-shrink: 0;
+  height: 100%;
   overflow: hidden; cursor: pointer; position: relative;
-  background: var(--grey-dark); display: block;
+  background: var(--grey-dark);
 }
 .gallery-item img {
-  width: 100%; height: auto; display: block;
+  height: 100%; width: auto; display: block;
   transition: transform 0.45s ease;
 }
 .gallery-item:hover img { transform: scale(1.04); }
@@ -553,10 +575,17 @@ section { padding: 6rem 2.5rem; }
 }
 
 @media (max-width: 768px) {
-  /* Switch gallery to 2-column CSS columns by making col divs transparent */
-  .gallery-grid { display: block; columns: 2; column-gap: 3px; margin-top: 2rem; }
-  .gallery-col { display: contents; }
-  .gallery-item { break-inside: avoid; margin-bottom: 3px; }
+  /* Mobile: native swipe via overflow-x: auto + scroll-snap */
+  .filmstrip-track {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    height: 300px;
+    padding: 0;
+  }
+  .gallery-item { scroll-snap-align: start; }
+  /* Hide desktop arrows on mobile — swipe handles navigation */
+  .filmstrip-arrow { display: none; }
   .lightbox-prev { left: 0.25rem; }
   .lightbox-next { right: 0.25rem; }
 }
@@ -782,8 +811,7 @@ footer {
   /* Calendar */
   .calendar-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
 
-  /* Gallery */
-  .gallery-item img { width: 100%; height: auto; }
+  /* Gallery — filmstrip height already set by 768px breakpoint */
 
   /* Contact */
   .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -1565,19 +1593,17 @@ Beast - 21km · Philippines</div>
       <div class="section-label">Media</div>
       <div class="section-title">GALLERY</div>
     </div>
-    <div class="gallery-grid">
-            <div class="gallery-col">
-        <div class="gallery-item reveal" data-index="0" data-src="images/gallery/01_fuji_trail.jpg"><img src="images/gallery/01_fuji_trail.jpg" alt="Fuji Trail" loading="lazy"></div>
+    <div class="filmstrip-wrapper">
+      <button class="filmstrip-arrow filmstrip-prev at-edge" aria-label="Scroll left">&#8249;</button>
+      <div class="filmstrip-track" id="gallery-track">
+                <div class="gallery-item reveal" data-index="0" data-src="images/gallery/01_fuji_trail.jpg"><img src="images/gallery/01_fuji_trail.jpg" alt="Fuji Trail" loading="lazy"></div>
         <div class="gallery-item reveal" data-index="1" data-src="images/gallery/02_fuji_finish.jpg"><img src="images/gallery/02_fuji_finish.jpg" alt="Fuji Finish" loading="lazy"></div>
-      </div>
-      <div class="gallery-col">
         <div class="gallery-item reveal" data-index="2" data-src="images/gallery/03_kenting_trail.jpg"><img src="images/gallery/03_kenting_trail.jpg" alt="Kenting Trail" loading="lazy"></div>
         <div class="gallery-item reveal" data-index="3" data-src="images/gallery/04_road_race.jpg"><img src="images/gallery/04_road_race.jpg" alt="Road Race" loading="lazy"></div>
-      </div>
-      <div class="gallery-col">
         <div class="gallery-item reveal" data-index="4" data-src="images/gallery/05_track_training.jpg"><img src="images/gallery/05_track_training.jpg" alt="Track Training" loading="lazy"></div>
         <div class="gallery-item reveal" data-index="5" data-src="images/gallery/06_race_finish.jpg"><img src="images/gallery/06_race_finish.jpg" alt="Race Finish" loading="lazy"></div>
       </div>
+      <button class="filmstrip-arrow filmstrip-next" aria-label="Scroll right">&#8250;</button>
     </div>
   </div>
 </section>
@@ -1876,6 +1902,26 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     <div class="cal-modal-text"></div>
   </div>
 </div>
+<script>
+// Gallery filmstrip — arrow navigation
+(function() {
+  const track = document.getElementById('gallery-track');
+  if (!track) return;
+  const prev = track.parentElement.querySelector('.filmstrip-prev');
+  const next = track.parentElement.querySelector('.filmstrip-next');
+  const scrollAmt = 480;
+
+  function updateEdge() {
+    prev.classList.toggle('at-edge', track.scrollLeft <= 1);
+    next.classList.toggle('at-edge', track.scrollLeft + track.clientWidth >= track.scrollWidth - 1);
+  }
+
+  prev.addEventListener('click', () => { track.scrollLeft -= scrollAmt; setTimeout(updateEdge, 420); });
+  next.addEventListener('click', () => { track.scrollLeft += scrollAmt; setTimeout(updateEdge, 420); });
+  track.addEventListener('scroll', updateEdge, { passive: true });
+  updateEdge();
+})();
+</script>
 <script>
 (function() {
   const lightbox = document.getElementById('lightbox');
