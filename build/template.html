@@ -404,50 +404,79 @@ section { padding: 6rem 2.5rem; }
 
 
 /* ===== GALLERY ===== */
-.filmstrip-wrapper {
-  position: relative;
-  margin-top: 3rem;
-}
-.filmstrip-arrow {
-  position: absolute;
-  top: 50%; transform: translateY(-50%);
-  z-index: 10;
-  width: 48px; height: 48px;
-  background: rgba(10,10,10,0.85);
-  border: 1px solid var(--grey-border);
-  color: var(--text-light);
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: background 0.2s, border-color 0.2s, color 0.2s;
-  font-family: var(--font-display);
-  user-select: none;
-  line-height: 1;
-}
-.filmstrip-arrow:hover { background: var(--accent); border-color: var(--accent); }
-.filmstrip-prev { left: 0; }
-.filmstrip-next { right: 0; }
-.filmstrip-arrow.at-edge { background: rgba(10,10,10,0.55); color: rgba(255,255,255,0.3); }
-.filmstrip-arrow.at-edge:hover { background: rgba(10,10,10,0.85); color: var(--text-light); border-color: var(--grey-border); }
-.filmstrip-track {
+/* Gallery — Featured + Thumbnail Rail */
+.gallery-featured-outer {
   display: flex;
   gap: 4px;
-  height: 440px;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
-  padding: 0 52px;
+  margin-top: 3rem;
+  align-items: flex-start;
 }
-.gallery-item {
+.gallery-featured-main {
+  flex: 1;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: height 0.45s cubic-bezier(0.4,0,0.2,1);
+  min-height: 200px;
+}
+.gallery-featured-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+.gallery-featured-img.fading { opacity: 0; }
+.gallery-featured-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(transparent, rgba(0,0,0,0.65));
+  pointer-events: none;
+}
+.gallery-featured-caption {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+}
+.gallery-rail {
+  width: 130px;
   flex-shrink: 0;
-  height: 100%;
-  overflow: hidden; cursor: pointer; position: relative;
-  background: var(--grey-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 72vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--grey-border) transparent;
 }
-.gallery-item img {
-  height: 100%; width: auto; display: block;
-  transition: transform 0.45s ease;
+.gallery-rail::-webkit-scrollbar { width: 3px; }
+.gallery-rail::-webkit-scrollbar-thumb { background: var(--grey-border); border-radius: 2px; }
+.gallery-thumb {
+  flex-shrink: 0;
+  height: 80px;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--grey-border);
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
 }
-.gallery-item:hover img { transform: scale(1.04); }
+.gallery-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.3s ease;
+}
+.gallery-thumb:hover img { transform: scale(1.07); }
+.gallery-thumb.active { border-color: var(--accent); }
+.gallery-thumb.active img { opacity: 0.8; }
 
 /* Lightbox */
 .lightbox {
@@ -550,17 +579,17 @@ section { padding: 6rem 2.5rem; }
 }
 
 @media (max-width: 768px) {
-  /* Mobile: native swipe via overflow-x: auto + scroll-snap */
-  .filmstrip-track {
-    overflow-x: auto;
+  /* Mobile: stack featured above rail, rail becomes horizontal scroll */
+  .gallery-featured-outer { flex-direction: column; gap: 4px; }
+  .gallery-rail {
+    width: 100%; max-height: none;
+    flex-direction: row;
+    overflow-x: auto; overflow-y: hidden;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    height: 300px;
-    padding: 0;
   }
-  .gallery-item { scroll-snap-align: start; }
-  /* Hide desktop arrows on mobile — swipe handles navigation */
-  .filmstrip-arrow { display: none; }
+  .gallery-thumb { flex-shrink: 0; width: 100px; height: 68px; scroll-snap-align: start; }
+  .gallery-featured-main { width: 100%; }
   .lightbox-prev { left: 0.25rem; }
   .lightbox-next { right: 0.25rem; }
 }
@@ -1024,13 +1053,7 @@ footer {
       <div class="section-label">Media</div>
       <div class="section-title">GALLERY</div>
     </div>
-    <div class="filmstrip-wrapper">
-      <button class="filmstrip-arrow filmstrip-prev at-edge" aria-label="Scroll left">&#8249;</button>
-      <div class="filmstrip-track" id="gallery-track">
-        {{ gallery_items }}
-      </div>
-      <button class="filmstrip-arrow filmstrip-next" aria-label="Scroll right">&#8250;</button>
-    </div>
+    {{ gallery_items }}
   </div>
 </section>
 
@@ -1327,23 +1350,61 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
   </div>
 </div>
 <script>
-// Gallery filmstrip — arrow navigation
+// Gallery — Featured + Thumbnail Rail
 (function() {
-  const track = document.getElementById('gallery-track');
-  if (!track) return;
-  const prev = track.parentElement.querySelector('.filmstrip-prev');
-  const next = track.parentElement.querySelector('.filmstrip-next');
-  const scrollAmt = 480;
+  const featMain    = document.getElementById('gallery-featured-main');
+  const featImg     = document.getElementById('gallery-featured-img');
+  const featCaption = document.getElementById('gallery-featured-caption');
+  if (!featMain) return;
 
-  function updateEdge() {
-    prev.classList.toggle('at-edge', track.scrollLeft <= 1);
-    next.classList.toggle('at-edge', track.scrollLeft + track.clientWidth >= track.scrollWidth - 1);
+  const thumbs = Array.from(document.querySelectorAll('.gallery-thumb'));
+  const srcs   = thumbs.map(t => t.dataset.src);
+
+  function computeHeight(natW, natH) {
+    const areaW  = featMain.offsetWidth || featMain.parentElement.offsetWidth - 134;
+    const maxH   = window.innerHeight * 0.72;
+    return Math.min(areaW / (natW / natH), maxH);
   }
 
-  prev.addEventListener('click', () => { track.scrollLeft -= scrollAmt; setTimeout(updateEdge, 420); });
-  next.addEventListener('click', () => { track.scrollLeft += scrollAmt; setTimeout(updateEdge, 420); });
-  track.addEventListener('scroll', updateEdge, { passive: true });
-  updateEdge();
+  function select(thumb) {
+    thumbs.forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+    featImg.classList.add('fading');
+    setTimeout(function() {
+      featImg.src = thumb.dataset.src;
+      featCaption.textContent = thumb.dataset.caption;
+      featMain.style.height = computeHeight(+thumb.dataset.w, +thumb.dataset.h) + 'px';
+      featImg.classList.remove('fading');
+    }, 280);
+  }
+
+  // Set initial height
+  if (thumbs.length) {
+    const first = thumbs[0];
+    featMain.style.height = computeHeight(+first.dataset.w, +first.dataset.h) + 'px';
+  }
+
+  thumbs.forEach(function(t) { t.addEventListener('click', function() { select(t); }); });
+
+  // Open lightbox on featured click
+  featMain.addEventListener('click', function() {
+    const active = document.querySelector('.gallery-thumb.active');
+    if (active) {
+      const idx = thumbs.indexOf(active);
+      const items = document.querySelectorAll('.gallery-item[data-src]');
+      if (items.length && typeof openAt === 'function') openAt(idx);
+    }
+  });
+
+  // Recompute on resize
+  var resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function() {
+      const active = document.querySelector('.gallery-thumb.active');
+      if (active) featMain.style.height = computeHeight(+active.dataset.w, +active.dataset.h) + 'px';
+    }, 150);
+  });
 })();
 </script>
 <script>
@@ -1364,6 +1425,7 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     lightbox.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
+  window.openAt = openAt;
   function closeLightbox() {
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden', 'true');

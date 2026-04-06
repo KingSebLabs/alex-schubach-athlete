@@ -201,18 +201,56 @@ def optimize_images():
 
 
 def build_gallery_html() -> str:
-    """Scan images/gallery/ and build flat gallery item HTML for the filmstrip."""
+    """Scan images/gallery/ and build featured + thumbnail rail HTML."""
     images = sorted(GALLERY_DIR.glob("*.jpg")) + sorted(GALLERY_DIR.glob("*.jpeg")) + sorted(GALLERY_DIR.glob("*.png"))
     if not images:
         return "<!-- No gallery images found -->"
-    items = []
-    for idx, img in enumerate(images):
-        alt = img.stem.lstrip("0123456789").strip("_- ").replace("_", " ").title()
-        items.append(
-            f'        <div class="gallery-item reveal" data-index="{idx}" data-src="images/gallery/{img.name}">'
-            f'<img src="images/gallery/{img.name}" alt="{alt}" loading="lazy"></div>'
+
+    # Read dimensions for all images (needed for dynamic height calculation in JS)
+    meta = []
+    for img_path in images:
+        try:
+            with Image.open(img_path) as im:
+                w, h = im.size
+        except Exception:
+            w, h = 800, 600
+        alt = img_path.stem.lstrip("0123456789").strip("_- ").replace("_", " ").title()
+        meta.append({"path": img_path, "alt": alt, "w": w, "h": h})
+
+    first = meta[0]
+    # Featured hero
+    featured = (
+        f'    <div class="gallery-featured-outer">\n'
+        f'      <div class="gallery-featured-main" id="gallery-featured-main">\n'
+        f'        <img class="gallery-featured-img" id="gallery-featured-img"'
+        f' src="images/gallery/{first["path"].name}" alt="{first["alt"]}">\n'
+        f'        <div class="gallery-featured-overlay">'
+        f'<div class="gallery-featured-caption" id="gallery-featured-caption">{first["alt"]}</div></div>\n'
+        f'      </div>\n'
+    )
+
+    # Thumbnail rail
+    thumbs = ['      <div class="gallery-rail">']
+    for idx, m in enumerate(meta):
+        active = ' active' if idx == 0 else ''
+        thumbs.append(
+            f'        <div class="gallery-thumb{active}" data-index="{idx}"'
+            f' data-src="images/gallery/{m["path"].name}"'
+            f' data-caption="{m["alt"]}" data-w="{m["w"]}" data-h="{m["h"]}">'
+            f'<img src="images/gallery/{m["path"].name}" alt="{m["alt"]}" loading="lazy"></div>'
         )
-    return "\n".join(items)
+    thumbs.append('      </div>')
+
+    # Hidden items list for lightbox (preserves existing lightbox JS query)
+    hidden = ['      <div style="display:none" aria-hidden="true">']
+    for idx, m in enumerate(meta):
+        hidden.append(
+            f'        <div class="gallery-item" data-index="{idx}" data-src="images/gallery/{m["path"].name}">'
+            f'<img src="" alt="{m["alt"]}"></div>'
+        )
+    hidden.append('      </div>')
+
+    return featured + "\n".join(thumbs) + "\n" + "\n".join(hidden) + "\n    </div>"
 
 
 # ─── Excel/Sheets column name helpers ────────────────────────────────────────
