@@ -14,10 +14,10 @@ hero:
 about:
   heading: "MY STORY"
   paragraphs:
-    - "I've been an <strong>athlete</strong> for as long as I can remember. It started in the pool as a competitive swimmer and sprinter, then onto the track in high school where middle distance is where I made my mark. That foundation built something that has never left me - focus, discipline, consistency, and a commitment to giving everything I do my <strong>best effort</strong>."
-    - "After ten years in the corporate grind, I'm back competing and doing what I really enjoy. Now, my focus is <strong>endurance</strong> - trail running, road racing, and hybrid events like Hyrox and Spartan. I'm drawn to environments that demand more, both physically and mentally. There's nothing quite like finding your <strong>limit</strong> and then pushing right past it."
-    - "My approach is <strong>simple</strong>. Show up everyday, do the work, and find out what's actually possible. The outcome matters, but what drives me is the <strong>process</strong> - the relentless pursuit of going beyond what I thought I was capable of."
-    - "Training is not something I switch on and off. It's how I live. Every session, every race, every day is an opportunity to do and be my best, and raise the <strong>standard</strong>."
+    - "<strong>I've been an athlete</strong> for as long as I can remember. It started in the pool as a competitive swimmer and sprinter, then onto the track in high school where middle distance is where I made my mark. That foundation built something that has never left me - focus, discipline, consistency, and a <strong>commitment to giving everything</strong> I do my best effort."
+    - "After ten years in the corporate grind, I'm back competing and doing what I really enjoy. Now, my <strong>focus is endurance</strong> - trail running, road racing, and hybrid events like Hyrox and Spartan. I'm drawn to <strong>environments that demand more</strong>, both physically and mentally. There's nothing quite like finding your limit and then pushing right past it."
+    - "My <strong>approach is simple</strong>. Show up everyday, do the work, and find out what's actually possible. The outcome matters, but <strong>what drives me is the process</strong> - the relentless pursuit of going beyond what I thought I was capable of."
+    - "Training is not something I switch on and off. It's how I live. Every session, every race, every day is an <strong>opportunity to do and be my best</strong>, and raise the standard."
   stats:
     - number: "JP"
       label: "Based in Japan"
@@ -45,7 +45,7 @@ values:
 
 # ─── MISSION ─────────────────────────────────────────────────────────────────
 mission:
-  quote: "My mission isn't just to inspire people to be active. It's to show that when <span>people commit fully, they're capable of more</span> than they realise."
+  quote: "My mission isn't just to inspire people to be active. It's to show that <span>when people commit fully, they're capable of more</span> than they realise."
   body: "Through my journey, I want to encourage people to find what they're passionate about, realise their potential, and push beyond what they think is possible."
   pillars:
     - "Find your passion"
