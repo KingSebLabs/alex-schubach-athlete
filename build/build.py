@@ -443,8 +443,10 @@ def build_calendar_card_html(race: dict) -> str:
 
     desc = race.get("description", "")
     if desc:
-        # Strip HTML tags for plain-text use in the calendar preview and modal data attribute
-        desc_plain = re.sub(r'<[^>]+>', '', desc)
+        # Strip HTML tags and unescape entities to get clean plain text for the
+        # calendar preview and modal data-desc attribute. The modal uses
+        # textContent (not innerHTML) so we need literal characters, not entities.
+        desc_plain = html.unescape(re.sub(r'<[^>]+>', '', desc))
         desc_html = f'        <div class="cal-desc">{html.escape(desc_plain)}</div>\n'
         data_attrs = (
             f' data-desc="{html.escape(desc_plain)}"'
