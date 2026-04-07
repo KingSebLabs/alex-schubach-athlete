@@ -65,19 +65,19 @@ indices:
 # ─── CONTACT ─────────────────────────────────────────────────────────────────
 contact:
   heading: "LET'S WORK<br>TOGETHER"
-  body: "Whether it's a brand partnership, media opportunity, or collaboration — I'd love to hear from you."
+  body: "Whether it's a brand partnership, media opportunity, or collaboration - I'd love to hear from you."
   # Formspree endpoint — sign up at formspree.io and paste your form ID here
   formspree_id: "mjgazkbq"
   categories:
     - icon: "🤝"
       label: "Brand Partnerships"
-      desc: "I work with brands built on performance, quality, and intent. I'm specifically interested in partnerships across sports & fitness gear, outdoor & adventure, health & nutrition, and lifestyle & apparel. I value brands that are pushing boundaries, not following trends. If your product can hold up under real training, competition, and daily use, that's where I see alignment. I'm focused on long-term partnerships that are integrated, authentic, and built through performance, not just promotion."
+      desc: "I work with brands that <strong>value performance, quality, and are built with purpose.</strong> My focus is on partnerships across sports and fitness, outdoor and adventure, health and nutrition, and lifestyle and apparel.<br><br>I align with products that are built to perform and stand up to the demands of training, competition, and daily life. The strongest partnerships are those with <strong>genuine alignment</strong>, where the product has a clear place in how I train, live, and compete.<br><br>I'm focused on <strong>building long-term partnerships</strong> that are credible, considered, and built on real use, where both sides create value and grow together over time."
     - icon: "📸"
       label: "Media Inquiries"
-      desc: "I'm open to media opportunities that focus on high performance, endurance sport, and the reality of pushing physical and mental limits. This includes interviews, features, podcasts, and performance-driven content. I'm interested in conversations that go beyond surface level, into training, discipline, mindset, and what it actually takes to operate at a high level while building something meaningful."
+      desc: "I'm open to media opportunities focused on high performance, endurance sport, and the realities of pushing physical and mental limits. This includes interviews, features, podcasts, and performance-driven content.<br><br>I'm particularly interested in <strong>conversations that go beyond surface level</strong>, exploring training, discipline, mindset, and what it takes to operate at a high level while building something meaningful. A key part of my work is showing what's possible when people fully commit, and <strong>encouraging others</strong> to push beyond what they think they're capable of."
     - icon: "✦"
       label: "Collaborations"
-      desc: "I collaborate with athletes, creators, and teams who are serious about what they do. Whether it's performance, storytelling, or building something in sport, travel, or culture, I'm interested in projects that have intent behind them. If you're pushing limits, creating at a high level, or building something with purpose, I'm open to working together."
+      desc: "I collaborate with <strong>athletes, creators, and teams</strong> who take their work seriously. This can be across performance, storytelling, or building something within sport, travel, or culture.<br><br>I'm interested in projects that are driven by <strong>a clear purpose and executed to a high standard</strong>. If you're pushing limits, creating at a high level, or building something meaningful, I'm keen to work together!"
 
 # ─── SOCIAL LINKS ────────────────────────────────────────────────────────────
 social:
