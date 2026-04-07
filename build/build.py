@@ -443,9 +443,11 @@ def build_calendar_card_html(race: dict) -> str:
 
     desc = race.get("description", "")
     if desc:
-        desc_html = f'        <div class="cal-desc">{html.escape(desc)}</div>\n'
+        # Strip HTML tags for plain-text use in the calendar preview and modal data attribute
+        desc_plain = re.sub(r'<[^>]+>', '', desc)
+        desc_html = f'        <div class="cal-desc">{html.escape(desc_plain)}</div>\n'
         data_attrs = (
-            f' data-desc="{html.escape(desc)}"'
+            f' data-desc="{html.escape(desc_plain)}"'
             f' data-race="{html.escape(race["name"].upper())}"'
             f' data-date="{html.escape(race["date"])}"'
             f' data-details="{html.escape(details)}"'
