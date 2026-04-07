@@ -63,7 +63,8 @@ def _fmt_cell(v) -> str:
 # Columns whose native Excel bold formatting should render as <strong> in HTML
 RICH_TEXT_COLS = {
     "COMMENTS PRE", "COMMENTS POST", "GOING IN", "LOOKING BACK",
-    "PRE RACE", "POST RACE"
+    "PRE RACE", "POST RACE",
+    "RACE DESCRIPTION", "DESCRIPTION",
 }
 
 
@@ -389,13 +390,11 @@ def build_race_card_html(race: dict) -> str:
     # Narrative body
     body_parts = []
     if race.get("description"):
-        # html.escape runs first so literal '<', '>', '&' are neutralised before
-        # _fmt_narrative applies bold (**word**→<strong>) and \n→<br>.
-        # Asterisks are not affected by html.escape, so markdown bold still works.
+        # Value is already escaped + bold-formatted by _fmt_rich_cell at load time.
         body_parts.append(
             f'              <div class="race-narrative">\n'
             f'                <div class="race-narrative-label">Race Description</div>\n'
-            f'                <p>{_fmt_narrative(html.escape(race["description"]))}</p>\n'
+            f'                <p>{race["description"]}</p>\n'
             f'              </div>'
         )
     if race["comments_pre"]:
