@@ -535,13 +535,13 @@ def build_seo_tags(site: dict, social: dict) -> str:
   <!-- Open Graph -->
   <meta property="og:title" content="{title}">
   <meta property="og:description" content="{description}">
-  <meta property="og:image" content="{base_url}/images/about.jpg">
+  <meta property="og:image" content="{base_url}/images/hero.jpg">
   <meta property="og:url" content="{base_url}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{description}">
-  <meta name="twitter:image" content="{base_url}/images/about.jpg">'''
+  <meta name="twitter:image" content="{base_url}/images/hero.jpg">'''
 
     same_as = [s for s in [instagram, strava] if s and s != "#"]
     same_as_json = ", ".join(f'"{s}"' for s in same_as)
