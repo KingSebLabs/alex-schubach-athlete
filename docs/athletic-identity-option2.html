@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Athletic Identity — Option 2: Impact Statement</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-dark:     #0a0a0a;
+  --bg-light:    #f5f3f0;
+  --text-light:  #f5f3f0;
+  --text-dark:   #0a0a0a;
+  --accent:      #e8490f;
+  --accent-glow: #ff6b35;
+  --grey-mid:    #888;
+  --grey-dark:   #1a1a1a;
+  --grey-border: #2a2a2a;
+  --font-display:'Bebas Neue', sans-serif;
+  --font-body:   'Instrument Sans', sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: #070707;
+  color: var(--text-light);
+}
+
+/* ── CONTEXT BAR ── */
+.demo-context {
+  background: #111;
+  border-bottom: 1px solid var(--grey-border);
+  padding: 0.6rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey-mid);
+}
+.demo-context strong { color: var(--accent); }
+.demo-context-pill {
+  margin-left: auto;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  padding: 0.3rem 0.9rem;
+  text-transform: uppercase;
+}
+
+/* ── IMPACT STATEMENT SECTION ── */
+#about {
+  position: relative;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-dark);
+}
+
+/* Full-bleed background photo */
+.about-photo-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.about-photo-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+/* Gradient overlay — heavy bottom for text legibility */
+.about-photo-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10,10,10,0.15) 0%,
+    rgba(10,10,10,0.55) 40%,
+    rgba(10,10,10,0.88) 68%,
+    #0a0a0a 100%
+  );
+}
+
+/* Content sits above bg */
+.about-content {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end; /* push content to right */
+  padding: 6rem 2.5rem 0;
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── SECTION LABEL / TITLE ── */
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.section-label::before {
+  content: '';
+  width: 32px;
+  height: 2px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  margin-bottom: 2.5rem;
+  max-width: 520px;
+  width: 100%;
+}
+
+/* ── BODY TEXT ── */
+.about-body {
+  max-width: 520px;
+  width: 100%;
+  margin-bottom: 4rem;
+}
+.about-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: rgba(245,243,240,0.72);
+  margin-bottom: 1.25rem;
+}
+.about-body p:last-child { margin-bottom: 0; }
+
+/* ── STAT STRIP (bottom bar) ── */
+.about-stat-strip {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: rgba(10,10,10,0.96);
+  border-top: 1px solid var(--grey-border);
+  display: flex;
+  align-items: stretch;
+}
+
+.stat-strip-item {
+  flex: 1;
+  padding: 1.75rem 2rem;
+  border-right: 1px solid var(--grey-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.stat-strip-item:last-child { border-right: none; }
+
+.stat-strip-number {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--text-light);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.stat-strip-item.text-stat .stat-strip-number {
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding-top: 0.3rem;
+}
+.stat-strip-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey-mid);
+}
+
+/* accent bar on top of each strip item on hover */
+.stat-strip-item {
+  transition: background 0.25s;
+}
+.stat-strip-item:hover {
+  background: rgba(232,73,15,0.06);
+}
+
+.next-section-hint {
+  background: #111;
+  border-top: 1px solid var(--grey-border);
+  padding: 3rem 2.5rem;
+  text-align: center;
+}
+.next-section-hint span {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .about-stat-strip { flex-direction: column; }
+  .stat-strip-item { border-right: none; border-bottom: 1px solid var(--grey-border); }
+  .stat-strip-item:last-child { border-bottom: none; }
+  .about-content { padding: 5rem 1.5rem 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-context">
+  <strong>Option 2</strong>
+  <span>·</span>
+  <span>Impact Statement — Full-Width Photo Backdrop</span>
+  <div class="demo-context-pill">Demo</div>
+</div>
+
+<!-- ATHLETIC IDENTITY SECTION -->
+<section id="about">
+
+  <!-- Background photo -->
+  <div class="about-photo-bg">
+    <img src="/Users/kingseb/projects/Athletics%20research%20%26%20career%20project/Gallery/12%20default_1.31.1.png" alt="">
+  </div>
+
+  <!-- Foreground content -->
+  <div class="about-content">
+    <div class="section-label">Identity</div>
+    <div class="section-title">ATHLETIC<br>IDENTITY</div>
+
+    <div class="about-body">
+      <p>I've always been an athlete. From the pool to the track, that early foundation built the values I live by today: discipline, consistency, and full commitment.</p>
+      <p>After stepping away, I returned to competition with a focus on endurance across trail, road, and hybrid racing.</p>
+      <p>I'm drawn to challenges that physically and mentally demand more. My approach is simple: show up, do the work, and push beyond what I thought was possible.</p>
+      <p>For me, performance is built in the process, every day. That standard doesn't change.</p>
+    </div>
+  </div>
+
+  <!-- Stat strip — anchored to bottom of section -->
+  <div class="about-stat-strip">
+    <div class="stat-strip-item text-stat">
+      <div class="stat-strip-number">JP</div>
+      <div class="stat-strip-label">Based in Japan</div>
+    </div>
+    <div class="stat-strip-item">
+      <div class="stat-strip-number">10+</div>
+      <div class="stat-strip-label">Years Competing</div>
+    </div>
+    <div class="stat-strip-item text-stat">
+      <div class="stat-strip-number">Hybrid</div>
+      <div class="stat-strip-label">Athlete Style</div>
+    </div>
+    <div class="stat-strip-item">
+      <div class="stat-strip-number">∞</div>
+      <div class="stat-strip-label">Potential</div>
+    </div>
+  </div>
+
+</section>
+
+<div class="next-section-hint">
+  <span>↓ &nbsp; MY VALUES follows below</span>
+</div>
+
+</body>
+</html>

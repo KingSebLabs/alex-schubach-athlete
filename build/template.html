@@ -162,23 +162,27 @@ section { padding: 6rem 2.5rem; }
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
 .about-text p { font-size: 1rem; line-height: 1.8; color: var(--grey-mid); margin-bottom: 1.5rem; }
 .about-text p strong { color: var(--text-light); font-weight: 600; }
-.about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; }
+.about-rule { border: none; border-top: 1px solid var(--grey-border); margin: 2rem 0 2.25rem; }
+.about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--grey-border); }
 .stat-item { border-left: 2px solid var(--accent); padding-left: 1rem; }
 .stat-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--text-light); line-height: 1; }
 /* Bebas Neue has no ∞ glyph — use body font for last stat so ∞ renders consistently across platforms */
 .stat-item:last-child .stat-number { font-family: var(--font-body); }
 .stat-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey-mid); margin-top: 0.3rem; }
 .about-image-col {
-  position: relative; aspect-ratio: 3/4; overflow: hidden;
-  background: linear-gradient(135deg, #1c0f0a, #2a1a12);
+  position: relative; overflow: hidden;
+  background: var(--bg-dark);
+  align-self: stretch;
 }
-.about-image-col .img-placeholder {
-  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-mid);
+.about-image-col img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center center;
+  display: block;
 }
 
 /* ===== VALUES ===== */
-.values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 3rem; }
+.values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 3rem; align-items: stretch; }
 .value-card {
   background: var(--bg-light); padding: 2.5rem 2rem 4rem; position: relative; overflow: hidden;
   transition: background 0.4s, border-color 0.3s; border: 1px solid #e0ddd9;
@@ -218,15 +222,27 @@ section { padding: 6rem 2.5rem; }
 .mission-quote span { color: var(--accent); }
 .mission-text { font-size: 1rem; line-height: 1.9; color: #555; max-width: 600px; }
 .mission-pillars {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; max-width: 600px;
+  display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0; max-width: 600px;
 }
+.mission-pillars-heading {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--accent); margin-top: 3rem; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.mission-pillars-heading::before { content: ''; width: 24px; height: 2px; background: var(--accent); }
 .pillar {
   display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: #444;
 }
 .pillar-icon { color: var(--accent); font-size: 1.1rem; flex-shrink: 0; }
+.mission-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0;
+}
 .mission-qt-wrapper {
   position: relative;
-  align-self: center;
+  align-self: flex-start;
   /* Extra margin so orange shadow isn't clipped */
   margin-bottom: 10px;
   margin-right: 10px;
@@ -905,12 +921,12 @@ footer {
   <div class="hero-bg"></div>
   <div class="hero-grain"></div>
   <div class="hero-content">
-    <div class="hero-tag">{{ hero.tag }}</div>
     <h1>{{ hero.name_line1 }}<br>{{ hero.name_line2 }}</h1>
+    <div class="hero-tag">{{ hero.tag }}</div>
     <p class="hero-subtitle">{{ hero.subtitle }}</p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Get in Touch ↗</a>
-      <a href="#results" class="btn-outline">View Results</a>
+      <a href="#contact" class="btn-primary">Partner With Me ↗</a>
+      <a href="#results" class="btn-outline">View Performance</a>
     </div>
   </div>
   <div class="hero-scroll"><span class="hero-scroll-text">Scroll to explore</span></div>
@@ -921,8 +937,9 @@ footer {
   <div class="container">
     <div class="about-grid">
       <div class="about-text reveal">
-        <div class="section-label">About</div>
+        <div class="section-label">Identity</div>
         <div class="section-title">{{ about.heading }}</div>
+        <hr class="about-rule">
         {% for para in about.paragraphs %}
         <p>{{ para }}</p>
         {% endfor %}
@@ -936,7 +953,7 @@ footer {
         </div>
       </div>
       <div class="about-image-col reveal" style="animation-delay:0.2s">
-        <img src="images/about.jpg" alt="Alex Schubach" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;">
+        <img src="images/about.jpg" alt="Alex Schubach">
       </div>
     </div>
   </div>
@@ -970,15 +987,20 @@ footer {
         <div class="section-title" style="color:var(--text-dark)">WHY I DO THIS</div>
         <div class="mission-quote">{{ mission.quote }}</div>
         <p class="mission-text">{{ mission.body }}</p>
+      </div>
+      <div class="mission-right">
+        <div class="mission-qt-wrapper">
+          <div class="mission-quote-tile">
+            <blockquote class="mission-qt-text"><span class="mission-qt-mark open">"</span>Who you become in the pursuit of your goals is the actual goal<span class="mission-qt-mark close">"</span></blockquote>
+          </div>
+        </div>
+        {% if mission.pillars_heading %}
+        <div class="mission-pillars-heading">{{ mission.pillars_heading }}</div>
+        {% endif %}
         <div class="mission-pillars">
           {% for pillar in mission.pillars %}
           <div class="pillar"><span class="pillar-icon">→</span> {{ pillar }}</div>
           {% endfor %}
-        </div>
-      </div>
-      <div class="mission-qt-wrapper">
-        <div class="mission-quote-tile">
-          <blockquote class="mission-qt-text"><span class="mission-qt-mark open">"</span>Who you become in the pursuit of your goals is the actual goal<span class="mission-qt-mark close">"</span></blockquote>
         </div>
       </div>
     </div>
@@ -1001,7 +1023,7 @@ footer {
           <div class="index-badge-value">{{ indices.utmb }}</div>
         </div>
       </div>
-      <div class="index-badge">
+      <div class="index-badge" style="display:none">
         <div class="index-badge-logo">ITRA</div>
         <div class="index-badge-body">
           <div class="index-badge-label">ITRA Index</div>
@@ -1022,7 +1044,6 @@ footer {
             <div class="index-badge-road-row"><span class="index-badge-road-dist">Marathon</span><span class="index-badge-road-time">{{ indices.road_marathon or "—" }}</span></div>
             <div class="index-badge-road-row"><span class="index-badge-road-dist">Half</span><span class="index-badge-road-time">{{ indices.road_half or "—" }}</span></div>
             <div class="index-badge-road-row"><span class="index-badge-road-dist">10 km</span><span class="index-badge-road-time">{{ indices.road_10k or "—" }}</span></div>
-            <div class="index-badge-road-row"><span class="index-badge-road-dist">5 km</span><span class="index-badge-road-time">{{ indices.road_5k or "—" }}</span></div>
           </div>
         </div>
       </div>

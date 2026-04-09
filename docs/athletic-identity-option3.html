@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Athletic Identity — Option 3: Badge Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-dark:     #0a0a0a;
+  --bg-light:    #f5f3f0;
+  --text-light:  #f5f3f0;
+  --text-dark:   #0a0a0a;
+  --accent:      #e8490f;
+  --accent-glow: #ff6b35;
+  --grey-mid:    #888;
+  --grey-dark:   #1a1a1a;
+  --grey-border: #2a2a2a;
+  --font-display:'Bebas Neue', sans-serif;
+  --font-body:   'Instrument Sans', sans-serif;
+}
+
+body { font-family: var(--font-body); background: #070707; color: var(--text-light); }
+
+.demo-context {
+  background: #111; border-bottom: 1px solid var(--grey-border);
+  padding: 0.6rem 2rem; display: flex; align-items: center; gap: 1rem;
+  font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-mid);
+}
+.demo-context strong { color: var(--accent); }
+.demo-context-pill {
+  margin-left: auto; background: var(--accent); color: #fff;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; padding: 0.3rem 0.9rem; text-transform: uppercase;
+}
+
+/* ── SECTION WRAPPER ── */
+#about { background: var(--bg-dark); }
+
+/* Section header — full width, padded */
+.about-header {
+  padding: 7rem 2.5rem 4rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em;
+  text-transform: uppercase; color: var(--accent);
+  margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem;
+}
+.section-label::before { content: ''; width: 32px; height: 2px; background: var(--accent); flex-shrink: 0; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 1; letter-spacing: 0.02em;
+}
+
+/* ── BADGE TABLE ── */
+/* Each row is a full-width 50/50 block — no container padding, edge-to-edge */
+.badge-table {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--grey-border);
+}
+
+/* ── BADGE ROW ── */
+.badge-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 480px;
+  border-bottom: 1px solid var(--grey-border);
+}
+
+/* ── CONTENT CELL ── */
+.badge-cell-text {
+  padding: 4rem 4rem 4rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid var(--grey-border);
+}
+
+/* Row 2: image left — text on right, no right border on image */
+.badge-row--flip .badge-cell-text {
+  border-right: none;
+  border-left: 1px solid var(--grey-border);
+  padding: 4rem 2.5rem 4rem 4rem;
+  order: 2;
+}
+.badge-row--flip .badge-cell-img { order: 1; }
+
+/* Row badge number */
+.badge-num {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  color: var(--accent);
+  opacity: 0.12;
+  line-height: 1;
+  margin-bottom: -1rem; /* pull title up closer */
+  letter-spacing: 0.02em;
+}
+
+.badge-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.75rem;
+}
+
+.badge-body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--grey-mid);
+  margin-bottom: 1.25rem;
+}
+.badge-body p:last-child { margin-bottom: 0; }
+
+/* ── VALUE BULLETS ── */
+.value-list {
+  list-style: none;
+  margin: 0.5rem 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.value-list li {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-size: 0.85rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-light);
+}
+.value-list li::before {
+  content: ''; width: 18px; height: 2px; background: var(--accent); flex-shrink: 0;
+}
+
+/* ── STATS (row 2 text cell) ── */
+.badge-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--grey-border);
+}
+.stat-item { border-left: 2px solid var(--accent); padding-left: 1rem; }
+.stat-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--text-light); line-height: 1; }
+.stat-item.text-stat .stat-number { font-family: var(--font-body); font-size: 1.3rem; font-weight: 700; letter-spacing: 0.06em; }
+.stat-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey-mid); margin-top: 0.3rem; }
+
+/* ── IMAGE CELL ── */
+.badge-cell-img {
+  position: relative;
+  overflow: hidden;
+  background: var(--grey-dark);
+}
+.badge-cell-img img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: center 15%;
+  display: block; position: absolute; inset: 0;
+}
+
+/* ── FOOTER ROW ── */
+.next-section-hint {
+  background: #111; border-top: 1px solid var(--grey-border);
+  padding: 3rem 2.5rem; text-align: center;
+}
+.next-section-hint span {
+  font-size: 0.6rem; font-weight: 600; letter-spacing: 0.3em; text-transform: uppercase; color: #333;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .about-header { padding: 5rem 1.5rem 3rem; }
+  .badge-row { grid-template-columns: 1fr; }
+  .badge-row--flip .badge-cell-text { order: 2; border-left: none; padding: 3rem 1.5rem; }
+  .badge-row--flip .badge-cell-img { order: 1; }
+  .badge-cell-text { padding: 3rem 1.5rem; border-right: none; }
+  .badge-cell-img { min-height: 300px; }
+  .badge-cell-img img { position: static; height: 300px; }
+  .badge-stats { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="demo-context">
+  <strong>Option 3</strong>
+  <span>·</span>
+  <span>Badge Table — Two-Panel Layout</span>
+  <div class="demo-context-pill">Demo</div>
+</div>
+
+<section id="about">
+
+  <!-- Section header -->
+  <div class="about-header">
+    <div class="section-label">Identity</div>
+    <div class="section-title">ATHLETIC IDENTITY</div>
+  </div>
+
+  <!-- Badge table -->
+  <div class="badge-table">
+
+    <!-- ROW 1: Text left | Image right -->
+    <div class="badge-row">
+      <div class="badge-cell-text">
+        <div class="badge-num">01</div>
+        <div class="badge-title">THE FOUNDATION</div>
+        <div class="badge-body">
+          <p>I've always been an athlete. From the pool to the track, that early foundation built the values I live by today:</p>
+          <ul class="value-list">
+            <li>Discipline</li>
+            <li>Consistency</li>
+            <li>Full commitment</li>
+          </ul>
+          <p>After stepping away, I returned to competition with a focus on endurance across trail, road, and hybrid racing.</p>
+        </div>
+      </div>
+      <div class="badge-cell-img">
+        <img src="/Users/kingseb/projects/Athletics%20research%20%26%20career%20project/Gallery/3_Updated%207.4.26.jpg" alt="Alex Schubach at the finish line">
+      </div>
+    </div>
+
+    <!-- ROW 2: Image left | Text right -->
+    <div class="badge-row badge-row--flip">
+      <div class="badge-cell-img">
+        <img src="/Users/kingseb/projects/Athletics%20research%20%26%20career%20project/Gallery/4_Updated%207.4.26.jpg" alt="Alex Schubach — night track training">
+      </div>
+      <div class="badge-cell-text">
+        <div class="badge-num">02</div>
+        <div class="badge-title">THE STANDARD</div>
+        <div class="badge-body">
+          <p>I'm drawn to challenges that physically and mentally demand more. My approach is simple: show up, do the work, and push beyond what I thought was possible.</p>
+          <p>For me, performance is built in the process, every day. That standard doesn't change.</p>
+        </div>
+        <div class="badge-stats">
+          <div class="stat-item text-stat">
+            <div class="stat-number">JP</div>
+            <div class="stat-label">Based in Japan</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">10+</div>
+            <div class="stat-label">Years Competing</div>
+          </div>
+          <div class="stat-item text-stat">
+            <div class="stat-number">Hybrid</div>
+            <div class="stat-label">Athlete Style</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Potential</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /badge-table -->
+</section>
+
+<div class="next-section-hint">
+  <span>↓ &nbsp; MY VALUES follows below</span>
+</div>
+
+</body>
+</html>

@@ -187,23 +187,27 @@ section { padding: 6rem 2.5rem; }
 .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
 .about-text p { font-size: 1rem; line-height: 1.8; color: var(--grey-mid); margin-bottom: 1.5rem; }
 .about-text p strong { color: var(--text-light); font-weight: 600; }
-.about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; }
+.about-rule { border: none; border-top: 1px solid var(--grey-border); margin: 2rem 0 2.25rem; }
+.about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 3rem; padding-top: 2.5rem; border-top: 1px solid var(--grey-border); }
 .stat-item { border-left: 2px solid var(--accent); padding-left: 1rem; }
 .stat-number { font-family: var(--font-display); font-size: 2.5rem; color: var(--text-light); line-height: 1; }
 /* Bebas Neue has no ∞ glyph — use body font for last stat so ∞ renders consistently across platforms */
 .stat-item:last-child .stat-number { font-family: var(--font-body); }
 .stat-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey-mid); margin-top: 0.3rem; }
 .about-image-col {
-  position: relative; aspect-ratio: 3/4; overflow: hidden;
-  background: linear-gradient(135deg, #1c0f0a, #2a1a12);
+  position: relative; overflow: hidden;
+  background: var(--bg-dark);
+  align-self: stretch;
 }
-.about-image-col .img-placeholder {
-  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-mid);
+.about-image-col img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain; object-position: center center;
+  display: block;
 }
 
 /* ===== VALUES ===== */
-.values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 3rem; }
+.values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin-top: 3rem; align-items: stretch; }
 .value-card {
   background: var(--bg-light); padding: 2.5rem 2rem 4rem; position: relative; overflow: hidden;
   transition: background 0.4s, border-color 0.3s; border: 1px solid #e0ddd9;
@@ -243,15 +247,27 @@ section { padding: 6rem 2.5rem; }
 .mission-quote span { color: var(--accent); }
 .mission-text { font-size: 1rem; line-height: 1.9; color: #555; max-width: 600px; }
 .mission-pillars {
-  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; max-width: 600px;
+  display: grid; grid-template-columns: 1fr; gap: 0.75rem; margin-top: 0; max-width: 600px;
 }
+.mission-pillars-heading {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.35em; text-transform: uppercase;
+  color: var(--accent); margin-top: 3rem; margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 1rem;
+}
+.mission-pillars-heading::before { content: ''; width: 24px; height: 2px; background: var(--accent); }
 .pillar {
   display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: #444;
 }
 .pillar-icon { color: var(--accent); font-size: 1.1rem; flex-shrink: 0; }
+.mission-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 0;
+}
 .mission-qt-wrapper {
   position: relative;
-  align-self: center;
+  align-self: flex-start;
   /* Extra margin so orange shadow isn't clipped */
   margin-bottom: 10px;
   margin-right: 10px;
@@ -930,12 +946,12 @@ footer {
   <div class="hero-bg"></div>
   <div class="hero-grain"></div>
   <div class="hero-content">
-    <div class="hero-tag">Endurance Athlete · Trail Runner · Hyrox Competitor</div>
     <h1>ALEX<br>SCHUBACH</h1>
-    <p class="hero-subtitle">Pushing the limits of human potential through endurance, discipline, and adventure.</p>
+    <div class="hero-tag">Build on discipline. Proven through performance.</div>
+    <p class="hero-subtitle">Endurance athlete, trail runner, HYROX competitor operating at a high-performance standard across training, competition, and content.</p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Get in Touch ↗</a>
-      <a href="#results" class="btn-outline">View Results</a>
+      <a href="#contact" class="btn-primary">Partner With Me ↗</a>
+      <a href="#results" class="btn-outline">View Performance</a>
     </div>
   </div>
   <div class="hero-scroll"><span class="hero-scroll-text">Scroll to explore</span></div>
@@ -946,16 +962,17 @@ footer {
   <div class="container">
     <div class="about-grid">
       <div class="about-text reveal">
-        <div class="section-label">About</div>
-        <div class="section-title">MY STORY</div>
+        <div class="section-label">Identity</div>
+        <div class="section-title">ATHLETIC IDENTITY</div>
+        <hr class="about-rule">
         
-        <p><strong>I've been an athlete</strong> for as long as I can remember. It started in the pool as a competitive swimmer and sprinter, then onto the track in high school where middle distance is where I made my mark. That foundation built something that has never left me - focus, discipline, consistency, and a <strong>commitment to giving everything</strong> I do my best effort.</p>
+        <p>I've always been an athlete. From the pool to the track, that early foundation built the values I live by today: <strong>discipline</strong>, <strong>consistency</strong>, and <strong>full commitment</strong>.</p>
         
-        <p>After ten years in the corporate grind, I'm back competing and doing what I really enjoy. Now, my <strong>focus is endurance</strong> - trail running, road racing, and hybrid events like Hyrox and Spartan. I'm drawn to <strong>environments that demand more</strong>, both physically and mentally. There's nothing quite like finding your limit and then pushing right past it.</p>
+        <p>After stepping away, I returned to competition with a focus on endurance across trail, road, and hybrid racing.</p>
         
-        <p>My <strong>approach is simple</strong>. Show up everyday, do the work, and find out what's actually possible. The outcome matters, but <strong>what drives me is the process</strong> - the relentless pursuit of going beyond what I thought I was capable of.</p>
+        <p>I'm drawn to challenges that physically and mentally demand more. My approach is simple: show up, do the work, and push beyond what I thought was possible.</p>
         
-        <p>Training is not something I switch on and off. It's how I live. Every session, every race, every day is an <strong>opportunity to do and be my best</strong>, and raise the standard.</p>
+        <p>For me, performance is built in the process, every day. That standard doesn't change.</p>
         
         <div class="about-stats">
           
@@ -982,7 +999,7 @@ footer {
         </div>
       </div>
       <div class="about-image-col reveal" style="animation-delay:0.2s">
-        <img src="images/about.jpg" alt="Alex Schubach" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;">
+        <img src="images/about.jpg" alt="Alex Schubach">
       </div>
     </div>
   </div>
@@ -1011,8 +1028,8 @@ footer {
       
       <div class="value-card reveal">
         <div class="value-num">03</div>
-        <div class="value-title">BUILT FOR THE OUTDOORS</div>
-        <div class="value-desc">I live and breathe movement. Nature isn't just a backdrop — it's where I feel the most alive. The trails, the peaks, the open water. There's always somewhere new to explore.</div>
+        <div class="value-title">HOLD THE STANDARD</div>
+        <div class="value-desc">The level I expect from myself doesn't drop when it's hard, inconvenient, or uncomfortable. It stays fixed. No matter what.</div>
       </div>
       
       <div class="value-card reveal">
@@ -1032,23 +1049,30 @@ footer {
       <div class="mission-content">
         <div class="section-label">My Mission</div>
         <div class="section-title" style="color:var(--text-dark)">WHY I DO THIS</div>
-        <div class="mission-quote">My mission isn't just to inspire people to be active. It's to show that <span>when people commit fully, they're capable of more</span> than they realise.</div>
-        <p class="mission-text">Through my journey, I want to encourage people to find what they're passionate about, realise their potential, and push beyond what they think is possible.</p>
+        <div class="mission-quote"><span>This isn't about motivation.</span> It's about setting a standard and showing what's possible when you live by it.</div>
+        <p class="mission-text">Through my journey, I show that limits are self-imposed.<br><br>When you get clear on what really matters and commit fully to it, you can operate at a level you didn't think was possible.<br><br>And achieve more than you ever thought you were capable of.</p>
+      </div>
+      <div class="mission-right">
+        <div class="mission-qt-wrapper">
+          <div class="mission-quote-tile">
+            <blockquote class="mission-qt-text"><span class="mission-qt-mark open">"</span>Who you become in the pursuit of your goals is the actual goal<span class="mission-qt-mark close">"</span></blockquote>
+          </div>
+        </div>
+        
+        <div class="mission-pillars-heading">THE STANDARD</div>
+        
         <div class="mission-pillars">
           
-          <div class="pillar"><span class="pillar-icon">→</span> Find your passion</div>
+          <div class="pillar"><span class="pillar-icon">→</span> Train daily, regardless of conditions</div>
           
-          <div class="pillar"><span class="pillar-icon">→</span> Realise your potential</div>
+          <div class="pillar"><span class="pillar-icon">→</span> Track performance across all key metrics</div>
           
-          <div class="pillar"><span class="pillar-icon">→</span> Commit fully to it</div>
+          <div class="pillar"><span class="pillar-icon">→</span> Compete consistently across hybrid and endurance racing</div>
           
-          <div class="pillar"><span class="pillar-icon">→</span> Push beyond your limits</div>
+          <div class="pillar"><span class="pillar-icon">→</span> Execute with discipline, not emotion</div>
           
-        </div>
-      </div>
-      <div class="mission-qt-wrapper">
-        <div class="mission-quote-tile">
-          <blockquote class="mission-qt-text"><span class="mission-qt-mark open">"</span>Who you become in the pursuit of your goals is the actual goal<span class="mission-qt-mark close">"</span></blockquote>
+          <div class="pillar"><span class="pillar-icon">→</span> Live the standard, on and off the field</div>
+          
         </div>
       </div>
     </div>
@@ -1071,7 +1095,7 @@ footer {
           <div class="index-badge-value">569</div>
         </div>
       </div>
-      <div class="index-badge">
+      <div class="index-badge" style="display:none">
         <div class="index-badge-logo">ITRA</div>
         <div class="index-badge-body">
           <div class="index-badge-label">ITRA Index</div>
@@ -1092,7 +1116,6 @@ footer {
             <div class="index-badge-road-row"><span class="index-badge-road-dist">Marathon</span><span class="index-badge-road-time">2:56:19</span></div>
             <div class="index-badge-road-row"><span class="index-badge-road-dist">Half</span><span class="index-badge-road-time">1:21:07</span></div>
             <div class="index-badge-road-row"><span class="index-badge-road-dist">10 km</span><span class="index-badge-road-time">35:56</span></div>
-            <div class="index-badge-road-row"><span class="index-badge-road-dist">5 km</span><span class="index-badge-road-time">17:50</span></div>
           </div>
         </div>
       </div>
@@ -1351,7 +1374,7 @@ Age Group: 10th / 33</div>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Going In</div>
-                <p>Back from Hawaii and a beautiful Christmas and New Year trip with the whole family - we hadn&#x27;t all been together like that since my sister graduated from Harvard back in June. I trained<strong> like a maniac</strong> every single day over the break and came back to Tokyo feeling fit and sharp.<br><br>Alos, I&#x27;m<strong> one year sober</strong> this weekend. What a time to be alive! And, what a way to mark it. God, it feels so good to feel SO good.<br><br>Going into this one, the mindset was simple: pacing practice for Kyoto. My first ever marathon is just a month away and the target is sub-3 hours. The plan here is to lock into 4:14min/km and finish around 1:29:19. Get a feel for what cruising at marathon pace actually feels like in a race. Maybe I lift the last couple of kilometres if the legs are talking. No pressure. Just get out there and have some fun.</p>
+                <p>Back from Hawaii and a beautiful Christmas and New Year trip with the whole family - we hadn&#x27;t all been together like that since my sister graduated from Harvard back in June. I <strong>trained like a maniac</strong> every single day over the break and came back to Tokyo feeling fit and sharp.<br><br>Also, I&#x27;m<strong> one year sober</strong> this weekend. What a time to be alive! And, what a way to mark it. God, it feels so good to feel SO good.<br><br>Going into this one, the <strong>mindset was</strong> simple: pacing practice for Kyoto. My first ever marathon is just a month away and the target is sub-3 hours. The plan here is to lock into 4:14min/km and finish around 1:29:19. Get a feel for what cruising at marathon pace actually feels like in a race. Maybe I lift the last couple of kilometres if the legs are talking. No pressure. Just get out there and have some fun.</p>
               </div>
               <div class="race-narrative">
                 <div class="race-narrative-label">Looking Back</div>
@@ -1515,13 +1538,13 @@ Age: 46th / 360</div>
         <div class="cal-desc">First crack at the 50km distance. The Hiroshima Trail race takes you through the forested mountains surrounding Hiroshima, with a solid mix of runnable ridge lines, technical descents, and the kind of sustained climbing that separates the people who trained for it from the people who thought they did. A big step up in distance from Nikko and the Hatsune 30k.</div>
         <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
-      <div class="cal-card reveal" data-desc="The Hong Kong leg of the global Hyrox circuit, and the first international Hyrox on the 2026 calendar. Racing with Seb, which adds an extra layer of motivation to not get beaten by your training partner. After the Osaka penalty lesson, this one is about running a clean, precise race and seeing what a proper preparation produces." data-race="HYROX HONG KONG" data-date="9 May 2026" data-details="Hyrox
+      <div class="cal-card reveal" data-desc="The Hong Kong leg of the global Hyrox circuit, and the first international Hyrox on the 2026 calendar. Racing with Seb, which adds an extra layer of motivation to absolutely get after it together. After the Osaka penalty lesson, this one is about running a clean, precise race and seeing what a proper preparation produces." data-race="HYROX HONG KONG" data-date="9 May 2026" data-details="Hyrox
 Men&#x27;s Single - Open · Hong Kong">
         <div class="cal-month">9 May 2026 </div>
         <div class="cal-race">HYROX HONG KONG</div>
         <div class="cal-details">Hyrox
 Men's Single - Open · Hong Kong</div>
-        <div class="cal-desc">The Hong Kong leg of the global Hyrox circuit, and the first international Hyrox on the 2026 calendar. Racing with Seb, which adds an extra layer of motivation to not get beaten by your training partner. After the Osaka penalty lesson, this one is about running a clean, precise race and seeing what a proper preparation produces.</div>
+        <div class="cal-desc">The Hong Kong leg of the global Hyrox circuit, and the first international Hyrox on the 2026 calendar. Racing with Seb, which adds an extra layer of motivation to absolutely get after it together. After the Osaka penalty lesson, this one is about running a clean, precise race and seeing what a proper preparation produces.</div>
         <button class="cal-read-more" onclick="openCalModal(this)">Read more →</button>
       </div>
       <div class="cal-card reveal" data-desc="The Kaga Spa 20K, part of the UTMB World Series, set in the hot spring resort town of Yamanaka in Ishikawa Prefecture. Running with Seb on this one. A shorter, sharper UTMB race in a beautiful setting, where the goal is to go faster and smarter than Kenting. The experience is already there. Now it&#x27;s about applying it." data-race="UTMB YAMANAKA, KAGA SPA 20K" data-date="20 Jun 2026" data-details="Trail · 20 km · Yamanaka, Japan">
@@ -1625,24 +1648,34 @@ Beast - 21km · Philippines</div>
     </div>
         <div class="gallery-featured-outer">
       <div class="gallery-featured-main" id="gallery-featured-main">
-        <img class="gallery-featured-img" id="gallery-featured-img" src="images/gallery/01_fuji_trail.jpg" alt="Fuji Trail">
-        <div class="gallery-featured-overlay"><div class="gallery-featured-caption" id="gallery-featured-caption">Fuji Trail</div></div>
+        <img class="gallery-featured-img" id="gallery-featured-img" src="images/gallery/01_trail_run.jpg" alt="Trail Run">
+        <div class="gallery-featured-overlay"><div class="gallery-featured-caption" id="gallery-featured-caption">Trail Run</div></div>
       </div>
       <div class="gallery-rail">
-        <div class="gallery-thumb active" data-index="0" data-src="images/gallery/01_fuji_trail.jpg" data-caption="Fuji Trail" data-w="1200" data-h="799"><img src="images/gallery/01_fuji_trail.jpg" alt="Fuji Trail" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="1" data-src="images/gallery/02_fuji_finish.jpg" data-caption="Fuji Finish" data-w="666" data-h="1000"><img src="images/gallery/02_fuji_finish.jpg" alt="Fuji Finish" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="2" data-src="images/gallery/03_kenting_trail.jpg" data-caption="Kenting Trail" data-w="666" data-h="1000"><img src="images/gallery/03_kenting_trail.jpg" alt="Kenting Trail" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="3" data-src="images/gallery/04_road_race.jpg" data-caption="Road Race" data-w="1200" data-h="800"><img src="images/gallery/04_road_race.jpg" alt="Road Race" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="4" data-src="images/gallery/05_track_training.jpg" data-caption="Track Training" data-w="645" data-h="967"><img src="images/gallery/05_track_training.jpg" alt="Track Training" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="5" data-src="images/gallery/06_race_finish.jpg" data-caption="Race Finish" data-w="1200" data-h="1800"><img src="images/gallery/06_race_finish.jpg" alt="Race Finish" loading="lazy"></div>
+        <div class="gallery-thumb active" data-index="0" data-src="images/gallery/01_trail_run.jpg" data-caption="Trail Run" data-w="1200" data-h="789"><img src="images/gallery/01_trail_run.jpg" alt="Trail Run" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="1" data-src="images/gallery/02_finish_celebration.jpg" data-caption="Finish Celebration" data-w="1200" data-h="1771"><img src="images/gallery/02_finish_celebration.jpg" alt="Finish Celebration" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="2" data-src="images/gallery/03_race_finish.jpg" data-caption="Race Finish" data-w="1200" data-h="1782"><img src="images/gallery/03_race_finish.jpg" alt="Race Finish" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="3" data-src="images/gallery/05_track_night.jpg" data-caption="Track Night" data-w="1200" data-h="800"><img src="images/gallery/05_track_night.jpg" alt="Track Night" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="4" data-src="images/gallery/06_trail_small.jpg" data-caption="Trail Small" data-w="604" data-h="821"><img src="images/gallery/06_trail_small.jpg" alt="Trail Small" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="5" data-src="images/gallery/07_trail_pack.jpg" data-caption="Trail Pack" data-w="1200" data-h="1684"><img src="images/gallery/07_trail_pack.jpg" alt="Trail Pack" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="6" data-src="images/gallery/04_portrait_shirtless.png" data-caption="Portrait Shirtless" data-w="1920" data-h="1080"><img src="images/gallery/04_portrait_shirtless.png" alt="Portrait Shirtless" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="7" data-src="images/gallery/08_track_race_blue.png" data-caption="Track Race Blue" data-w="1920" data-h="1080"><img src="images/gallery/08_track_race_blue.png" alt="Track Race Blue" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="8" data-src="images/gallery/09_portrait_fence.png" data-caption="Portrait Fence" data-w="1920" data-h="1080"><img src="images/gallery/09_portrait_fence.png" alt="Portrait Fence" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="9" data-src="images/gallery/10_track_studio.png" data-caption="Track Studio" data-w="1920" data-h="1080"><img src="images/gallery/10_track_studio.png" alt="Track Studio" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="10" data-src="images/gallery/11_track_stadium.png" data-caption="Track Stadium" data-w="1920" data-h="1080"><img src="images/gallery/11_track_stadium.png" alt="Track Stadium" loading="lazy"></div>
       </div>
       <div style="display:none" aria-hidden="true">
-        <div class="gallery-item" data-index="0" data-src="images/gallery/01_fuji_trail.jpg"><img src="" alt="Fuji Trail"></div>
-        <div class="gallery-item" data-index="1" data-src="images/gallery/02_fuji_finish.jpg"><img src="" alt="Fuji Finish"></div>
-        <div class="gallery-item" data-index="2" data-src="images/gallery/03_kenting_trail.jpg"><img src="" alt="Kenting Trail"></div>
-        <div class="gallery-item" data-index="3" data-src="images/gallery/04_road_race.jpg"><img src="" alt="Road Race"></div>
-        <div class="gallery-item" data-index="4" data-src="images/gallery/05_track_training.jpg"><img src="" alt="Track Training"></div>
-        <div class="gallery-item" data-index="5" data-src="images/gallery/06_race_finish.jpg"><img src="" alt="Race Finish"></div>
+        <div class="gallery-item" data-index="0" data-src="images/gallery/01_trail_run.jpg"><img src="" alt="Trail Run"></div>
+        <div class="gallery-item" data-index="1" data-src="images/gallery/02_finish_celebration.jpg"><img src="" alt="Finish Celebration"></div>
+        <div class="gallery-item" data-index="2" data-src="images/gallery/03_race_finish.jpg"><img src="" alt="Race Finish"></div>
+        <div class="gallery-item" data-index="3" data-src="images/gallery/05_track_night.jpg"><img src="" alt="Track Night"></div>
+        <div class="gallery-item" data-index="4" data-src="images/gallery/06_trail_small.jpg"><img src="" alt="Trail Small"></div>
+        <div class="gallery-item" data-index="5" data-src="images/gallery/07_trail_pack.jpg"><img src="" alt="Trail Pack"></div>
+        <div class="gallery-item" data-index="6" data-src="images/gallery/04_portrait_shirtless.png"><img src="" alt="Portrait Shirtless"></div>
+        <div class="gallery-item" data-index="7" data-src="images/gallery/08_track_race_blue.png"><img src="" alt="Track Race Blue"></div>
+        <div class="gallery-item" data-index="8" data-src="images/gallery/09_portrait_fence.png"><img src="" alt="Portrait Fence"></div>
+        <div class="gallery-item" data-index="9" data-src="images/gallery/10_track_studio.png"><img src="" alt="Track Studio"></div>
+        <div class="gallery-item" data-index="10" data-src="images/gallery/11_track_stadium.png"><img src="" alt="Track Stadium"></div>
       </div>
     </div>
   </div>

@@ -5,19 +5,19 @@ site:
 
 # ─── HERO ────────────────────────────────────────────────────────────────────
 hero:
-  tag: "Endurance Athlete · Trail Runner · Hyrox Competitor"
+  tag: "Build on discipline. Proven through performance."
   name_line1: "ALEX"
   name_line2: "SCHUBACH"
-  subtitle: "Pushing the limits of human potential through endurance, discipline, and adventure."
+  subtitle: "Endurance athlete, trail runner, HYROX competitor operating at a high-performance standard across training, competition, and content."
 
 # ─── ABOUT ───────────────────────────────────────────────────────────────────
 about:
-  heading: "MY STORY"
+  heading: "ATHLETIC IDENTITY"
   paragraphs:
-    - "<strong>I've been an athlete</strong> for as long as I can remember. It started in the pool as a competitive swimmer and sprinter, then onto the track in high school where middle distance is where I made my mark. That foundation built something that has never left me - focus, discipline, consistency, and a <strong>commitment to giving everything</strong> I do my best effort."
-    - "After ten years in the corporate grind, I'm back competing and doing what I really enjoy. Now, my <strong>focus is endurance</strong> - trail running, road racing, and hybrid events like Hyrox and Spartan. I'm drawn to <strong>environments that demand more</strong>, both physically and mentally. There's nothing quite like finding your limit and then pushing right past it."
-    - "My <strong>approach is simple</strong>. Show up everyday, do the work, and find out what's actually possible. The outcome matters, but <strong>what drives me is the process</strong> - the relentless pursuit of going beyond what I thought I was capable of."
-    - "Training is not something I switch on and off. It's how I live. Every session, every race, every day is an <strong>opportunity to do and be my best</strong>, and raise the standard."
+    - "I've always been an athlete. From the pool to the track, that early foundation built the values I live by today: <strong>discipline</strong>, <strong>consistency</strong>, and <strong>full commitment</strong>."
+    - "After stepping away, I returned to competition with a focus on endurance across trail, road, and hybrid racing."
+    - "I'm drawn to challenges that physically and mentally demand more. My approach is simple: show up, do the work, and push beyond what I thought was possible."
+    - "For me, performance is built in the process, every day. That standard doesn't change."
   stats:
     - number: "JP"
       label: "Based in Japan"
@@ -37,21 +37,23 @@ values:
     title: "THE PURSUIT OF MORE"
     desc: "We don't know where our limits are until we push past where we thought they were. That chase is what drives me."
   - num: "03"
-    title: "BUILT FOR THE OUTDOORS"
-    desc: "I live and breathe movement. Nature isn't just a backdrop — it's where I feel the most alive. The trails, the peaks, the open water. There's always somewhere new to explore."
+    title: "HOLD THE STANDARD"
+    desc: "The level I expect from myself doesn't drop when it's hard, inconvenient, or uncomfortable. It stays fixed. No matter what."
   - num: "04"
     title: "SHOW UP EVERYDAY"
     desc: "Motivation is unreliable. Discipline isn't. The work gets done regardless of how I feel because consistency compounds. And that's what separates the good from the great."
 
 # ─── MISSION ─────────────────────────────────────────────────────────────────
 mission:
-  quote: "My mission isn't just to inspire people to be active. It's to show that <span>when people commit fully, they're capable of more</span> than they realise."
-  body: "Through my journey, I want to encourage people to find what they're passionate about, realise their potential, and push beyond what they think is possible."
+  quote: "<span>This isn't about motivation.</span> It's about setting a standard and showing what's possible when you live by it."
+  body: "Through my journey, I show that limits are self-imposed.<br><br>When you get clear on what really matters and commit fully to it, you can operate at a level you didn't think was possible.<br><br>And achieve more than you ever thought you were capable of."
+  pillars_heading: "THE STANDARD"
   pillars:
-    - "Find your passion"
-    - "Realise your potential"
-    - "Commit fully to it"
-    - "Push beyond your limits"
+    - "Train daily, regardless of conditions"
+    - "Track performance across all key metrics"
+    - "Compete consistently across hybrid and endurance racing"
+    - "Execute with discipline, not emotion"
+    - "Live the standard, on and off the field"
 
 # ─── RACE PERFORMANCE INDICES ─────────────────────────────────────────────────
 indices:
