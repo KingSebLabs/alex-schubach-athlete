@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Redesign Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-dark: #0a0a0a;
+      --bg-light: #f5f3f0;
+      --text-light: #f5f3f0;
+      --text-dark: #0a0a0a;
+      --accent: #e8490f;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Instrument Sans', sans-serif;
+    }
+    body { font-family: var(--font-body); background: var(--bg-dark); color: var(--text-light); }
+
+    /* ── SECTION SHELL ── */
+    .mission-section {
+      position: relative;
+      overflow: hidden;
+      padding: 8rem 0;
+      min-height: 600px;
+    }
+
+    /* ── HERO IMAGE ── */
+    .mission-hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: right center;
+      z-index: 0;
+    }
+
+    /* ── OVERLAY — original left-side gradient from first demo ── */
+    .mission-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(10, 10, 10, 0.70) 0%,
+        rgba(10, 10, 10, 0.45) 30%,
+        transparent 55%
+      );
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ── CONTAINER ── */
+    .container {
+      position: relative;
+      z-index: 2;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* ── GRID: 50/50, left is empty space, right holds all content ── */
+    .mission-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    /* ── LEFT: empty spacer — image shows through ── */
+    .mission-spacer { /* intentionally empty */ }
+
+    /* ── RIGHT: free-floating text, no panel ── */
+    .mission-content-right {
+      padding: 3rem 2.5rem;
+    }
+
+    /* Section label */
+    .section-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
+    }
+    .section-label::before {
+      content: '';
+      width: 32px;
+      height: 2px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* Section title */
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+      line-height: 0.95;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.95);
+    }
+
+    /* YAML mission quote ("This isn't about motivation") */
+    .mission-quote {
+      font-family: var(--font-display);
+      font-size: clamp(1.55rem, 2.8vw, 2.2rem);
+      line-height: 1.25;
+      margin-bottom: 1.5rem;
+      color: var(--text-light);
+      text-shadow: 0 2px 16px rgba(0, 0, 0, 0.9);
+    }
+    .mission-quote span { color: var(--accent); }
+
+    /* Body */
+    .mission-text {
+      font-size: 1rem;
+      line-height: 1.9;
+      color: rgba(245, 243, 240, 0.82);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+    }
+
+    /* Pillars heading */
+    .mission-pillars-heading {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
+    }
+    .mission-pillars-heading::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* Pillars */
+    .mission-pillars {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+    }
+    .pillar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      color: rgba(245, 243, 240, 0.85);
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+    }
+    .pillar-icon { color: var(--accent); font-size: 1rem; flex-shrink: 0; }
+
+    /* ── QUOTE at bottom, below pillars ── */
+    .mission-quote-bottom {
+      margin-top: 2.75rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(232, 73, 15, 0.35);
+    }
+    .mission-qt-text {
+      font-family: var(--font-body);
+      font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+      font-style: italic;
+      line-height: 1.55;
+      color: var(--text-light);
+      margin: 0;
+      quotes: none;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.95), 0 1px 6px rgba(0, 0, 0, 0.6);
+    }
+    .mission-qt-mark {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 1.8vw, 1.55rem);
+      line-height: 1;
+      color: var(--accent);
+      vertical-align: baseline;
+    }
+    .mission-qt-mark.open  { margin-right: 0.06em; }
+    .mission-qt-mark.close { margin-left:  0.06em; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .mission-grid { grid-template-columns: 1fr; gap: 0; }
+      .mission-spacer { display: none; }
+      .mission-section::before {
+        background: rgba(10, 10, 10, 0.55);
+      }
+      .mission-content-right { padding: 2rem 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+  <section class="mission-section" id="mission">
+    <img
+      class="mission-hero-img"
+      src="../images/mission-hero.jpg"
+      alt=""
+      aria-hidden="true"
+    >
+    <div class="container">
+      <div class="mission-grid">
+
+        <!-- LEFT: empty — image (athlete) shows through -->
+        <div class="mission-spacer"></div>
+
+        <!-- RIGHT: all content, free-floating, no panel -->
+        <div class="mission-content-right">
+          <div class="section-label">My Mission</div>
+          <div class="section-title">WHY I DO THIS</div>
+          <div class="mission-quote">
+            <span>This isn't about motivation.</span> It's about setting a standard and showing what's possible when you live by it.
+          </div>
+          <p class="mission-text">
+            Through my journey, I show that limits are self-imposed.<br><br>
+            When you get clear on what really matters and commit fully to it, you can operate at a level you didn't think was possible.<br><br>
+            And achieve more than you ever thought you were capable of.
+          </p>
+          <div class="mission-pillars-heading">THE STANDARD</div>
+          <div class="mission-pillars">
+            <div class="pillar"><span class="pillar-icon">→</span> Train daily, regardless of conditions</div>
+            <div class="pillar"><span class="pillar-icon">→</span> Track performance across all key metrics</div>
+            <div class="pillar"><span class="pillar-icon">→</span> Compete consistently across hybrid and endurance racing</div>
+            <div class="pillar"><span class="pillar-icon">→</span> Execute with discipline, not emotion</div>
+            <div class="pillar"><span class="pillar-icon">→</span> Live the standard, on and off the field</div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+</body>
+</html>
