@@ -837,19 +837,31 @@ footer {
 
   /* About */
   .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-  .about-image-col { width: 100%; max-height: none; overflow: hidden; }
+  .about-image-col { order: 1; width: 100%; min-height: 60vw; max-height: none; overflow: hidden; }
+  .about-text { order: 2; }
   .about-stats { grid-template-columns: repeat(2, 1fr); }
 
   /* Values */
-  .values-grid { grid-template-columns: 1fr; }
-  .value-num { position: static; opacity: 0.08; line-height: 1; margin-bottom: -1.5rem; }
+  .values-grid { grid-template-columns: repeat(2, 1fr); }
+  .value-num { position: static; opacity: 0.12; line-height: 1; margin-bottom: -1.5rem; }
 
   /* Mission */
   .mission-grid { grid-template-columns: 1fr; gap: 0; }
   .mission-spacer { display: none; }
-  .mission-section::before { background: rgba(10,10,10,0.55); }
+  .mission-section::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(10,10,10,0.65) 0%,
+      rgba(10,10,10,0.40) 50%,
+      rgba(10,10,10,0.60) 100%
+    );
+  }
   .mission-content-right { padding: 2rem 1.75rem; }
-  .mission-qt-wrapper { display: none; }
+  .mission-section .mission-qt-wrapper {
+    display: block; position: static; margin: 2rem 0 0 0;
+  }
+  .mission-section .mission-qt-wrapper::after { display: none; }
+  .mission-section .mission-quote-tile { background: transparent; padding: 0; width: auto; }
 
   /* Race stats */
   .race-stats-strip { gap: 0.5rem; }
@@ -857,6 +869,17 @@ footer {
 
   /* Calendar */
   .calendar-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+
+  /* Calendar show-more button (mobile only) */
+  .cal-show-more {
+    display: block; width: 100%; margin-top: 1.5rem; padding: 1rem 1.5rem;
+    background: transparent; border: 1px solid var(--grey-border);
+    color: var(--text-light); font-family: var(--font-body);
+    font-size: 0.85rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; cursor: pointer;
+    transition: border-color 0.25s, color 0.25s, opacity 0.25s;
+  }
+  .cal-show-more:hover, .cal-show-more:focus { border-color: var(--accent); color: var(--accent); }
 
   /* Gallery — filmstrip height already set by 768px breakpoint */
 
@@ -878,6 +901,7 @@ footer {
   .hero { padding: 5rem 1.25rem 2.5rem; }
   .race-stats-strip { padding: 0.75rem 1rem; gap: 0.4rem; }
   .year-tab { padding: 0.6rem 1rem; font-size: 1.1rem; }
+  .values-grid { grid-template-columns: 1fr; }
 }
 
 /* Hero height fallback for browsers without svh support */
@@ -2112,6 +2136,33 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
   document.addEventListener('keydown', function(e) {
     if (!modal.classList.contains('open')) return;
     if (e.key === 'Escape') closeCalModal();
+  });
+})();
+
+// Calendar: show first 4 on mobile, reveal rest on tap
+(function() {
+  if (window.innerWidth > 768) return;
+  var grid = document.querySelector('.calendar-grid');
+  if (!grid) return;
+  var cards = Array.from(grid.querySelectorAll('.cal-card'));
+  if (cards.length <= 4) return;
+
+  cards.slice(4).forEach(function(card) { card.style.display = 'none'; });
+
+  var remaining = cards.length - 4;
+  var btn = document.createElement('button');
+  btn.className = 'cal-show-more';
+  btn.textContent = 'Show ' + remaining + ' more race' + (remaining === 1 ? '' : 's') + ' \u2192';
+  grid.parentElement.insertBefore(btn, grid.nextSibling);
+
+  btn.addEventListener('click', function() {
+    cards.slice(4).forEach(function(card, i) {
+      card.style.display = '';
+      setTimeout(function() { card.classList.add('visible'); }, i * 80 + 16);
+    });
+    btn.style.opacity = '0';
+    btn.style.pointerEvents = 'none';
+    setTimeout(function() { btn.remove(); }, 300);
   });
 })();
 </script>
