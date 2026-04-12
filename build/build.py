@@ -498,7 +498,7 @@ def build_race_tabs_and_panels(sheets_data: dict) -> tuple:
 
         tabs_html += f'  <div class="year-tab{" active" if is_current else ""}" data-year="{year_full}">{year_full}</div>\n'
 
-        race_cards = "\n".join(build_race_card_html(r) for r in past_races) if past_races else \
+        race_cards = "\n".join(build_race_card_html(r) for r in reversed(past_races)) if past_races else \
             '        <p style="color:var(--grey-mid);padding:2rem 0">No results recorded yet.</p>'
 
         panels_html += (
