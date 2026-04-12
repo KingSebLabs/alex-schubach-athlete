@@ -225,8 +225,6 @@ def build_gallery_html() -> str:
         f'      <div class="gallery-featured-main" id="gallery-featured-main">\n'
         f'        <img class="gallery-featured-img" id="gallery-featured-img"'
         f' src="images/gallery/{first["path"].name}" alt="{first["alt"]}">\n'
-        f'        <div class="gallery-featured-overlay">'
-        f'<div class="gallery-featured-caption" id="gallery-featured-caption">{first["alt"]}</div></div>\n'
         f'      </div>\n'
     )
 

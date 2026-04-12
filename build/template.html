@@ -450,20 +450,6 @@ section { padding: 6rem 2.5rem; }
   transition: opacity 0.3s ease;
 }
 .gallery-featured-img.fading { opacity: 0; }
-.gallery-featured-overlay {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 1.25rem 1.5rem;
-  background: linear-gradient(transparent, rgba(0,0,0,0.65));
-  pointer-events: none;
-}
-.gallery-featured-caption {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.75);
-  text-transform: uppercase;
-}
 .gallery-rail {
   width: 130px;
   flex-shrink: 0;
@@ -607,8 +593,8 @@ section { padding: 6rem 2.5rem; }
   }
   .gallery-thumb { flex-shrink: 0; width: 100px; height: 68px; scroll-snap-align: start; }
   .gallery-featured-main { width: 100%; }
-  .lightbox-prev { left: 0.25rem; }
-  .lightbox-next { right: 0.25rem; }
+  .lightbox-prev { left: 0; padding: 1.5rem; }
+  .lightbox-next { right: 0; padding: 1.5rem; }
 }
 
 /* ===== PDF DOWNLOAD ===== */
@@ -747,6 +733,16 @@ section { padding: 6rem 2.5rem; }
 }
 .social-link:hover { color: var(--accent); }
 
+/* ===== SCROLL TO TOP ===== */
+.scroll-top-btn {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--font-body); font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--grey-mid); transition: color 0.3s;
+  padding: 0; margin-top: 1rem; display: block;
+}
+.scroll-top-btn:hover { color: var(--accent); }
+
 /* ===== FOOTER ===== */
 footer {
   padding: 2rem 2.5rem; border-top: 1px solid rgba(255,255,255,0.06);
@@ -806,9 +802,7 @@ footer {
 
   /* Hero */
   .hero { padding: 6rem 1.5rem 3rem; min-height: 100svh; }
-  .hero-scroll { display: flex; }
-  .hero-scroll-text { font-size: 0; }
-  .hero-scroll-text::after { content: "Tap to explore"; font-size: 0.75rem; }
+  .hero-scroll { display: none; }
 
   /* About */
   .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
@@ -818,7 +812,7 @@ footer {
 
   /* Values */
   .values-grid { grid-template-columns: repeat(2, 1fr); }
-  .value-num { position: static; opacity: 0.12; line-height: 1; margin-bottom: -1.5rem; }
+  .value-num { position: absolute; bottom: 0.5rem; right: 0.75rem; opacity: 0.15; font-size: 2.5rem; }
 
   /* Mission */
   .mission-grid { grid-template-columns: 1fr; gap: 0; }
@@ -832,11 +826,14 @@ footer {
     );
   }
   .mission-content-right { padding: 2rem 1.75rem; }
+  .mission-section { display: flex; flex-direction: column; }
+  .mission-section .container { order: 1; }
   .mission-section .mission-qt-wrapper {
-    display: block; position: static; margin: 2rem 0 0 0;
+    order: 2; display: block; position: static; margin: 0 1.75rem 2rem;
   }
   .mission-section .mission-qt-wrapper::after { display: none; }
   .mission-section .mission-quote-tile { background: transparent; padding: 0; width: auto; }
+  .btn-arrow { display: none; }
 
   /* Race stats */
   .race-stats-strip { gap: 0.5rem; }
@@ -950,7 +947,7 @@ footer {
     <div class="hero-tag">{{ hero.tag }}</div>
     <p class="hero-subtitle">{{ hero.subtitle }}</p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Partner With Me ↗</a>
+      <a href="#contact" class="btn-primary">Partner With Me <span class="btn-arrow">↗</span></a>
       <a href="#results" class="btn-outline">View Performance</a>
     </div>
   </div>
@@ -1163,6 +1160,7 @@ footer {
         <div class="social-bar">
           <a href="{{ social.instagram }}" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="{{ social.strava }}" class="social-link" target="_blank" rel="noopener noreferrer">Strava</a>
+          <a href="{{ social.blog }}" class="social-link" target="_blank" rel="noopener noreferrer">Blog</a>
         </div>
       </div>
       <div class="reveal">
@@ -1215,6 +1213,7 @@ footer {
 <footer>
   <span>{{ footer.copyright }}</span>
   <span>{{ footer.tagline }}</span>
+  <button class="scroll-top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">&#8593; Back to top</button>
 </footer>
 
 <script>
@@ -1401,7 +1400,6 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
 (function() {
   const featMain    = document.getElementById('gallery-featured-main');
   const featImg     = document.getElementById('gallery-featured-img');
-  const featCaption = document.getElementById('gallery-featured-caption');
   if (!featMain) return;
 
   const thumbs = Array.from(document.querySelectorAll('.gallery-thumb'));
@@ -1419,7 +1417,6 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     featImg.classList.add('fading');
     setTimeout(function() {
       featImg.src = thumb.dataset.src;
-      featCaption.textContent = thumb.dataset.caption;
       featMain.style.height = computeHeight(+thumb.dataset.w, +thumb.dataset.h) + 'px';
       featImg.classList.remove('fading');
     }, 280);
@@ -1431,7 +1428,12 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     featMain.style.height = computeHeight(+first.dataset.w, +first.dataset.h) + 'px';
   }
 
-  thumbs.forEach(function(t) { t.addEventListener('click', function() { select(t); }); });
+  thumbs.forEach(function(t, i) {
+    t.addEventListener('click', function() {
+      select(t);
+      if (window.matchMedia('(hover: none)').matches && typeof openAt === 'function') openAt(i);
+    });
+  });
 
   // Open lightbox on featured click
   featMain.addEventListener('click', function() {
@@ -1491,6 +1493,17 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') openAt(current - 1);
     if (e.key === 'ArrowRight') openAt(current + 1);
+  });
+  var touchStartX = 0;
+  lightbox.addEventListener('touchstart', function(e) {
+    touchStartX = e.changedTouches[0].clientX;
+  }, { passive: true });
+  lightbox.addEventListener('touchend', function(e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) openAt(current + 1);
+      else openAt(current - 1);
+    }
   });
 })();
 </script>
