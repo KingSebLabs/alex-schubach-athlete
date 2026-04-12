@@ -520,15 +520,18 @@ def build_race_tabs_and_panels(sheets_data: dict) -> tuple:
     return tabs_html + panels_html, calendar_html, CURRENT_YEAR
 
 
-def build_seo_tags(site: dict, social: dict) -> str:
-    """Build Open Graph, Twitter Card, and JSON-LD tags."""
+def build_seo_tags(site: dict, social: dict, analytics: dict = None) -> str:
+    """Build Open Graph, Twitter Card, JSON-LD, and GSC verification tags."""
     base_url = site.get("base_url", "")
     title = site.get("title", "Alex Schubach — Endurance Athlete")
     description = site.get("description", "")
     instagram = social.get("instagram", "#")
     strava = social.get("strava", "#")
 
-    og = f'''  <!-- Keywords -->
+    gsc_token = (analytics or {}).get("gsc_verification_token", "").strip()
+    gsc_tag = f'  <meta name="google-site-verification" content="{gsc_token}">\n' if gsc_token else ""
+
+    og = gsc_tag + f'''  <!-- Keywords -->
   <meta name="keywords" content="Alex Schubach, Alexander Schubach, Alex the Athlete, alexschubach, alexschubach.com, endurance athlete, trail runner, Hyrox, ultra running, UTMB">
   <!-- Open Graph -->
   <meta property="og:title" content="{title}">
@@ -661,7 +664,7 @@ def main():
         calendar_year = CURRENT_YEAR
 
     # 6. Build SEO and analytics tags
-    seo_tags = build_seo_tags(site, content.get("social", {}))
+    seo_tags = build_seo_tags(site, content.get("social", {}), analytics=content.get("analytics", {}))
     analytics_tags = build_analytics_tags(content.get("analytics", {}))
 
     # 7. Render template
