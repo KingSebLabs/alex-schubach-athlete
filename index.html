@@ -854,11 +854,13 @@ footer {
   .mission-section { display: flex; flex-direction: column; }
   .mission-section .container { order: 1; }
   .mission-section .mission-qt-wrapper {
-    order: 2; display: block; position: static; margin: 0 1.75rem 2rem;
+    order: 2; display: block; position: static; margin: 3rem auto 2rem; text-align: center; padding: 0 1.75rem;
   }
   .mission-section .mission-qt-wrapper::after { display: none; }
   .mission-section .mission-quote-tile { background: transparent; padding: 0; width: auto; }
   .btn-arrow { display: none; }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-outline { flex: 1; justify-content: center; }
 
   /* Race stats */
   .race-stats-strip { gap: 0.5rem; }
