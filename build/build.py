@@ -43,6 +43,9 @@ CURRENT_YEAR = "2026"
 # Alex's UTMB runner profile URL — used to auto-fetch the live UTMB Index at build time
 UTMB_RUNNER_URL = "https://utmb.world/en/runner/8058767.alex.schubach"
 
+# Alex's ITRA runner profile URL — used to auto-fetch the live ITRA Performance Index at build time
+ITRA_RUNNER_URL = "https://itra.run/RunnerSpace/schubach.alex.6900188"
+
 
 def _fmt_cell(v) -> str:
     """Convert a cell value to a clean string; formats dates as '1 Jan 2025', times as H:MM:SS."""
@@ -172,6 +175,28 @@ def fetch_utmb_index(runner_url: str, fallback: str = "") -> str:
     except Exception as e:
         print(f"  ⚠ Could not fetch UTMB index: {e}", file=sys.stderr)
     return fallback
+
+
+def fetch_itra_index(runner_url: str, fallback_score: str = "", fallback_level: str = "") -> tuple[str, str]:
+    """Fetch live ITRA Performance Index and level from runner's itra.run profile.
+    Returns (score, level) e.g. ("609", "Advanced 3"). Falls back to provided values on error."""
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        resp = requests.get(runner_url, timeout=15, headers=headers)
+        resp.raise_for_status()
+        score_match = re.search(r'"performanceIndex":(\d+)', resp.text)
+        level_match = re.search(r'"(Advanced|Elite|Expert|Finisher|Recreational)-(\d+)"', resp.text)
+        score = score_match.group(1) if score_match else fallback_score
+        level = f"{level_match.group(1)} {level_match.group(2)}" if level_match else fallback_level
+        if score:
+            print(f"  ITRA Index fetched: {score} ({level})")
+        return score, level
+    except Exception as e:
+        print(f"  ⚠ Could not fetch ITRA index: {e}", file=sys.stderr)
+    return fallback_score, fallback_level
 
 
 def optimize_images():
@@ -631,6 +656,16 @@ def main():
     live_utmb = fetch_utmb_index(UTMB_RUNNER_URL, fallback=indices.get("utmb", ""))
     if live_utmb:
         indices = {**indices, "utmb": live_utmb}
+
+    # 1c. Fetch live ITRA index (overrides content.yaml fallback)
+    print("Fetching ITRA index...")
+    live_itra, live_itra_level = fetch_itra_index(
+        ITRA_RUNNER_URL,
+        fallback_score=indices.get("itra", ""),
+        fallback_level=indices.get("itra_level", ""),
+    )
+    if live_itra:
+        indices = {**indices, "itra": live_itra, "itra_level": live_itra_level}
 
     # 2. Optimise images
     print("Optimising images...")

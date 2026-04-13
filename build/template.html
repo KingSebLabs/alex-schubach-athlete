@@ -1047,11 +1047,12 @@ footer {
           <div class="index-badge-value">{{ indices.utmb }}</div>
         </div>
       </div>
-      <div class="index-badge" style="display:none">
+      <div class="index-badge">
         <div class="index-badge-logo">ITRA</div>
         <div class="index-badge-body">
           <div class="index-badge-label">ITRA Index</div>
-          <div class="index-badge-value">—</div>
+          <div class="index-badge-value">{{ indices.itra or "—" }}</div>
+          {% if indices.itra_level %}<div class="index-badge-id">{{ indices.itra_level }}</div>{% endif %}
         </div>
       </div>
       <div class="index-badge">
