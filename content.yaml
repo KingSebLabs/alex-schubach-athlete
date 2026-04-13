@@ -98,8 +98,8 @@ pdf:
 
 # ─── ANALYTICS ───────────────────────────────────────────────────────────────
 analytics:
-  ga4_id: ""               # e.g. "G-XXXXXXXXXX" — get from analytics.google.com
-  gsc_verification_token: ""  # HTML tag token from Google Search Console verification
+  ga4_id: "G-QJK7DMSV8B"
+  gsc_verification_token: ""  # already verified via DNS — not needed
   plausible_domain: ""     # e.g. "alexschubach.com" — use GA4 OR Plausible, not both
 
 # ─── FOOTER ──────────────────────────────────────────────────────────────────
