@@ -303,8 +303,8 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
             continue
         registered = find_col(row, "REGISTERED", "Registered", "REGISTRATION")
         reg_lower = registered.lower()
-        # Include if not registered column (older sheets), or "yes"/"tbc" in value
-        if registered and "yes" not in reg_lower and "tbc" not in reg_lower:
+        # Include if not registered column (older sheets), or "yes"/"tbc"/"alex" in value
+        if registered and "yes" not in reg_lower and "tbc" not in reg_lower and "alex" not in reg_lower:
             continue
 
         result = find_col(row, "RACE RESULTS", "Race Results", "RESULT", "Results", "TIME")
