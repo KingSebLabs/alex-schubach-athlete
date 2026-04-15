@@ -226,9 +226,32 @@ def optimize_images():
             print(f"  ⚠ Could not optimise about.jpg: {e}", file=sys.stderr)
 
 
+def _natural_key(p):
+    """Sort key for gallery filenames: numeric prefix sorts as integer."""
+    m = re.match(r'^(\d+)', p.name)
+    return int(m.group(1)) if m else float('inf')
+
+
+def _build_caption(stem: str) -> str:
+    """Parse filename stem into display caption HTML.
+    Filmmaker pattern: 'N_Name - Filmmaker_Shot' → two-line HTML (Shot / Photographer).
+    Simple pattern: 'N_Description' → title-cased single line.
+    """
+    name = re.sub(r'^\d+[_\s]*', '', stem)
+    if ' - Filmmaker_' in name:
+        photographer, shot = name.split(' - Filmmaker_', 1)
+        shot_display = shot.replace('_', ' ').title()
+        return f"{shot_display}<br>{photographer.strip()}"
+    else:
+        return name.replace('_', ' ').title()
+
+
 def build_gallery_html() -> str:
     """Scan images/gallery/ and build featured + thumbnail rail HTML."""
-    images = sorted(GALLERY_DIR.glob("*.jpg")) + sorted(GALLERY_DIR.glob("*.jpeg")) + sorted(GALLERY_DIR.glob("*.png"))
+    images = sorted(
+        list(GALLERY_DIR.glob("*.jpg")) + list(GALLERY_DIR.glob("*.jpeg")) + list(GALLERY_DIR.glob("*.png")),
+        key=_natural_key
+    )
     if not images:
         return "<!-- No gallery images found -->"
 
@@ -241,7 +264,7 @@ def build_gallery_html() -> str:
         except Exception:
             w, h = 800, 600
         alt = img_path.stem.lstrip("0123456789").strip("_- ").replace("_", " ").title()
-        meta.append({"path": img_path, "alt": alt, "w": w, "h": h})
+        meta.append({"path": img_path, "alt": alt, "caption": _build_caption(img_path.stem), "w": w, "h": h})
 
     first = meta[0]
     # Featured hero
@@ -250,6 +273,7 @@ def build_gallery_html() -> str:
         f'      <div class="gallery-featured-main" id="gallery-featured-main">\n'
         f'        <img class="gallery-featured-img" id="gallery-featured-img"'
         f' src="images/gallery/{first["path"].name}" alt="{first["alt"]}">\n'
+        f'        <div class="gallery-caption" id="gallery-caption">{first["caption"]}</div>\n'
         f'      </div>\n'
     )
 
@@ -260,7 +284,8 @@ def build_gallery_html() -> str:
         thumbs.append(
             f'        <div class="gallery-thumb{active}" data-index="{idx}"'
             f' data-src="images/gallery/{m["path"].name}"'
-            f' data-caption="{m["alt"]}" data-w="{m["w"]}" data-h="{m["h"]}">'
+            f' data-caption="{m["alt"]}" data-caption-html="{html.escape(m["caption"])}"'
+            f' data-w="{m["w"]}" data-h="{m["h"]}">'
             f'<img src="images/gallery/{m["path"].name}" alt="{m["alt"]}" loading="lazy"></div>'
         )
     thumbs.append('      </div>')

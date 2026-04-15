@@ -209,7 +209,7 @@ section { padding: 6rem 2.5rem; }
 .about-image-col img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: contain; object-position: center center;
+  object-fit: cover; object-position: center center;
   display: block;
 }
 
@@ -272,7 +272,7 @@ section { padding: 6rem 2.5rem; }
 }
 .mission-quote span { color: var(--accent); }
 .mission-text {
-  font-size: 1rem; line-height: 1.9; color: rgba(245,243,240,0.82);
+  font-size: 1.125rem; line-height: 1.9; color: rgba(245,243,240,0.82);
   max-width: 480px; margin-bottom: 2.5rem; text-shadow: 0 1px 8px rgba(0,0,0,0.85);
 }
 .mission-pillars { display: grid; grid-template-columns: 1fr; gap: 0.65rem; }
@@ -294,11 +294,11 @@ section { padding: 6rem 2.5rem; }
   position: relative; z-index: 1; padding: 0; width: 420px; text-align: center;
 }
 .mission-qt-text {
-  font-family: var(--font-body); font-size: clamp(1.1rem, 1.6vw, 1.35rem);
-  font-style: italic; line-height: 1.55; color: var(--text-light); margin: 0; quotes: none;
+  font-family: var(--font-display); font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-weight: 700; line-height: 1.55; color: var(--text-light); margin: 0; quotes: none;
 }
 .mission-qt-mark {
-  font-family: var(--font-display); font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-family: var(--font-display); font-size: clamp(1.8rem, 2.5vw, 2.4rem);
   line-height: 1; color: var(--accent); vertical-align: baseline;
 }
 .mission-qt-mark.open { margin-right: 0.06em; }
@@ -402,6 +402,8 @@ section { padding: 6rem 2.5rem; }
 .race-narrative p strong { color: var(--text-light); font-weight: 600; }
 
 .race-note { margin-top: 2rem; font-size: 0.8rem; color: var(--grey-mid); font-style: italic; }
+.race-note a { color: var(--accent); text-decoration: none; }
+.race-note a:hover { text-decoration: underline; }
 
 /* Mobile accordion */
 @media (max-width: 768px) {
@@ -482,6 +484,12 @@ section { padding: 6rem 2.5rem; }
   transition: opacity 0.3s ease;
 }
 .gallery-featured-img.fading { opacity: 0; }
+.gallery-caption {
+  position: absolute; bottom: 0.75rem; left: 0.75rem; z-index: 5;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text-light); text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+  pointer-events: none; line-height: 1.35;
+}
 .gallery-rail {
   width: 130px;
   flex-shrink: 0;
@@ -681,6 +689,7 @@ section { padding: 6rem 2.5rem; }
   font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 1.5rem;
 }
 .contact-info p { font-size: 0.95rem; line-height: 1.8; color: var(--grey-mid); margin-bottom: 2rem; }
+.contact-info p strong { color: var(--text-light); font-weight: 600; }
 .contact-cats { display: flex; flex-direction: column; gap: 1rem; }
 .contact-cat {
   display: flex; align-items: center; gap: 1rem; padding: 1rem;
@@ -980,7 +989,7 @@ footer {
   <div class="hero-content">
     <h1>ALEX<br>SCHUBACH</h1>
     <div class="hero-tag">Build on discipline. Proven through performance.</div>
-    <p class="hero-subtitle">Endurance athlete, trail runner, HYROX competitor operating at a high-performance standard across training, competition, and content.</p>
+    <p class="hero-subtitle">Endurance athlete, trail runner, Hyrox competitor operating at a high-performance standard across training, competition, and content.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn-primary">Partner With Me <span class="btn-arrow">↗</span></a>
       <a href="#results" class="btn-outline">View Performance</a>
@@ -1031,7 +1040,7 @@ footer {
         </div>
       </div>
       <div class="about-image-col reveal" style="animation-delay:0.2s">
-        <img src="images/about.jpg" alt="Alex Schubach">
+        <img src="images/identity.jpg" alt="Alex Schubach">
       </div>
     </div>
   </div>
@@ -1123,14 +1132,14 @@ footer {
       <div class="index-badge">
         <div class="index-badge-logo">UTMB</div>
         <div class="index-badge-body">
-          <div class="index-badge-label">UTMB Index</div>
+          <div class="index-badge-label">Index</div>
           <div class="index-badge-value">569</div>
         </div>
       </div>
       <div class="index-badge">
         <div class="index-badge-logo">ITRA</div>
         <div class="index-badge-body">
-          <div class="index-badge-label">ITRA Index</div>
+          <div class="index-badge-label">Index</div>
           <div class="index-badge-value">609</div>
           <div class="index-badge-id">Advanced 3</div>
         </div>
@@ -1138,7 +1147,7 @@ footer {
       <div class="index-badge">
         <div class="index-badge-logo">HYROX</div>
         <div class="index-badge-body">
-          <div class="index-badge-label">Personal Best</div>
+          <div class="index-badge-label">PB</div>
           <div class="index-badge-value">1:05:02</div>
         </div>
       </div>
@@ -1578,7 +1587,8 @@ Age Group: 16th / 410</div>
       </div>
     </div>
 
-    <p class="race-note reveal">Results updated after each race. Click any race to read the full story.</p>
+    <p class="race-note reveal">Results updated after each race.<br>
+<a href="https://www.welcometojpn.com/blog/categories/race-blogs" target="_blank" rel="noopener noreferrer">Read the full story for each race on the blog →</a></p>
   </div>
 </section>
 
@@ -1734,33 +1744,24 @@ TBC · 50 km · Thailand</div>
     </div>
         <div class="gallery-featured-outer">
       <div class="gallery-featured-main" id="gallery-featured-main">
-        <img class="gallery-featured-img" id="gallery-featured-img" src="images/gallery/01_trail_run.jpg" alt="Trail Run">
+        <img class="gallery-featured-img" id="gallery-featured-img" src="images/gallery/1_Fuji Trail.jpg" alt="Fuji Trail">
+        <div class="gallery-caption" id="gallery-caption">Fuji Trail</div>
       </div>
       <div class="gallery-rail">
-        <div class="gallery-thumb active" data-index="0" data-src="images/gallery/01_trail_run.jpg" data-caption="Trail Run" data-w="1200" data-h="789"><img src="images/gallery/01_trail_run.jpg" alt="Trail Run" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="1" data-src="images/gallery/02_finish_celebration.jpg" data-caption="Finish Celebration" data-w="1200" data-h="1771"><img src="images/gallery/02_finish_celebration.jpg" alt="Finish Celebration" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="2" data-src="images/gallery/03_race_finish.jpg" data-caption="Race Finish" data-w="1200" data-h="1782"><img src="images/gallery/03_race_finish.jpg" alt="Race Finish" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="3" data-src="images/gallery/05_track_night.jpg" data-caption="Track Night" data-w="1200" data-h="800"><img src="images/gallery/05_track_night.jpg" alt="Track Night" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="4" data-src="images/gallery/06_trail_small.jpg" data-caption="Trail Small" data-w="604" data-h="821"><img src="images/gallery/06_trail_small.jpg" alt="Trail Small" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="5" data-src="images/gallery/07_trail_pack.jpg" data-caption="Trail Pack" data-w="1200" data-h="1684"><img src="images/gallery/07_trail_pack.jpg" alt="Trail Pack" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="6" data-src="images/gallery/04_portrait_shirtless.png" data-caption="Portrait Shirtless" data-w="1920" data-h="1080"><img src="images/gallery/04_portrait_shirtless.png" alt="Portrait Shirtless" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="7" data-src="images/gallery/08_track_race_blue.png" data-caption="Track Race Blue" data-w="1920" data-h="1080"><img src="images/gallery/08_track_race_blue.png" alt="Track Race Blue" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="8" data-src="images/gallery/09_portrait_fence.png" data-caption="Portrait Fence" data-w="1920" data-h="1080"><img src="images/gallery/09_portrait_fence.png" alt="Portrait Fence" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="9" data-src="images/gallery/10_track_studio.png" data-caption="Track Studio" data-w="1920" data-h="1080"><img src="images/gallery/10_track_studio.png" alt="Track Studio" loading="lazy"></div>
-        <div class="gallery-thumb" data-index="10" data-src="images/gallery/11_track_stadium.png" data-caption="Track Stadium" data-w="1920" data-h="1080"><img src="images/gallery/11_track_stadium.png" alt="Track Stadium" loading="lazy"></div>
+        <div class="gallery-thumb active" data-index="0" data-src="images/gallery/1_Fuji Trail.jpg" data-caption="Fuji Trail" data-caption-html="Fuji Trail" data-w="1200" data-h="789"><img src="images/gallery/1_Fuji Trail.jpg" alt="Fuji Trail" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="1" data-src="images/gallery/2_Fuji Finish.jpg" data-caption="Fuji Finish" data-caption-html="Fuji Finish" data-w="1200" data-h="1771"><img src="images/gallery/2_Fuji Finish.jpg" alt="Fuji Finish" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="2" data-src="images/gallery/3_Rio Kimura - Filmmaker_Head to Head.jpg" data-caption="Rio Kimura - Filmmaker Head To Head" data-caption-html="Head To Head&lt;br&gt;Rio Kimura" data-w="1200" data-h="800"><img src="images/gallery/3_Rio Kimura - Filmmaker_Head to Head.jpg" alt="Rio Kimura - Filmmaker Head To Head" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="3" data-src="images/gallery/6_Tre Loren - Filmmaker_Speed Work.png" data-caption="Tre Loren - Filmmaker Speed Work" data-caption-html="Speed Work&lt;br&gt;Tre Loren" data-w="1920" data-h="1080"><img src="images/gallery/6_Tre Loren - Filmmaker_Speed Work.png" alt="Tre Loren - Filmmaker Speed Work" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="4" data-src="images/gallery/8_Tre Loren - Filmmaker_Hydrating.png" data-caption="Tre Loren - Filmmaker Hydrating" data-caption-html="Hydrating&lt;br&gt;Tre Loren" data-w="1920" data-h="1080"><img src="images/gallery/8_Tre Loren - Filmmaker_Hydrating.png" alt="Tre Loren - Filmmaker Hydrating" loading="lazy"></div>
+        <div class="gallery-thumb" data-index="5" data-src="images/gallery/10_Tre Loren - Filmmaker_City Running.png" data-caption="Tre Loren - Filmmaker City Running" data-caption-html="City Running&lt;br&gt;Tre Loren" data-w="1920" data-h="1080"><img src="images/gallery/10_Tre Loren - Filmmaker_City Running.png" alt="Tre Loren - Filmmaker City Running" loading="lazy"></div>
       </div>
       <div style="display:none" aria-hidden="true">
-        <div class="gallery-item" data-index="0" data-src="images/gallery/01_trail_run.jpg"><img src="" alt="Trail Run"></div>
-        <div class="gallery-item" data-index="1" data-src="images/gallery/02_finish_celebration.jpg"><img src="" alt="Finish Celebration"></div>
-        <div class="gallery-item" data-index="2" data-src="images/gallery/03_race_finish.jpg"><img src="" alt="Race Finish"></div>
-        <div class="gallery-item" data-index="3" data-src="images/gallery/05_track_night.jpg"><img src="" alt="Track Night"></div>
-        <div class="gallery-item" data-index="4" data-src="images/gallery/06_trail_small.jpg"><img src="" alt="Trail Small"></div>
-        <div class="gallery-item" data-index="5" data-src="images/gallery/07_trail_pack.jpg"><img src="" alt="Trail Pack"></div>
-        <div class="gallery-item" data-index="6" data-src="images/gallery/04_portrait_shirtless.png"><img src="" alt="Portrait Shirtless"></div>
-        <div class="gallery-item" data-index="7" data-src="images/gallery/08_track_race_blue.png"><img src="" alt="Track Race Blue"></div>
-        <div class="gallery-item" data-index="8" data-src="images/gallery/09_portrait_fence.png"><img src="" alt="Portrait Fence"></div>
-        <div class="gallery-item" data-index="9" data-src="images/gallery/10_track_studio.png"><img src="" alt="Track Studio"></div>
-        <div class="gallery-item" data-index="10" data-src="images/gallery/11_track_stadium.png"><img src="" alt="Track Stadium"></div>
+        <div class="gallery-item" data-index="0" data-src="images/gallery/1_Fuji Trail.jpg"><img src="" alt="Fuji Trail"></div>
+        <div class="gallery-item" data-index="1" data-src="images/gallery/2_Fuji Finish.jpg"><img src="" alt="Fuji Finish"></div>
+        <div class="gallery-item" data-index="2" data-src="images/gallery/3_Rio Kimura - Filmmaker_Head to Head.jpg"><img src="" alt="Rio Kimura - Filmmaker Head To Head"></div>
+        <div class="gallery-item" data-index="3" data-src="images/gallery/6_Tre Loren - Filmmaker_Speed Work.png"><img src="" alt="Tre Loren - Filmmaker Speed Work"></div>
+        <div class="gallery-item" data-index="4" data-src="images/gallery/8_Tre Loren - Filmmaker_Hydrating.png"><img src="" alt="Tre Loren - Filmmaker Hydrating"></div>
+        <div class="gallery-item" data-index="5" data-src="images/gallery/10_Tre Loren - Filmmaker_City Running.png"><img src="" alt="Tre Loren - Filmmaker City Running"></div>
       </div>
     </div>
   </div>
@@ -1782,11 +1783,11 @@ TBC · 50 km · Thailand</div>
     </div>
     <div class="pdf-panel" id="pdf-training">
       <p class="pdf-subtitle">This training split is designed to build a powerful engine, strong legs, full-body strength, and unstoppable hybrid conditioning.</p>
-      <a href="downloads/training-program.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Training Program</a>
+      <a href="downloads/training-program.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Training Split</a>
     </div>
     <div class="pdf-panel" id="pdf-meal">
       <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
-      <a href="downloads/meal-plan.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Meal Plan</a>
+      <a href="downloads/meal-plan.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Cutting Plan</a>
     </div>
   </div>
 </section>
@@ -1803,7 +1804,7 @@ TBC · 50 km · Thailand</div>
         <div class="contact-cats">
           
           <div class="contact-cat-item">
-            <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+            <div class="contact-cat">
               
               <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/handshake_icon.png" alt="" style="width:2rem;height:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
               
@@ -1816,7 +1817,7 @@ TBC · 50 km · Thailand</div>
           </div>
           
           <div class="contact-cat-item">
-            <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+            <div class="contact-cat">
               
               <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/camera_icon.png" alt="" style="width:2rem;height:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
               
@@ -1829,7 +1830,7 @@ TBC · 50 km · Thailand</div>
           </div>
           
           <div class="contact-cat-item">
-            <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+            <div class="contact-cat">
               
               <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/collab_icon.png" alt="" style="width:2rem;height:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
               
@@ -1845,7 +1846,7 @@ TBC · 50 km · Thailand</div>
         <div class="social-bar">
           <a href="https://www.instagram.com/alex_in_japan_" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href="https://strava.app.link/5cOYQkeCQ1b" class="social-link" target="_blank" rel="noopener noreferrer">Strava</a>
-          <a href="https://www.welcometojpn.com/blog/categories/my-japan" class="social-link" target="_blank" rel="noopener noreferrer">Blog</a>
+          <a href="https://www.welcometojpn.com/blog/categories/race-blogs" class="social-link" target="_blank" rel="noopener noreferrer">Blog</a>
         </div>
       </div>
       <div class="reveal">
@@ -1900,6 +1901,16 @@ document.querySelectorAll('.race-header').forEach(header => {
     const item = header.closest('.race-item');
     const wasOpen = item.classList.contains('open');
     item.closest('.year-panel').querySelectorAll('.race-item').forEach(r => r.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Contact category accordion — single open (mirrors race accordion pattern)
+document.querySelectorAll('.contact-cat').forEach(cat => {
+  cat.addEventListener('click', () => {
+    const item = cat.closest('.contact-cat-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.contact-cat-item').forEach(c => c.classList.remove('open'));
     if (!wasOpen) item.classList.add('open');
   });
 });
@@ -2082,6 +2093,12 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     thumbs.forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
     featImg.classList.add('fading');
+    const captionEl = document.getElementById('gallery-caption');
+    if (captionEl && thumb.dataset.captionHtml) {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = thumb.dataset.captionHtml;
+      captionEl.innerHTML = tmp.innerHTML;
+    }
     setTimeout(function() {
       featImg.src = thumb.dataset.src;
       featMain.style.height = computeHeight(+thumb.dataset.w, +thumb.dataset.h) + 'px';

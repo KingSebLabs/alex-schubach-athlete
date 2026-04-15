@@ -177,7 +177,7 @@ section { padding: 6rem 2.5rem; }
 .about-image-col img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
-  object-fit: contain; object-position: center center;
+  object-fit: cover; object-position: center center;
   display: block;
 }
 
@@ -240,7 +240,7 @@ section { padding: 6rem 2.5rem; }
 }
 .mission-quote span { color: var(--accent); }
 .mission-text {
-  font-size: 1rem; line-height: 1.9; color: rgba(245,243,240,0.82);
+  font-size: 1.125rem; line-height: 1.9; color: rgba(245,243,240,0.82);
   max-width: 480px; margin-bottom: 2.5rem; text-shadow: 0 1px 8px rgba(0,0,0,0.85);
 }
 .mission-pillars { display: grid; grid-template-columns: 1fr; gap: 0.65rem; }
@@ -262,11 +262,11 @@ section { padding: 6rem 2.5rem; }
   position: relative; z-index: 1; padding: 0; width: 420px; text-align: center;
 }
 .mission-qt-text {
-  font-family: var(--font-body); font-size: clamp(1.1rem, 1.6vw, 1.35rem);
-  font-style: italic; line-height: 1.55; color: var(--text-light); margin: 0; quotes: none;
+  font-family: var(--font-display); font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-weight: 700; line-height: 1.55; color: var(--text-light); margin: 0; quotes: none;
 }
 .mission-qt-mark {
-  font-family: var(--font-display); font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+  font-family: var(--font-display); font-size: clamp(1.8rem, 2.5vw, 2.4rem);
   line-height: 1; color: var(--accent); vertical-align: baseline;
 }
 .mission-qt-mark.open { margin-right: 0.06em; }
@@ -370,6 +370,8 @@ section { padding: 6rem 2.5rem; }
 .race-narrative p strong { color: var(--text-light); font-weight: 600; }
 
 .race-note { margin-top: 2rem; font-size: 0.8rem; color: var(--grey-mid); font-style: italic; }
+.race-note a { color: var(--accent); text-decoration: none; }
+.race-note a:hover { text-decoration: underline; }
 
 /* Mobile accordion */
 @media (max-width: 768px) {
@@ -450,6 +452,12 @@ section { padding: 6rem 2.5rem; }
   transition: opacity 0.3s ease;
 }
 .gallery-featured-img.fading { opacity: 0; }
+.gallery-caption {
+  position: absolute; bottom: 0.75rem; left: 0.75rem; z-index: 5;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--text-light); text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+  pointer-events: none; line-height: 1.35;
+}
 .gallery-rail {
   width: 130px;
   flex-shrink: 0;
@@ -649,6 +657,7 @@ section { padding: 6rem 2.5rem; }
   font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 1.5rem;
 }
 .contact-info p { font-size: 0.95rem; line-height: 1.8; color: var(--grey-mid); margin-bottom: 2rem; }
+.contact-info p strong { color: var(--text-light); font-weight: 600; }
 .contact-cats { display: flex; flex-direction: column; gap: 1rem; }
 .contact-cat {
   display: flex; align-items: center; gap: 1rem; padding: 1rem;
@@ -978,7 +987,7 @@ footer {
         </div>
       </div>
       <div class="about-image-col reveal" style="animation-delay:0.2s">
-        <img src="images/about.jpg" alt="Alex Schubach">
+        <img src="images/identity.jpg" alt="Alex Schubach">
       </div>
     </div>
   </div>
@@ -1044,14 +1053,14 @@ footer {
       <div class="index-badge">
         <div class="index-badge-logo">UTMB</div>
         <div class="index-badge-body">
-          <div class="index-badge-label">UTMB Index</div>
+          <div class="index-badge-label">Index</div>
           <div class="index-badge-value">{{ indices.utmb }}</div>
         </div>
       </div>
       <div class="index-badge">
         <div class="index-badge-logo">ITRA</div>
         <div class="index-badge-body">
-          <div class="index-badge-label">ITRA Index</div>
+          <div class="index-badge-label">Index</div>
           <div class="index-badge-value">{{ indices.itra or "—" }}</div>
           {% if indices.itra_level %}<div class="index-badge-id">{{ indices.itra_level }}</div>{% endif %}
         </div>
@@ -1059,7 +1068,7 @@ footer {
       <div class="index-badge">
         <div class="index-badge-logo">HYROX</div>
         <div class="index-badge-body">
-          <div class="index-badge-label">Personal Best</div>
+          <div class="index-badge-label">PB</div>
           <div class="index-badge-value">{{ indices.hyrox_pb or "—" }}</div>
         </div>
       </div>
@@ -1077,7 +1086,8 @@ footer {
 
     {{ race_tabs_and_panels }}
 
-    <p class="race-note reveal">Results updated after each race. Click any race to read the full story.</p>
+    <p class="race-note reveal">Results updated after each race.<br>
+<a href="https://www.welcometojpn.com/blog/categories/race-blogs" target="_blank" rel="noopener noreferrer">Read the full story for each race on the blog →</a></p>
   </div>
 </section>
 
@@ -1121,11 +1131,11 @@ footer {
     </div>
     <div class="pdf-panel" id="pdf-training">
       <p class="pdf-subtitle">This training split is designed to build a powerful engine, strong legs, full-body strength, and unstoppable hybrid conditioning.</p>
-      <a href="{{ pdf.training_program_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Training Program</a>
+      <a href="{{ pdf.training_program_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Training Split</a>
     </div>
     <div class="pdf-panel" id="pdf-meal">
       <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
-      <a href="{{ pdf.meal_plan_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Meal Plan</a>
+      <a href="{{ pdf.meal_plan_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Cutting Plan</a>
     </div>
   </div>
 </section>
@@ -1142,7 +1152,7 @@ footer {
         <div class="contact-cats">
           {% for cat in contact.categories %}
           <div class="contact-cat-item">
-            <div class="contact-cat" onclick="this.parentElement.classList.toggle('open')">
+            <div class="contact-cat">
               {% if cat.label == "Brand Partnerships" %}
               <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/handshake_icon.png" alt="" style="width:2rem;height:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
               {% elif cat.label == "Media Inquiries" %}
@@ -1237,6 +1247,16 @@ document.querySelectorAll('.race-header').forEach(header => {
     const item = header.closest('.race-item');
     const wasOpen = item.classList.contains('open');
     item.closest('.year-panel').querySelectorAll('.race-item').forEach(r => r.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+// Contact category accordion — single open (mirrors race accordion pattern)
+document.querySelectorAll('.contact-cat').forEach(cat => {
+  cat.addEventListener('click', () => {
+    const item = cat.closest('.contact-cat-item');
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.contact-cat-item').forEach(c => c.classList.remove('open'));
     if (!wasOpen) item.classList.add('open');
   });
 });
@@ -1419,6 +1439,12 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     thumbs.forEach(t => t.classList.remove('active'));
     thumb.classList.add('active');
     featImg.classList.add('fading');
+    const captionEl = document.getElementById('gallery-caption');
+    if (captionEl && thumb.dataset.captionHtml) {
+      const tmp = document.createElement('div');
+      tmp.innerHTML = thumb.dataset.captionHtml;
+      captionEl.innerHTML = tmp.innerHTML;
+    }
     setTimeout(function() {
       featImg.src = thumb.dataset.src;
       featMain.style.height = computeHeight(+thumb.dataset.w, +thumb.dataset.h) + 'px';
