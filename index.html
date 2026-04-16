@@ -307,7 +307,7 @@ section { padding: 6rem 2.5rem; }
 /* ===== INDEX BADGES ===== */
 .index-badges { display: flex; gap: 1rem; margin-top: 2rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
 .index-badge {
-  display: flex; align-items: flex-start; gap: 1rem;
+  display: flex; align-items: center; gap: 1rem;
   background: var(--grey-dark); border: 1px solid var(--grey-border);
   padding: 1rem 1.5rem; min-width: 200px;
 }
@@ -315,6 +315,7 @@ section { padding: 6rem 2.5rem; }
   display: flex; flex-direction: column;
   border-right: 1px solid var(--grey-border); padding-right: 1rem;
 }
+.index-badge-right { display: flex; flex-direction: column; }
 .index-badge-logo {
   font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.1em;
   color: var(--accent); line-height: 1;
@@ -1136,22 +1137,28 @@ footer {
           <div class="index-badge-logo">UTMB</div>
           <div class="index-badge-label">Index</div>
         </div>
-        <div class="index-badge-value">569</div>
+        <div class="index-badge-right">
+          <div class="index-badge-value">569</div>
+        </div>
       </div>
       <div class="index-badge">
         <div class="index-badge-left">
           <div class="index-badge-logo">ITRA</div>
           <div class="index-badge-label">Index</div>
+        </div>
+        <div class="index-badge-right">
+          <div class="index-badge-value">609</div>
           <div class="index-badge-id">Advanced 3</div>
         </div>
-        <div class="index-badge-value">609</div>
       </div>
       <div class="index-badge">
         <div class="index-badge-left">
           <div class="index-badge-logo">HYROX</div>
           <div class="index-badge-label">PB</div>
         </div>
-        <div class="index-badge-value">1:05:02</div>
+        <div class="index-badge-right">
+          <div class="index-badge-value">1:05:02</div>
+        </div>
       </div>
       <div class="index-badge index-badge--road">
         <div class="index-badge-logo">ROAD</div>
