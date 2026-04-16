@@ -200,30 +200,78 @@ def fetch_itra_index(runner_url: str, fallback_score: str = "", fallback_level: 
 
 
 def optimize_images():
-    """Resize gallery images to max 1200px wide, quality 82. Modifies in-place."""
-    for img_path in GALLERY_DIR.glob("*.jpg"):
+    """Resize and compress all gallery images to max 1200px wide, quality 82.
+    PNGs are converted to JPEG (far better compression for photos).
+    Uppercase extensions (.JPG, .PNG) are normalised to lowercase .jpg.
+    Modifies in-place; originals are replaced/deleted after conversion.
+    """
+    all_images = (
+        list(GALLERY_DIR.glob("*.jpg")) + list(GALLERY_DIR.glob("*.JPG")) +
+        list(GALLERY_DIR.glob("*.jpeg")) + list(GALLERY_DIR.glob("*.JPEG")) +
+        list(GALLERY_DIR.glob("*.png")) + list(GALLERY_DIR.glob("*.PNG"))
+    )
+
+    # Deduplicate by lowercase stem (macOS case-insensitive FS returns .JPG from *.jpg glob)
+    seen = set()
+    deduped = []
+    for p in all_images:
+        key = p.stem.lower()
+        if key not in seen:
+            seen.add(key)
+            deduped.append(p)
+
+    for img_path in deduped:
         try:
             img = Image.open(img_path)
+            img.load()  # force full read before closing the file handle
+
+            is_png = img_path.suffix.lower() == ".png"
+            out_path = img_path.parent / (img_path.stem + ".jpg")
+
+            # Flatten transparency (PNGs may have alpha channel)
+            if img.mode in ("RGBA", "LA", "P"):
+                if img.mode == "P":
+                    img = img.convert("RGBA")
+                bg = Image.new("RGB", img.size, (10, 10, 10))
+                bg.paste(img, mask=img.split()[-1])
+                img = bg
+            elif img.mode != "RGB":
+                img = img.convert("RGB")
+
+            # Resize if wider than 1200px
             if img.width > 1200:
                 ratio = 1200 / img.width
                 new_size = (1200, int(img.height * ratio))
                 img = img.resize(new_size, Image.LANCZOS)
-                img.save(img_path, "JPEG", quality=82, optimize=True)
-                print(f"  Resized {img_path.name} → {new_size[0]}×{new_size[1]}")
+
+            if is_png:
+                # PNG → JPEG: save to new path, delete original
+                img.save(str(out_path), "JPEG", quality=82, optimize=True)
+                img_path.unlink()
+                print(f"  Converted {img_path.name} → {out_path.name} "
+                      f"({out_path.stat().st_size // 1024} KB)")
+            else:
+                # JPEG (any case extension): save in-place using original path string
+                img.save(str(img_path), "JPEG", quality=82, optimize=True)
+                print(f"  Optimised {img_path.name} "
+                      f"({img_path.stat().st_size // 1024} KB)")
+
         except Exception as e:
             print(f"  ⚠ Could not optimise {img_path.name}: {e}", file=sys.stderr)
 
-    # Also optimise about.jpg
-    about_path = IMAGES_DIR / "about.jpg"
-    if about_path.exists():
-        try:
-            img = Image.open(about_path)
-            if img.width > 1200:
-                ratio = 1200 / img.width
-                img = img.resize((1200, int(img.height * ratio)), Image.LANCZOS)
-                img.save(about_path, "JPEG", quality=82, optimize=True)
-        except Exception as e:
-            print(f"  ⚠ Could not optimise about.jpg: {e}", file=sys.stderr)
+    # Also optimise identity.jpg and about.jpg
+    for extra in [IMAGES_DIR / "identity.jpg", IMAGES_DIR / "about.jpg"]:
+        if extra.exists():
+            try:
+                img = Image.open(extra)
+                if img.mode != "RGB":
+                    img = img.convert("RGB")
+                if img.width > 1200:
+                    ratio = 1200 / img.width
+                    img = img.resize((1200, int(img.height * ratio)), Image.LANCZOS)
+                    img.save(extra, "JPEG", quality=82, optimize=True)
+            except Exception as e:
+                print(f"  ⚠ Could not optimise {extra.name}: {e}", file=sys.stderr)
 
 
 def _natural_key(p):
