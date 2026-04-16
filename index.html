@@ -680,6 +680,7 @@ section { padding: 6rem 2.5rem; }
   text-decoration: none; transition: all 0.3s;
 }
 .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+.btn-white--disabled { opacity: 0.45; cursor: default; pointer-events: none; }
 .pdf-panel { display: none; }
 .pdf-panel.active { display: block; }
 @media (max-width: 768px) {
@@ -1791,6 +1792,7 @@ TBC · 50 km · Thailand</div>
     <button class="pdf-tab active" data-tab="media">Media Kit</button>
     <button class="pdf-tab" data-tab="training">Training Program</button>
     <button class="pdf-tab" data-tab="meal">Meal Plan</button>
+    <button class="pdf-tab" data-tab="selfdev">Self Development</button>
   </div>
   <div class="pdf-body">
     <div class="pdf-title">DOWNLOADS</div>
@@ -1805,6 +1807,10 @@ TBC · 50 km · Thailand</div>
     <div class="pdf-panel" id="pdf-meal">
       <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
       <a href="downloads/meal-plan.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Alex's current meal plan</a>
+    </div>
+    <div class="pdf-panel" id="pdf-selfdev">
+      <p class="pdf-subtitle">This self-development framework is designed to elevate your mindset, improve daily structure, and drive continuous personal growth. It's time to rewire your mind and live in alignment with your values. Take control and transform your life.</p>
+      <span class="btn-white btn-white--disabled">↓ Coming Soon</span>
     </div>
   </div>
 </section>
