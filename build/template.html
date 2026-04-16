@@ -275,15 +275,15 @@ section { padding: 6rem 2.5rem; }
 /* ===== INDEX BADGES ===== */
 .index-badges { display: flex; gap: 1rem; margin-top: 2rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
 .index-badge {
-  display: flex; align-items: baseline; gap: 1rem;
+  display: flex; align-items: center; gap: 1rem;
   background: var(--grey-dark); border: 1px solid var(--grey-border);
   padding: 1rem 1.5rem; min-width: 200px;
 }
 .index-badge-left {
-  display: flex; flex-direction: column;
-  border-right: 1px solid var(--grey-border); padding-right: 1rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-right: 1px solid var(--grey-border); padding-right: 1rem; align-self: stretch;
 }
-.index-badge-right { display: flex; flex-direction: column; }
+.index-badge-right { display: flex; flex-direction: column; justify-content: center; }
 .index-badge-logo {
   font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.1em;
   color: var(--accent); line-height: 1;
@@ -1083,8 +1083,10 @@ footer {
         </div>
       </div>
       <div class="index-badge index-badge--road">
-        <div class="index-badge-logo">ROAD</div>
-        <div class="index-badge-body">
+        <div class="index-badge-left">
+          <div class="index-badge-logo">ROAD</div>
+        </div>
+        <div class="index-badge-right">
           <div class="index-badge-road-rows">
             <div class="index-badge-road-row"><span class="index-badge-road-dist">Marathon</span><span class="index-badge-road-time">{{ indices.road_marathon or "—" }}</span></div>
             <div class="index-badge-road-row"><span class="index-badge-road-dist">Half</span><span class="index-badge-road-time">{{ indices.road_half or "—" }}</span></div>
