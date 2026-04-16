@@ -249,7 +249,9 @@ def _build_caption(stem: str) -> str:
 def build_gallery_html() -> str:
     """Scan images/gallery/ and build featured + thumbnail rail HTML."""
     images = sorted(
-        list(GALLERY_DIR.glob("*.jpg")) + list(GALLERY_DIR.glob("*.jpeg")) + list(GALLERY_DIR.glob("*.png")),
+        list(GALLERY_DIR.glob("*.jpg")) + list(GALLERY_DIR.glob("*.JPG")) +
+        list(GALLERY_DIR.glob("*.jpeg")) + list(GALLERY_DIR.glob("*.JPEG")) +
+        list(GALLERY_DIR.glob("*.png")) + list(GALLERY_DIR.glob("*.PNG")),
         key=_natural_key
     )
     if not images:
