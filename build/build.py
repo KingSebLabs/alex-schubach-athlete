@@ -15,6 +15,7 @@ import sys
 import io
 import re
 import html
+import json
 import datetime
 import requests
 from pathlib import Path
@@ -484,6 +485,12 @@ def build_race_card_html(race: dict) -> str:
     pos = race["pos_overall"] or "—"
     dist_already_in_type = distance.lower().replace(" ", "").replace(".", "") in race_type.lower().replace(" ", "").replace(".", "")
     type_display = f"{race_type}\n{distance}" if distance and distance not in ("—", "") and not dist_already_in_type else race_type
+    # HTML-escape header display fields (narrative fields are already escaped by _fmt_rich_cell)
+    name = html.escape(name)
+    date = html.escape(date)
+    result = html.escape(result)
+    pos = html.escape(pos)
+    type_display = html.escape(type_display)
 
     # Narrative body
     body_parts = []
@@ -512,7 +519,7 @@ def build_race_card_html(race: dict) -> str:
 
     body_html = "\n".join(body_parts) if body_parts else "              <p>Race notes coming soon.</p>"
 
-    location = race.get("location", "") or ""
+    location = html.escape(race.get("location", "") or "")
     loc_html = f'<div class="race-h-loc">{location}</div>' if location and location != "—" else ""
     has_desc_class = (" has-desc" if race.get("description") else "")
 
@@ -631,36 +638,40 @@ def build_seo_tags(site: dict, social: dict, analytics: dict = None) -> str:
     gsc_token = (analytics or {}).get("gsc_verification_token", "").strip()
     gsc_tag = f'  <meta name="google-site-verification" content="{gsc_token}">\n' if gsc_token else ""
 
+    title_esc = html.escape(title)
+    desc_esc = html.escape(description)
+
     og = gsc_tag + f'''  <!-- Keywords -->
   <meta name="keywords" content="Alex Schubach, Alexander Schubach, Alex the Athlete, alexschubach, alexschubach.com, endurance athlete, trail runner, Hyrox, ultra running, UTMB">
   <!-- Open Graph -->
-  <meta property="og:title" content="{title}">
-  <meta property="og:description" content="{description}">
+  <meta property="og:title" content="{title_esc}">
+  <meta property="og:description" content="{desc_esc}">
   <meta property="og:image" content="{base_url}/images/hero.jpg">
   <meta property="og:url" content="{base_url}">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{title}">
-  <meta name="twitter:description" content="{description}">
+  <meta name="twitter:title" content="{title_esc}">
+  <meta name="twitter:description" content="{desc_esc}">
   <meta name="twitter:image" content="{base_url}/images/hero.jpg">'''
 
     same_as = [s for s in [instagram, strava] if s and s != "#"]
-    same_as_json = ", ".join(f'"{s}"' for s in same_as)
-
-    jsonld = f'''  <!-- JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {{
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Alex Schubach",
-    "alternateName": ["Alexander Schubach", "Alex the Athlete", "alexschubach"],
-    "url": "{base_url}",
-    "image": "{base_url}/images/about.jpg",
-    "jobTitle": "Endurance Athlete",
-    "description": "{description}",
-    "sameAs": [{same_as_json}]
-  }}
-  </script>'''
+    jsonld_data = {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Alex Schubach",
+        "alternateName": ["Alexander Schubach", "Alex the Athlete", "alexschubach"],
+        "url": base_url,
+        "image": f"{base_url}/images/about.jpg",
+        "jobTitle": "Endurance Athlete",
+        "description": description,
+        "sameAs": same_as,
+    }
+    jsonld = (
+        "  <!-- JSON-LD Structured Data -->\n"
+        "  <script type=\"application/ld+json\">\n"
+        + json.dumps(jsonld_data, indent=2, ensure_ascii=False)
+        + "\n  </script>"
+    )
 
     return og + "\n" + jsonld
 
