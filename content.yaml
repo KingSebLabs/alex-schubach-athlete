@@ -94,7 +94,7 @@ social:
 # ─── PDF DOWNLOAD ─────────────────────────────────────────────────────────────
 pdf:
   enabled: true
-  media_kit_url: "#"        # Paste Media Kit PDF link here when ready
+  media_kit_url: "downloads/media-kit-alex-schubach-2026-v2.pdf"
   training_program_url: "downloads/training-program.pdf" # Paste Training Program PDF link here when ready
   meal_plan_url: "downloads/meal-plan.pdf"              # Paste Meal Plan PDF link here when ready
 
