@@ -22,7 +22,7 @@
   --text-dark: #0a0a0a;
   --accent: #e8490f;
   --accent-glow: #ff6b35;
-  --grey-mid: #888;
+  --grey-mid: #aaa;
   --grey-dark: #1a1a1a;
   --grey-border: #2a2a2a;
   --font-display: 'Bebas Neue', sans-serif;
@@ -70,7 +70,7 @@ nav.nav-hidden { transform: translateY(-100%); }
 .nav-cta:hover { background: var(--accent-glow); transform: translateY(-1px); }
 .nav-links .nav-cta, .nav-links .nav-cta:hover { color: white; }
 
-.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 12px; }
 .hamburger span { display: block; width: 24px; height: 2px; background: var(--text-light); transition: 0.3s; }
 
 /* ===== HERO ===== */
@@ -652,7 +652,7 @@ section { padding: 6rem 2.5rem; }
 .pdf-panel { display: none; }
 .pdf-panel.active { display: block; }
 @media (max-width: 768px) {
-  .pdf-tab { padding: 1.5rem 0.5rem; font-size: 0.65rem; letter-spacing: 0.08em; }
+  .pdf-tab { padding: 1.5rem 0.5rem; font-size: 0.75rem; letter-spacing: 0.08em; }
 }
 
 /* ===== CONTACT ===== */
@@ -779,6 +779,28 @@ footer {
 .value-num       { font-size: clamp(2rem, 6vw, 3rem); }
 .stat-number     { font-size: clamp(1.8rem, 5vw, 2.5rem); }
 .race-h-sub      { font-size: clamp(0.65rem, 2vw, 0.75rem); }
+
+/* ===== FOCUS STYLES (keyboard navigation) ===== */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.year-tab:focus-visible,
+.pdf-tab:focus-visible,
+.race-header:focus-visible,
+.gallery-thumb:focus-visible,
+.scroll-top-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.lightbox-close:focus-visible,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible { outline: 2px solid var(--text-light); outline-offset: 3px; }
+.nav-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 /* Hamburger X animation (CSS-driven — inline JS styles removed in script) */
 .hamburger span { transition: transform 0.25s ease, opacity 0.25s ease; }
@@ -1260,12 +1282,20 @@ document.querySelectorAll('.year-tab').forEach(tab => {
 
 // Race accordion
 document.querySelectorAll('.race-header').forEach(header => {
-  header.addEventListener('click', () => {
+  const toggle = () => {
     const item = header.closest('.race-item');
     const wasOpen = item.classList.contains('open');
-    item.closest('.year-panel').querySelectorAll('.race-item').forEach(r => r.classList.remove('open'));
-    if (!wasOpen) item.classList.add('open');
-  });
+    item.closest('.year-panel').querySelectorAll('.race-item').forEach(r => {
+      r.classList.remove('open');
+      r.querySelector('.race-header').setAttribute('aria-expanded', 'false');
+    });
+    if (!wasOpen) {
+      item.classList.add('open');
+      header.setAttribute('aria-expanded', 'true');
+    }
+  };
+  header.addEventListener('click', toggle);
+  header.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); } });
 });
 
 // Contact category accordion — single open (mirrors race accordion pattern)

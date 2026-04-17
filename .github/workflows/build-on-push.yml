@@ -23,6 +23,16 @@ jobs:
       - name: Build site
         run: python build/build.py
 
+      - name: Verify build
+        run: |
+          python3 -c "
+          content = open('index.html').read()
+          assert '<title>' in content, 'Missing title tag'
+          assert 'race-item' in content, 'Missing race cards'
+          assert len(content) > 100000, f'Output too small: {len(content)} bytes'
+          print('Build verified:', len(content), 'bytes')
+          "
+
       - name: Commit updated files (if changed)
         run: |
           git config user.name "github-actions[bot]"

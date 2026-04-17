@@ -21,7 +21,7 @@ import requests
 from pathlib import Path
 
 import yaml
-from jinja2 import Environment, FileSystemLoader, Undefined
+from jinja2 import Environment, FileSystemLoader
 from PIL import Image
 from openpyxl.cell.rich_text import CellRichText, TextBlock
 
@@ -506,14 +506,14 @@ def build_race_card_html(race: dict) -> str:
         body_parts.append(
             f'              <div class="race-narrative">\n'
             f'                <div class="race-narrative-label">Going In</div>\n'
-            f'                <p>{_fmt_narrative(race["comments_pre"])}</p>\n'
+            f'                <p>{race["comments_pre"]}</p>\n'
             f'              </div>'
         )
     if race["comments_post"]:
         body_parts.append(
             f'              <div class="race-narrative">\n'
             f'                <div class="race-narrative-label">Looking Back</div>\n'
-            f'                <p>{_fmt_narrative(race["comments_post"])}</p>\n'
+            f'                <p>{race["comments_post"]}</p>\n'
             f'              </div>'
         )
 
@@ -524,7 +524,7 @@ def build_race_card_html(race: dict) -> str:
     has_desc_class = (" has-desc" if race.get("description") else "")
 
     return f'''        <div class="race-item">
-          <div class="race-header">
+          <div class="race-header" tabindex="0" role="button" aria-expanded="false">
             <div><div class="race-h-name">{name}</div><div class="race-h-sub">{date}</div>{loc_html}</div>
             <div class="race-h-type">{type_display}</div>
             <div class="race-h-time">{result or "—"}</div>
