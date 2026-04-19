@@ -66,10 +66,14 @@ indices:
   road_10k: "35:56"
   road_5k: "17:50"
 
+# ─── CALENDAR ────────────────────────────────────────────────────────────────
+calendar:
+  intro: "Based in Tokyo, I compete in endurance races across Asia, with a focus on trail running in Japan. I want to shine a light on the depth and uniqueness of the running culture here, and inspire you to get after it in your own way. <strong>Anything you put your mind to, you can achieve.</strong>"
+
 # ─── CONTACT ─────────────────────────────────────────────────────────────────
 contact:
   heading: "LET'S WORK<br>TOGETHER"
-  body: "Whether it's a brand partnership, media opportunity, or content collaboration, I'm interested in working with people and brands that operate with intent.<br><br><strong>Let's build something that performs.</strong>"
+  body: "Based in Tokyo and racing across Asia, I'm focused on showcasing the unique racing culture here and working with people who want to elevate it. If you're looking to tap into the Asian fitness or running market, <strong>I am your bridge.</strong><br><br>Whether it's a brand partnership, media opportunity, or content collaboration, <strong>I'm interested in working with people and brands that operate with intent.</strong>"
   # Formspree endpoint — sign up at formspree.io and paste your form ID here
   formspree_id: "mjgazkbq"
   categories:

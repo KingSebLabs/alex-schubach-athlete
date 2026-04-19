@@ -807,6 +807,7 @@ def main():
         seo_tags=seo_tags,
         analytics_tags=analytics_tags,
         race_tabs_and_panels=race_tabs_and_panels,
+        calendar=content.get("calendar", {}),
         calendar_cards=calendar_cards,
         calendar_year=calendar_year,
         gallery_items=gallery_html,

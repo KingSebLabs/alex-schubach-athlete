@@ -699,6 +699,8 @@ section { padding: 6rem 2.5rem; }
 .contact-info h3 {
   font-family: var(--font-display); font-size: 2rem; letter-spacing: 0.03em; margin-bottom: 1.5rem;
 }
+.calendar-intro { font-size: 0.95rem; line-height: 1.8; color: var(--grey-mid); margin-bottom: 2.5rem; }
+.calendar-intro strong { color: var(--text-light); font-weight: 600; }
 .contact-info p { font-size: 0.95rem; line-height: 1.8; color: var(--grey-mid); margin-bottom: 2rem; }
 .contact-info p strong { color: var(--text-light); font-weight: 600; }
 .contact-cats { display: flex; flex-direction: column; gap: 1rem; }
@@ -1640,6 +1642,7 @@ Age Group: 16th / 410</div>
       <div class="section-label">Upcoming</div>
       <div class="section-title">2026 EVENT CALENDAR</div>
     </div>
+    <p class="calendar-intro reveal">Based in Tokyo, I compete in endurance races across Asia, with a focus on trail running in Japan. I want to shine a light on the depth and uniqueness of the running culture here, and inspire you to get after it in your own way. <strong>Anything you put your mind to, you can achieve.</strong></p>
     <div class="calendar-grid">
             <div class="cal-card reveal" data-desc="The Hong Kong leg of the global Hyrox circuit, and the first international Hyrox on the 2026 calendar. Racing with Sebastian, which adds an extra layer of motivation to absolutely get after it together. After the Osaka penalty lesson, this one is about running a clean, precise race and seeing what a proper preparation produces." data-race="HYROX HONG KONG" data-date="9 May 2026" data-details="Hyrox
 Men&#x27;s Single - Open · Hong Kong">
@@ -1854,7 +1857,7 @@ TBC · 50 km · Thailand</div>
       <div class="contact-info reveal">
         <div class="section-label">Connect</div>
         <h3>LET'S WORK<br>TOGETHER</h3>
-        <p>Whether it's a brand partnership, media opportunity, or content collaboration, I'm interested in working with people and brands that operate with intent.<br><br><strong>Let's build something that performs.</strong></p>
+        <p>Based in Tokyo and racing across Asia, I'm focused on showcasing the unique racing culture here and working with people who want to elevate it. If you're looking to tap into the Asian fitness or running market, <strong>I am your bridge.</strong><br><br>Whether it's a brand partnership, media opportunity, or content collaboration, <strong>I'm interested in working with people and brands that operate with intent.</strong></p>
         <div class="contact-cats">
           
           <div class="contact-cat-item">
@@ -2104,6 +2107,7 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
 // Show success banner when returning from Formspree redirect (?submitted=true)
 (function () {
   if (new URLSearchParams(window.location.search).get('submitted') !== 'true') return;
+  if (typeof gtag === 'function') gtag('event', 'contact_form_success');
   history.replaceState({}, '', window.location.pathname + '#contact');
   var form = document.querySelector('form.contact-form');
   if (form) form.reset();
