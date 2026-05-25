@@ -99,8 +99,10 @@ social:
 pdf:
   enabled: true
   media_kit_url: "downloads/media-kit-alex-schubach-2026-v2.pdf"
-  training_program_url: "downloads/training-program.pdf"
-  meal_plan_url: "downloads/meal-plan.pdf"
+  training_program_url: "downloads/hybrid-training-split.pdf"
+  leg_conditioning_url: "downloads/leg-conditioning-program.pdf"
+  meal_plan_url: "downloads/maintenance-meal-plan.pdf"
+  supplements_url: "downloads/electrolytes-supplements.pdf"
 
 # ─── ANALYTICS ───────────────────────────────────────────────────────────────
 analytics:

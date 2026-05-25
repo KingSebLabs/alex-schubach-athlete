@@ -639,9 +639,9 @@ section { padding: 6rem 2.5rem; }
 .pdf-body { padding: 4rem 2.5rem 5rem; text-align: center; }
 .pdf-title {
   font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem);
-  color: white; margin-bottom: 1.5rem;
+  color: rgba(0,0,0,0.9); margin-bottom: 1.5rem;
 }
-.pdf-subtitle { font-size: 1rem; color: rgba(255,255,255,0.8); margin-bottom: 2rem; max-width: 500px; margin-inline: auto; line-height: 1.7; }
+.pdf-subtitle { font-size: 1rem; color: rgba(0,0,0,0.8); margin-bottom: 2rem; max-width: 500px; margin-inline: auto; line-height: 1.7; }
 .btn-white {
   display: inline-flex; align-items: center; gap: 0.6rem;
   background: white; color: var(--accent); padding: 1rem 2.5rem;
@@ -652,6 +652,15 @@ section { padding: 6rem 2.5rem; }
 .btn-white--disabled { opacity: 0.45; cursor: default; pointer-events: none; }
 .pdf-panel { display: none; }
 .pdf-panel.active { display: block; }
+.pdf-actions { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.pdf-columns { display: flex; max-width: 900px; margin-inline: auto; align-items: stretch; }
+.pdf-column { flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; padding: 0 1.5rem; }
+.pdf-column + .pdf-column { border-left: 1px solid rgba(0,0,0,0.2); }
+.pdf-column .pdf-subtitle { margin-bottom: 0; }
+@media (max-width: 768px) {
+  .pdf-columns { flex-direction: column; gap: 2.5rem; }
+  .pdf-column + .pdf-column { border-left: 0; border-top: 1px solid rgba(0,0,0,0.2); padding-top: 2.5rem; }
+}
 @media (max-width: 768px) {
   .pdf-tab { padding: 1.5rem 0.5rem; font-size: 0.75rem; letter-spacing: 0.08em; }
 }
@@ -1158,8 +1167,8 @@ footer {
 <section class="pdf-section" id="pdf">
   <div class="pdf-tabs">
     <button class="pdf-tab active" data-tab="media">Media Kit</button>
-    <button class="pdf-tab" data-tab="training">Training Program</button>
-    <button class="pdf-tab" data-tab="meal">Meal Plan</button>
+    <button class="pdf-tab" data-tab="training">Training</button>
+    <button class="pdf-tab" data-tab="meal">Nutrition</button>
     <button class="pdf-tab" data-tab="selfdev">Self Development</button>
   </div>
   <div class="pdf-body">
@@ -1169,12 +1178,28 @@ footer {
       <a href="{{ pdf.media_kit_url }}" class="btn-white" download target="_blank" rel="noopener noreferrer">↓ Download Media Kit</a>
     </div>
     <div class="pdf-panel" id="pdf-training">
-      <p class="pdf-subtitle">This training split is designed to build a powerful engine, strong legs, full-body strength, and unstoppable hybrid conditioning.</p>
-      <a href="{{ pdf.training_program_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Alex's current training program</a>
+      <div class="pdf-columns">
+        <div class="pdf-column">
+          <p class="pdf-subtitle">This training split is designed to build a powerful engine, strong legs, full-body strength, and unstoppable hybrid conditioning.</p>
+          <a href="{{ pdf.training_program_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Hybrid Training Split</a>
+        </div>
+        <div class="pdf-column">
+          <p class="pdf-subtitle">My leg conditioning program is designed to improve eccentric strength, joint stability, and reactive power in the lower body.</p>
+          <a href="{{ pdf.leg_conditioning_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Leg Conditioning Program</a>
+        </div>
+      </div>
     </div>
     <div class="pdf-panel" id="pdf-meal">
-      <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
-      <a href="{{ pdf.meal_plan_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Alex's current meal plan</a>
+      <div class="pdf-columns">
+        <div class="pdf-column">
+          <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
+          <a href="{{ pdf.meal_plan_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Maintenance Meal Plan</a>
+        </div>
+        <div class="pdf-column">
+          <p class="pdf-subtitle">My electrolyte and supplement stack is designed to support hydration, recovery, and consistent training output across the week.</p>
+          <a href="{{ pdf.supplements_url }}" class="btn-white" download target="_blank" rel="noopener">↓ Download Electrolytes &amp; Supplements</a>
+        </div>
+      </div>
     </div>
     <div class="pdf-panel" id="pdf-selfdev">
       <p class="pdf-subtitle">This self-development framework is designed to elevate your mindset, improve daily structure, and drive continuous personal growth. It's time to rewire your mind and live in alignment with your values. Take control and transform your life.</p>
