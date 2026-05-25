@@ -5,7 +5,7 @@ site:
 
 # ─── HERO ────────────────────────────────────────────────────────────────────
 hero:
-  tag: "Build on discipline. Proven through performance."
+  tag: "Built on discipline. Proven through performance."
   name_line1: "ALEX"
   name_line2: "SCHUBACH"
   subtitle: "Endurance athlete, trail runner, Hyrox competitor operating at a high-performance standard across training, competition, and content."
@@ -60,7 +60,7 @@ indices:
   utmb: "569"
   itra: "609"
   itra_level: "Advanced 3"
-  hyrox_pb: "1:05:02"
+  hyrox_pb: "1:02:01"
   road_marathon: "2:56:19"
   road_half: "1:21:07"
   road_10k: "35:56"
