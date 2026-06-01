@@ -1145,7 +1145,7 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
         <p>{html.escape(description)}</p>
         <p>{html.escape(_plain_text(positioning.get("brand_fit", "")))}</p>
         <div class="actions">
-          <a class="button primary" href="{html.escape(media_pdf_url)}">Download PDF Media Kit</a>
+          <a class="button primary" href="{html.escape(media_pdf_url)}" data-ga-asset-name="Media Kit" data-ga-asset-type="media_kit">Download PDF Media Kit</a>
           <a class="button" href="{html.escape(instagram)}">Instagram</a>
         </div>
       </div>
@@ -1216,8 +1216,44 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
 
       document.querySelectorAll('a[href$=".pdf"]').forEach(function(link) {{
         link.addEventListener('click', function() {{
+          var href = link.getAttribute('href') || '';
+          var absoluteUrl = new URL(href, window.location.href).href;
+          var fileName = absoluteUrl.split('/').pop().split('?')[0].split('#')[0];
+          var assetName = link.dataset.gaAssetName || link.textContent.trim() || fileName || 'Unknown PDF';
           track('pdf_download', {{
-            label: link.textContent.trim(),
+            label: assetName,
+            asset_name: assetName,
+            asset_type: link.dataset.gaAssetType || 'other',
+            file_name: fileName,
+            file_extension: fileName && fileName.indexOf('.') > -1 ? fileName.split('.').pop() : 'pdf',
+            link_url: absoluteUrl,
+            link_text: link.textContent.trim(),
+            source_page: 'sponsor_and_partnership_media_kit'
+          }});
+        }});
+      }});
+
+      document.querySelectorAll('a[href*="instagram.com"]').forEach(function(link) {{
+        link.addEventListener('click', function() {{
+          var params = {{
+            platform: 'instagram',
+            link_url: link.href || '',
+            link_text: link.textContent.trim(),
+            source_page: 'sponsor_and_partnership_media_kit'
+          }};
+          track('instagram_click', params);
+          track('social_click', params);
+        }});
+      }});
+
+      document.querySelectorAll('a[href^="http"], a[href^="mailto:"]').forEach(function(link) {{
+        link.addEventListener('click', function() {{
+          var href = link.href || '';
+          if (href.indexOf(window.location.origin) === 0 || (link.getAttribute('href') || '').endsWith('.pdf')) return;
+          track('outbound_link_click', {{
+            link_url: href,
+            link_text: link.textContent.trim(),
+            link_domain: href.replace(/^https?:\\/\\//, '').replace(/^mailto:/, '').split('/')[0],
             source_page: 'sponsor_and_partnership_media_kit'
           }});
         }});

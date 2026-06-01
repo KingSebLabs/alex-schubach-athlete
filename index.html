@@ -2083,17 +2083,17 @@ TBC · 50 km · Thailand</div>
     <div class="pdf-title">DOWNLOADS</div>
     <div class="pdf-panel active" id="pdf-media">
       <p class="pdf-subtitle">Full athlete profile — Detailed biography, mission, race results, upcoming calendar, partnership and contact details.</p>
-      <a href="downloads/media-kit-alex-schubach-2026-v2.pdf" class="btn-white" download target="_blank" rel="noopener noreferrer">↓ Download Media Kit</a>
+      <a href="downloads/media-kit-alex-schubach-2026-v2.pdf" class="btn-white" download target="_blank" rel="noopener noreferrer" data-ga-asset-name="Media Kit" data-ga-asset-type="media_kit">↓ Download Media Kit</a>
     </div>
     <div class="pdf-panel" id="pdf-training">
       <div class="pdf-columns">
         <div class="pdf-column">
           <p class="pdf-subtitle">This training split is designed to build a powerful engine, strong legs, full-body strength, and unstoppable hybrid conditioning.</p>
-          <a href="downloads/hybrid-training-split.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Hybrid Training Split</a>
+          <a href="downloads/hybrid-training-split.pdf" class="btn-white" download target="_blank" rel="noopener" data-ga-asset-name="Hybrid Training Split" data-ga-asset-type="training_program">↓ Download Hybrid Training Split</a>
         </div>
         <div class="pdf-column">
           <p class="pdf-subtitle">My leg conditioning program is designed to improve eccentric strength, joint stability, and reactive power in the lower body.</p>
-          <a href="downloads/leg-conditioning-program.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Leg Conditioning Program</a>
+          <a href="downloads/leg-conditioning-program.pdf" class="btn-white" download target="_blank" rel="noopener" data-ga-asset-name="Leg Conditioning Program" data-ga-asset-type="training_program">↓ Download Leg Conditioning Program</a>
         </div>
       </div>
     </div>
@@ -2101,11 +2101,11 @@ TBC · 50 km · Thailand</div>
       <div class="pdf-columns">
         <div class="pdf-column">
           <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
-          <a href="downloads/maintenance-meal-plan.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Maintenance Meal Plan</a>
+          <a href="downloads/maintenance-meal-plan.pdf" class="btn-white" download target="_blank" rel="noopener" data-ga-asset-name="Maintenance Meal Plan" data-ga-asset-type="meal_plan">↓ Download Maintenance Meal Plan</a>
         </div>
         <div class="pdf-column">
           <p class="pdf-subtitle">My electrolyte and supplement stack is designed to support hydration, recovery, and consistent training output across the week.</p>
-          <a href="downloads/electrolytes-supplements.pdf" class="btn-white" download target="_blank" rel="noopener">↓ Download Electrolytes &amp; Supplements</a>
+          <a href="downloads/electrolytes-supplements.pdf" class="btn-white" download target="_blank" rel="noopener" data-ga-asset-name="Electrolytes and Supplements" data-ga-asset-type="supplements">↓ Download Electrolytes &amp; Supplements</a>
         </div>
       </div>
     </div>
@@ -2602,8 +2602,8 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
   // CTA buttons
   var ctaPrimary = document.querySelector('.hero-actions .btn-primary');
   var ctaOutline = document.querySelector('.hero-actions .btn-outline');
-  if (ctaPrimary) ctaPrimary.addEventListener('click', function() { track('cta_click', { button: 'partner_with_me' }); });
-  if (ctaOutline) ctaOutline.addEventListener('click', function() { track('cta_click', { button: 'view_performance' }); });
+  if (ctaPrimary) ctaPrimary.addEventListener('click', function() { track('cta_click', { button: 'view_performance' }); });
+  if (ctaOutline) ctaOutline.addEventListener('click', function() { track('cta_click', { button: 'get_in_touch' }); });
 
   // Nav links
   document.querySelectorAll('.nav-links a').forEach(function(a) {
@@ -2654,14 +2654,57 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     a.addEventListener('click', function() {
       var href = a.href || '';
       var platform = href.includes('instagram') ? 'instagram' : href.includes('strava') ? 'strava' : a.textContent.trim().toLowerCase();
-      track('social_click', { platform: platform });
+      var params = { platform: platform, link_url: href, link_text: a.textContent.trim(), source_page: window.location.pathname || '/' };
+      track('social_click', params);
+      if (platform === 'instagram') track('instagram_click', params);
+    });
+  });
+
+  // Contact link clicks
+  document.querySelectorAll('a[href="#contact"], a[href$="#contact"], .nav-cta').forEach(function(a) {
+    a.addEventListener('click', function() {
+      track('contact_click', {
+        link_text: a.textContent.trim(),
+        link_url: a.getAttribute('href') || '',
+        source_page: window.location.pathname || '/'
+      });
     });
   });
 
   // PDF downloads
-  document.querySelectorAll('.btn-white[href], .btn-white[download]').forEach(function(a) {
+  document.querySelectorAll('a[href$=".pdf"], a[download]').forEach(function(a) {
     a.addEventListener('click', function() {
-      track('pdf_download', { label: a.textContent.trim() });
+      var href = a.getAttribute('href') || '';
+      var absoluteUrl = new URL(href, window.location.href).href;
+      var fileName = absoluteUrl.split('/').pop().split('?')[0].split('#')[0];
+      var assetName = a.dataset.gaAssetName || a.textContent.replace(/^↓\s*/, '').trim() || fileName || 'Unknown PDF';
+      var assetType = a.dataset.gaAssetType || 'other';
+      track('pdf_download', {
+        label: assetName,
+        asset_name: assetName,
+        asset_type: assetType,
+        file_name: fileName,
+        file_extension: fileName && fileName.indexOf('.') > -1 ? fileName.split('.').pop() : 'pdf',
+        link_url: absoluteUrl,
+        link_text: a.textContent.trim(),
+        source_page: window.location.pathname || '/'
+      });
+    });
+  });
+
+  // Sponsor/outbound link clicks
+  document.querySelectorAll('a[href^="http"], a[href^="mailto:"]').forEach(function(a) {
+    a.addEventListener('click', function() {
+      var href = a.href || '';
+      var isOwnDomain = href.indexOf(window.location.origin) === 0;
+      if (isOwnDomain && !href.includes('/downloads/')) return;
+      if ((a.getAttribute('href') || '').endsWith('.pdf') || a.hasAttribute('download')) return;
+      track('outbound_link_click', {
+        link_url: href,
+        link_text: a.textContent.trim(),
+        link_domain: href.replace(/^https?:\/\//, '').replace(/^mailto:/, '').split('/')[0],
+        source_page: window.location.pathname || '/'
+      });
     });
   });
 
