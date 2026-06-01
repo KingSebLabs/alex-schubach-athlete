@@ -1012,9 +1012,9 @@ footer {
         <div class="section-label">Identity</div>
         <div class="section-title">{{ about.heading }}</div>
         <hr class="about-rule">
-        {% for para in about.paragraphs %}
+        {%- for para in about.paragraphs %}
         <p>{{ para }}</p>
-        {% endfor %}
+        {%- endfor %}
         <div class="about-stats">
           {% for stat in about.stats %}
           <div class="stat-item">
@@ -1803,4 +1803,3 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
 </script>
 </body>
 </html>
-

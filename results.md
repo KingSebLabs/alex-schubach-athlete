@@ -3,6 +3,16 @@
 Last updated: 2026-06-01
 Canonical URL: https://alexschubach.com/#results
 
+## Performance Athlete Summary
+
+Tokyo-based performance athlete and endurance athlete available for sponsorship enquiries, athlete modelling, brand partnerships, media, and content collaborations across Japan and Asia-Pacific.
+
+- Marathon PB: 2:56:19.
+- HYROX PB: 1:02:01, with a 1:05:02 Osaka result also listed in race results.
+- UTMB World Series top-10 finish at UTMB Kenting Xtrail 25.
+- 1st overall at Spartan New Taipei Beast.
+- UTMB and ITRA performance indices are refreshed during site builds when source profiles are reachable.
+
 ## Performance Indices and Personal Bests
 
 - UTMB Index: 644

@@ -684,7 +684,7 @@ def build_seo_tags(site: dict, social: dict, analytics: dict = None) -> str:
     desc_esc = html.escape(description)
 
     og = gsc_tag + f'''  <!-- Keywords -->
-  <meta name="keywords" content="Alex Schubach, Alexander Schubach, Alex the Athlete, alexschubach, alexschubach.com, endurance athlete, trail runner, Hyrox, ultra running, UTMB">
+  <meta name="keywords" content="Alex Schubach, Alexander Schubach, Alex the Athlete, alexschubach, alexschubach.com, Tokyo endurance athlete, performance athlete, athlete model, athlete modelling, sponsorship profile, brand partner, endurance athlete, trail runner, Hyrox, ultra running, UTMB, Spartan">
   <!-- Open Graph -->
   <meta property="og:title" content="{title_esc}">
   <meta property="og:description" content="{desc_esc}">
@@ -704,8 +704,36 @@ def build_seo_tags(site: dict, social: dict, analytics: dict = None) -> str:
         "alternateName": ["Alexander Schubach", "Alex the Athlete", "alexschubach"],
         "url": base_url,
         "image": f"{base_url}/images/about.jpg",
-        "jobTitle": "Endurance Athlete",
+        "jobTitle": "Endurance athlete, performance athlete, athlete model, and brand partner",
         "description": description,
+        "homeLocation": {
+            "@type": "Place",
+            "name": "Tokyo, Japan",
+        },
+        "workLocation": {
+            "@type": "Place",
+            "name": "Japan and Asia-Pacific",
+        },
+        "hasOccupation": [
+            {"@type": "Occupation", "name": "Endurance Athlete"},
+            {"@type": "Occupation", "name": "Performance Athlete"},
+            {"@type": "Occupation", "name": "Athlete Model"},
+            {"@type": "Occupation", "name": "Brand Partner"},
+        ],
+        "knowsAbout": [
+            "endurance sport",
+            "trail running",
+            "road running",
+            "Hyrox",
+            "Spartan racing",
+            "ultra running",
+            "athlete modelling",
+            "brand partnerships",
+            "sports sponsorship",
+            "fitness content",
+            "outdoor performance",
+            "Japan and Asia-Pacific racing",
+        ],
         "sameAs": same_as,
     }
     jsonld = (
@@ -743,6 +771,7 @@ def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
     social = content.get("social", {})
     pdf = content.get("pdf", {})
     contact = content.get("contact", {})
+    positioning = content.get("positioning", {})
     description = site.get("description", "")
     itra_label = indices.get("itra") or "not listed"
     if indices.get("itra_level"):
@@ -753,23 +782,25 @@ def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
         "",
         f"> {_plain_text(description)}",
         "",
-        "Alex Schubach is a Japan-based endurance athlete, trail runner, Hyrox competitor, and hybrid racing athlete. This file points AI systems to stable, text-first mirrors of the public site.",
+        "Alex Schubach is a Tokyo-based performance athlete, endurance athlete, trail runner, Hyrox competitor, athlete model, and brand partner. This file points AI systems to stable, text-first mirrors of the public site.",
+        "",
+        _plain_text(positioning.get("summary", "")),
         "",
         "## Core Pages",
         "",
-        f"- [Homepage]({_url(base_url, 'index.md')}): Athlete identity, headline metrics, race results, calendar, gallery, downloads, and contact.",
-        f"- [Profile]({_url(base_url, 'profile.md')}): Athletic background, location, disciplines, and positioning.",
+        f"- [Homepage]({_url(base_url, 'index.md')}): Athlete identity, headline metrics, race results, calendar, gallery, downloads, and sponsorship/contact routes.",
+        f"- [Profile]({_url(base_url, 'profile.md')}): Athletic background, Tokyo location, disciplines, athlete modelling context, and brand partner positioning.",
         f"- [Results]({_url(base_url, 'results.md')}): Performance indices, personal bests, and race results.",
         f"- [Calendar]({_url(base_url, 'calendar.md')}): Upcoming races and target events.",
-        f"- [Media Kit]({_url(base_url, 'media-kit.md')}): Downloadable media kit and training/nutrition resources.",
-        f"- [Partnerships]({_url(base_url, 'partnerships.md')}): Sponsorship, media, collaboration, and management contact route.",
+        f"- [Media Kit]({_url(base_url, 'media-kit.md')}): Downloadable media kit and training/nutrition resources for partnership review.",
+        f"- [Partnerships]({_url(base_url, 'partnerships.md')}): Sponsorship enquiries, athlete modelling briefs, media, collaborations, and management contact route.",
         f"- [Gallery]({_url(base_url, 'gallery.md')}): Public image references and visual profile.",
         f"- [Values]({_url(base_url, 'values.md')}): Alex's stated values.",
         f"- [Mission]({_url(base_url, 'mission.md')}): Mission, mindset, and performance standard.",
         "",
         "## Performance Facts",
         "",
-        f"- Based in Japan.",
+        f"- Based in Tokyo, Japan.",
         "- Disciplines: trail running, ultra running, road running, Hyrox, Spartan, obstacle racing, and hybrid endurance.",
         f"- UTMB Index: {indices.get('utmb') or 'not listed'}.",
         f"- ITRA Index: {itra_label}.",
@@ -781,8 +812,8 @@ def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
         "",
         "## Partnership Fit",
         "",
-        "- Sponsorship, ambassador, affiliate, product-testing, event, media, and campaign enquiries.",
-        "- Relevant categories: endurance sport, trail running, road running, Hyrox, outdoor gear, nutrition, recovery, wearables, travel, Japan/Asia-Pacific races, modelling, and content production.",
+        "- Sponsorship, ambassador, affiliate, product-testing, event, media, athlete modelling, and campaign enquiries.",
+        f"- {_plain_text(positioning.get('brand_fit', 'Relevant categories: endurance sport, trail running, road running, Hyrox, outdoor gear, nutrition, recovery, wearables, travel, Japan/Asia-Pacific races, modelling, and content production.'))}",
         "",
         "## Contact",
         "",
@@ -821,6 +852,7 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
     contact = content.get("contact", {})
     pdf = content.get("pdf", {})
     social = content.get("social", {})
+    positioning = content.get("positioning", {})
     today = datetime.date.today().isoformat()
     itra_label = indices.get("itra") or "not listed"
     if indices.get("itra_level"):
@@ -840,6 +872,8 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         f"Canonical URL: {_url(base_url, '#about')}",
         "",
         _plain_text(site.get("description", "")),
+        "",
+        _plain_text(positioning.get("summary", "")),
         "",
         f"Hero: {_plain_text(content.get('hero', {}).get('subtitle', ''))}",
         "",
@@ -889,6 +923,12 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         "",
         f"Last updated: {today}",
         f"Canonical URL: {_url(base_url, '#results')}",
+        "",
+        "## Performance Athlete Summary",
+        "",
+        _plain_text(positioning.get("summary", "")),
+        "",
+        *[f"- {_plain_text(item)}" for item in positioning.get("highlights", [])],
         "",
         "## Performance Indices and Personal Bests",
         "",
@@ -956,6 +996,8 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         f"Last updated: {today}",
         f"Canonical URL: {_url(base_url, '#pdf')}",
         "",
+        "Use these assets to review Alex Schubach's Tokyo-based endurance athlete profile for sponsorship, brand partnership, athlete modelling, performance, outdoor, nutrition, travel, and lifestyle opportunities.",
+        "",
     ]
     download_labels = {
         "media_kit_url": "Media Kit",
@@ -973,6 +1015,14 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         "",
         f"Last updated: {today}",
         f"Canonical URL: {_url(base_url, '#contact')}",
+        "",
+        "## Partnership Positioning",
+        "",
+        _plain_text(positioning.get("summary", "")),
+        "",
+        _plain_text(positioning.get("brand_fit", "")),
+        "",
+        "## Contact Context",
         "",
         _plain_text(contact.get("body", "")),
         "",
@@ -1015,6 +1065,12 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         f"Canonical URL: {_url(base_url)}",
         "",
         _plain_text(site.get("description", "")),
+        "",
+        "## Positioning Summary",
+        "",
+        _plain_text(positioning.get("summary", "")),
+        "",
+        _plain_text(positioning.get("brand_fit", "")),
         "",
         "## Site Mirrors",
         "",

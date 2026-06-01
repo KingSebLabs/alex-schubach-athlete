@@ -1,25 +1,36 @@
 site:
-  title: "Alex Schubach — Endurance Athlete, Trail Runner & Hyrox Competitor"
-  description: "Alex Schubach (Alexander Schubach) — Endurance Athlete, Trail Runner, Hyrox Competitor. Pushing the limits of human potential through endurance, discipline, and adventure. Follow Alex the Athlete at alexschubach.com."
+  title: "Alex Schubach — Tokyo Endurance Athlete, Performance Athlete & Athlete Model"
+  description: "Alex Schubach (Alexander Schubach) is a Tokyo-based endurance athlete, trail runner, Hyrox competitor, performance athlete, athlete model, and brand partner for sport, fitness, outdoor, nutrition, travel, and lifestyle campaigns."
   base_url: "https://alexschubach.com"
+
+positioning:
+  summary: "Tokyo-based performance athlete and endurance athlete available for sponsorship enquiries, athlete modelling, brand partnerships, media, and content collaborations across Japan and Asia-Pacific."
+  brand_fit: "Relevant for performance, fitness, outdoor, nutrition, recovery, wearables, travel, lifestyle, and athlete modelling brands looking for a credible endurance athlete profile."
+  highlights:
+    - "Marathon PB: 2:56:19."
+    - "HYROX PB: 1:02:01, with a 1:05:02 Osaka result also listed in race results."
+    - "UTMB World Series top-10 finish at UTMB Kenting Xtrail 25."
+    - "1st overall at Spartan New Taipei Beast."
+    - "UTMB and ITRA performance indices are refreshed during site builds when source profiles are reachable."
 
 # ─── HERO ────────────────────────────────────────────────────────────────────
 hero:
   tag: "Built on discipline. Proven through performance."
   name_line1: "ALEX"
   name_line2: "SCHUBACH"
-  subtitle: "Endurance athlete, trail runner, Hyrox competitor operating at a high-performance standard across training, competition, and content."
+  subtitle: "Tokyo-based endurance athlete, trail runner, Hyrox competitor, and athlete model operating at a high-performance standard across training, competition, brand work, and content."
 
 # ─── ABOUT ───────────────────────────────────────────────────────────────────
 about:
   heading: "ATHLETIC IDENTITY"
   paragraphs:
+    - "I'm a Tokyo-based <strong>performance athlete and endurance athlete</strong> competing across trail, road, Hyrox, Spartan, and hybrid racing, while building a credible profile for brand partnerships, sponsorships, athlete modelling, and media work."
     - "I've always been an athlete. From the pool to the track, that early foundation built the <strong>values I live by today</strong>. Discipline, consistency, and full commitment."
     - "After stepping away, I returned to competition with a <strong>focus on endurance</strong> across trail, road, and hybrid racing."
     - "<strong>I'm drawn to challenges</strong> that physically and mentally demand more. My approach is simple: show up, do the work, and push beyond what I thought was possible."
     - "For me, <strong>performance is built in the process</strong>, every day. That standard doesn't change."
   stats:
-    - number: "JP"
+    - number: "Tokyo"
       label: "Based in Japan"
     - number: "10+"
       label: "Years Competing"
@@ -73,13 +84,13 @@ calendar:
 # ─── CONTACT ─────────────────────────────────────────────────────────────────
 contact:
   heading: "LET'S WORK<br>TOGETHER"
-  body: "Based in Tokyo and racing across Asia, I'm focused on showcasing the unique racing culture here and working with people who want to elevate it. If you're looking to tap into the Asian fitness or running market, <strong>I am your bridge.</strong><br><br>Whether it's a brand partnership, media opportunity, or content collaboration, <strong>I'm interested in working with people and brands that operate with intent.</strong>"
+  body: "Based in Tokyo and racing across Asia, I'm focused on showcasing the unique racing culture here and working with people who want to elevate it. If you're looking to tap into the Asian fitness or running market, <strong>I am your bridge.</strong><br><br>Whether it's a brand partnership, sponsorship enquiry, athlete modelling brief, media opportunity, or content collaboration, <strong>I'm interested in working with people and brands that operate with intent.</strong>"
   # Formspree endpoint — sign up at formspree.io and paste your form ID here
   formspree_id: "mjgazkbq"
   categories:
     - icon: "🤝"
       label: "Brand Partnerships"
-      desc: "I partner with brands that value <strong>performance, quality, and purpose</strong>.<br><br>My focus is across sport, fitness, outdoor, health, and lifestyle. <strong>I align with</strong> products that are built to perform and can stand up to the demands of training, competition, and daily life.<br><br>The strongest partnerships are built on real use and genuine alignment. I'm focused on <strong>long-term relationships</strong> that are credible, considered, and create value on both sides."
+      desc: "I partner with brands that value <strong>performance, quality, and purpose</strong>.<br><br>My focus is across sport, fitness, outdoor, nutrition, recovery, health, travel, and lifestyle. <strong>I align with</strong> products that are built to perform and can stand up to the demands of training, competition, and daily life.<br><br>The strongest partnerships are built on real use and genuine alignment. I'm focused on <strong>long-term relationships</strong> that are credible, considered, and create value on both sides, including sponsorship, ambassador, product-testing, athlete modelling, and campaign work."
     - icon: "📸"
       label: "Media Inquiries"
       desc: "I'm available for media opportunities <strong>focused on</strong> high performance, endurance sport, and pushing physical and mental limits.<br><br><strong>I'm interested in</strong> conversations that go deeper. Training, discipline, mindset, and what it takes to operate at a high level while building something meaningful.<br><br>A key part of my work is showing what's possible when you <strong>fully commit</strong>, and encouraging others to push beyond what they think they're capable of."
