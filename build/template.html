@@ -980,7 +980,7 @@ footer {
     <a href="#results">Results</a>
     <a href="#calendar">Calendar</a>
     <a href="#gallery">Gallery</a>
-    <a href="#downloads">Downloads</a>
+    <a href="#pdf">Downloads</a>
     <a href="#contact" class="nav-cta">Get in Touch</a>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -1164,15 +1164,20 @@ footer {
 
 <!-- DOWNLOADS -->
 {% if pdf.enabled %}
-<section class="pdf-section" id="downloads">
+<section class="pdf-section" id="pdf">
   <div class="pdf-tabs">
-    <button class="pdf-tab active" data-tab="training">Training</button>
+    <button class="pdf-tab active" data-tab="media">Media Kit</button>
+    <button class="pdf-tab" data-tab="training">Training</button>
     <button class="pdf-tab" data-tab="meal">Nutrition</button>
     <button class="pdf-tab" data-tab="selfdev">Self Development</button>
   </div>
   <div class="pdf-body">
-    <div class="pdf-panel active" id="pdf-training">
-      <div class="pdf-title">TRAINING DOWNLOADS</div>
+    <div class="pdf-title">DOWNLOADS</div>
+    <div class="pdf-panel active" id="pdf-media">
+      <p class="pdf-subtitle">Full athlete profile — Detailed biography, mission, race results, upcoming calendar, partnership and contact details.</p>
+      <a href="{{ pdf.media_kit_url }}" class="btn-white" download target="_blank" rel="noopener noreferrer">↓ Download Media Kit</a>
+    </div>
+    <div class="pdf-panel" id="pdf-training">
       <div class="pdf-columns">
         <div class="pdf-column">
           <p class="pdf-subtitle">This training split is designed to build a powerful engine, strong legs, full-body strength, and unstoppable hybrid conditioning.</p>
@@ -1185,7 +1190,6 @@ footer {
       </div>
     </div>
     <div class="pdf-panel" id="pdf-meal">
-      <div class="pdf-title">NUTRITION DOWNLOADS</div>
       <div class="pdf-columns">
         <div class="pdf-column">
           <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
@@ -1198,7 +1202,6 @@ footer {
       </div>
     </div>
     <div class="pdf-panel" id="pdf-selfdev">
-      <div class="pdf-title">SELF DEVELOPMENT</div>
       <p class="pdf-subtitle">This self-development framework is designed to elevate your mindset, improve daily structure, and drive continuous personal growth. It's time to rewire your mind and live in alignment with your values. Take control and transform your life.</p>
       <span class="btn-white btn-white--disabled">↓ Coming Soon</span>
     </div>
