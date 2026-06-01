@@ -1,6 +1,6 @@
 # Alex Schubach Values
 
-Last updated: 2026-06-02
+Last updated: 2026-06-01
 Canonical URL: https://alexschubach.com/#values
 
 ## 01. FULL SEND
