@@ -1,7 +1,7 @@
 """
 build.py
 --------
-Builds index.html, sitemap.xml, and robots.txt from:
+Builds index.html, sitemap.xml, robots.txt, llms.txt, and Markdown mirrors from:
   - build/template.html        (Jinja2 HTML template)
   - content.yaml               (editable site content)
   - Dropbox XLSX (live)        (race results + calendar)
@@ -30,6 +30,17 @@ ROOT = Path(__file__).parent.parent
 BUILD_DIR = ROOT / "build"
 IMAGES_DIR = ROOT / "images"
 GALLERY_DIR = IMAGES_DIR / "gallery"
+MARKDOWN_MIRROR_FILES = [
+    "index.md",
+    "profile.md",
+    "results.md",
+    "calendar.md",
+    "media-kit.md",
+    "partnerships.md",
+    "gallery.md",
+    "values.md",
+    "mission.md",
+]
 
 # ─── Dropbox Excel config ─────────────────────────────────────────────────────
 DROPBOX_XLSX_URL = (
@@ -79,6 +90,29 @@ def _fmt_narrative(text: str) -> str:
     text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', text)
     text = text.replace('\n', '<br>')
     return text
+
+
+def _plain_text(value: str) -> str:
+    """Convert simple site HTML fragments into readable plain text/Markdown."""
+    if not value:
+        return ""
+    text = str(value)
+    text = re.sub(r'<\s*br\s*/?\s*>', '\n', text, flags=re.IGNORECASE)
+    text = re.sub(r'</p\s*>', '\n', text, flags=re.IGNORECASE)
+    text = re.sub(r'<[^>]+>', '', text)
+    text = html.unescape(text)
+    text = re.sub(r'[ \t]+\n', '\n', text)
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
+
+
+def _md_table_escape(value: str) -> str:
+    return _plain_text(value).replace("|", "\\|").replace("\n", " ")
+
+
+def _url(base_url: str, path: str = "") -> str:
+    base = base_url.rstrip("/")
+    return f"{base}/{path.lstrip('/')}" if path else f"{base}/"
 
 
 def _fmt_rich_cell(cell) -> str:
@@ -295,8 +329,8 @@ def _build_caption(stem: str) -> str:
         return name.replace('_', ' ').title()
 
 
-def build_gallery_html() -> str:
-    """Scan images/gallery/ and build featured + thumbnail rail HTML."""
+def build_gallery_meta() -> list[dict]:
+    """Scan images/gallery/ and return image metadata for HTML and Markdown outputs."""
     images = sorted(
         list(GALLERY_DIR.glob("*.jpg")) + list(GALLERY_DIR.glob("*.JPG")) +
         list(GALLERY_DIR.glob("*.jpeg")) + list(GALLERY_DIR.glob("*.JPEG")) +
@@ -304,9 +338,8 @@ def build_gallery_html() -> str:
         key=_natural_key
     )
     if not images:
-        return "<!-- No gallery images found -->"
+        return []
 
-    # Read dimensions for all images (needed for dynamic height calculation in JS)
     meta = []
     for img_path in images:
         try:
@@ -316,6 +349,15 @@ def build_gallery_html() -> str:
             w, h = 800, 600
         alt = img_path.stem.lstrip("0123456789").strip("_- ").replace("_", " ").title()
         meta.append({"path": img_path, "alt": alt, "caption": _build_caption(img_path.stem), "w": w, "h": h})
+    return meta
+
+
+def build_gallery_html(meta: list[dict] | None = None) -> str:
+    """Build featured + thumbnail rail HTML from gallery metadata."""
+    if meta is None:
+        meta = build_gallery_meta()
+    if not meta:
+        return "<!-- No gallery images found -->"
 
     first = meta[0]
     # Featured hero
@@ -696,18 +738,327 @@ def build_analytics_tags(analytics: dict) -> str:
     return "  <!-- Analytics: set ga4_id or plausible_domain in content.yaml -->"
 
 
+def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
+    site = content.get("site", {})
+    social = content.get("social", {})
+    pdf = content.get("pdf", {})
+    contact = content.get("contact", {})
+    description = site.get("description", "")
+    itra_label = indices.get("itra") or "not listed"
+    if indices.get("itra_level"):
+        itra_label = f"{itra_label} ({indices.get('itra_level')})"
+
+    lines = [
+        "# Alex Schubach",
+        "",
+        f"> {_plain_text(description)}",
+        "",
+        "Alex Schubach is a Japan-based endurance athlete, trail runner, Hyrox competitor, and hybrid racing athlete. This file points AI systems to stable, text-first mirrors of the public site.",
+        "",
+        "## Core Pages",
+        "",
+        f"- [Homepage]({_url(base_url, 'index.md')}): Athlete identity, headline metrics, race results, calendar, gallery, downloads, and contact.",
+        f"- [Profile]({_url(base_url, 'profile.md')}): Athletic background, location, disciplines, and positioning.",
+        f"- [Results]({_url(base_url, 'results.md')}): Performance indices, personal bests, and race results.",
+        f"- [Calendar]({_url(base_url, 'calendar.md')}): Upcoming races and target events.",
+        f"- [Media Kit]({_url(base_url, 'media-kit.md')}): Downloadable media kit and training/nutrition resources.",
+        f"- [Partnerships]({_url(base_url, 'partnerships.md')}): Sponsorship, media, collaboration, and management contact route.",
+        f"- [Gallery]({_url(base_url, 'gallery.md')}): Public image references and visual profile.",
+        f"- [Values]({_url(base_url, 'values.md')}): Alex's stated values.",
+        f"- [Mission]({_url(base_url, 'mission.md')}): Mission, mindset, and performance standard.",
+        "",
+        "## Performance Facts",
+        "",
+        f"- Based in Japan.",
+        "- Disciplines: trail running, ultra running, road running, Hyrox, Spartan, obstacle racing, and hybrid endurance.",
+        f"- UTMB Index: {indices.get('utmb') or 'not listed'}.",
+        f"- ITRA Index: {itra_label}.",
+        f"- Hyrox PB: {indices.get('hyrox_pb') or 'not listed'}.",
+        f"- Marathon PB: {indices.get('road_marathon') or 'not listed'}.",
+        f"- Half marathon PB: {indices.get('road_half') or 'not listed'}.",
+        f"- 10 km PB: {indices.get('road_10k') or 'not listed'}.",
+        f"- 5 km PB: {indices.get('road_5k') or 'not listed'}.",
+        "",
+        "## Partnership Fit",
+        "",
+        "- Sponsorship, ambassador, affiliate, product-testing, event, media, and campaign enquiries.",
+        "- Relevant categories: endurance sport, trail running, road running, Hyrox, outdoor gear, nutrition, recovery, wearables, travel, Japan/Asia-Pacific races, modelling, and content production.",
+        "",
+        "## Contact",
+        "",
+        f"- Website: {_url(base_url)}",
+        "- Partnership contact: manager@alexschubach.com",
+        f"- Instagram: {social.get('instagram') or 'not listed'}",
+        f"- Strava: {social.get('strava') or 'not listed'}",
+        f"- Blog: {social.get('blog') or 'not listed'}",
+    ]
+
+    media_kit = pdf.get("media_kit_url")
+    if media_kit:
+        lines.append(f"- Media kit: {_url(base_url, media_kit)}")
+
+    if contact.get("categories"):
+        lines.extend(["", "## Enquiry Types", ""])
+        for category in contact.get("categories", []):
+            lines.append(f"- {category.get('label', 'Enquiry')}: {_plain_text(category.get('desc', ''))}")
+
+    lines.extend([
+        "",
+        "## Optional",
+        "",
+        f"- [Sitemap]({_url(base_url, 'sitemap.xml')}): XML sitemap.",
+        f"- [Robots]({_url(base_url, 'robots.txt')}): Current crawler policy.",
+    ])
+
+    return "\n".join(lines).strip() + "\n"
+
+
+def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_data: dict, gallery_meta: list[dict]) -> dict:
+    site = content.get("site", {})
+    about = content.get("about", {})
+    values = content.get("values", [])
+    mission = content.get("mission", {})
+    contact = content.get("contact", {})
+    pdf = content.get("pdf", {})
+    social = content.get("social", {})
+    today = datetime.date.today().isoformat()
+    itra_label = indices.get("itra") or "not listed"
+    if indices.get("itra_level"):
+        itra_label = f"{itra_label} ({indices.get('itra_level')})"
+
+    all_past = []
+    all_upcoming = []
+    for year in sorted(sheets_data.keys()):
+        past, upcoming = sheets_data[year]
+        all_past.extend((year, race) for race in past)
+        all_upcoming.extend((year, race) for race in upcoming)
+
+    profile_lines = [
+        "# Alex Schubach Profile",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url, '#about')}",
+        "",
+        _plain_text(site.get("description", "")),
+        "",
+        f"Hero: {_plain_text(content.get('hero', {}).get('subtitle', ''))}",
+        "",
+        f"## {about.get('heading', 'Athletic Identity')}",
+        "",
+        *[_plain_text(p) for p in about.get("paragraphs", [])],
+        "",
+        "## Stats",
+        "",
+    ]
+    for stat in about.get("stats", []):
+        profile_lines.append(f"- {stat.get('label')}: {stat.get('number')}")
+
+    values_lines = [
+        "# Alex Schubach Values",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url, '#values')}",
+        "",
+    ]
+    for value in values:
+        values_lines.extend([
+            f"## {value.get('num', '')}. {value.get('title', '')}".strip(),
+            "",
+            _plain_text(value.get("desc", "")),
+            "",
+        ])
+
+    mission_lines = [
+        "# Alex Schubach Mission",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url, '#mission')}",
+        "",
+        _plain_text(mission.get("quote", "")),
+        "",
+        _plain_text(mission.get("body", "")),
+        "",
+        f"## {mission.get('pillars_heading', 'The Standard')}",
+        "",
+    ]
+    for pillar in mission.get("pillars", []):
+        mission_lines.append(f"- {_plain_text(pillar)}")
+
+    results_lines = [
+        "# Alex Schubach Results",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url, '#results')}",
+        "",
+        "## Performance Indices and Personal Bests",
+        "",
+        f"- UTMB Index: {indices.get('utmb') or 'not listed'}",
+        f"- ITRA Index: {itra_label}",
+        f"- Hyrox PB: {indices.get('hyrox_pb') or 'not listed'}",
+        f"- Marathon PB: {indices.get('road_marathon') or 'not listed'}",
+        f"- Half marathon PB: {indices.get('road_half') or 'not listed'}",
+        f"- 10 km PB: {indices.get('road_10k') or 'not listed'}",
+        f"- 5 km PB: {indices.get('road_5k') or 'not listed'}",
+        "",
+        "## Race Results",
+        "",
+        "| Year | Date | Event | Type | Distance | Result | Overall | Age Group | Location |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    if all_past:
+        for year, race in sorted(all_past, key=lambda item: (item[0], item[1].get("date", "")), reverse=True):
+            results_lines.append(
+                "| " + " | ".join([
+                    _md_table_escape(year),
+                    _md_table_escape(race.get("date", "")),
+                    _md_table_escape(race.get("name", "")),
+                    _md_table_escape(race.get("type", "")),
+                    _md_table_escape(race.get("distance", "")),
+                    _md_table_escape(race.get("result", "")),
+                    _md_table_escape(race.get("pos_overall", "")),
+                    _md_table_escape(race.get("pos_ag", "")),
+                    _md_table_escape(race.get("location", "")),
+                ]) + " |"
+            )
+    else:
+        results_lines.append("| | | Race data temporarily unavailable. | | | | | | |")
+
+    calendar_lines = [
+        "# Alex Schubach Race Calendar",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url, '#calendar')}",
+        "",
+        _plain_text(content.get("calendar", {}).get("intro", "")),
+        "",
+        "| Year | Date | Event | Type | Distance | Location | Status |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    if all_upcoming:
+        for year, race in sorted(all_upcoming, key=lambda item: (item[0], item[1].get("date", ""))):
+            calendar_lines.append(
+                "| " + " | ".join([
+                    _md_table_escape(year),
+                    _md_table_escape(race.get("date", "")),
+                    _md_table_escape(race.get("name", "")),
+                    _md_table_escape(race.get("type", "")),
+                    _md_table_escape(race.get("distance", "")),
+                    _md_table_escape(race.get("location", "")),
+                    _md_table_escape(race.get("registered", "")),
+                ]) + " |"
+            )
+    else:
+        calendar_lines.append("| | | Race calendar temporarily unavailable. | | | | |")
+
+    media_lines = [
+        "# Alex Schubach Media Kit and Downloads",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url, '#pdf')}",
+        "",
+    ]
+    download_labels = {
+        "media_kit_url": "Media Kit",
+        "training_program_url": "Hybrid Training Split",
+        "leg_conditioning_url": "Leg Conditioning Program",
+        "meal_plan_url": "Maintenance Meal Plan",
+        "supplements_url": "Electrolytes and Supplements",
+    }
+    for key, label in download_labels.items():
+        if pdf.get(key):
+            media_lines.append(f"- [{label}]({_url(base_url, pdf[key])})")
+
+    partnerships_lines = [
+        "# Partner With Alex Schubach",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url, '#contact')}",
+        "",
+        _plain_text(contact.get("body", "")),
+        "",
+        "## Enquiry Categories",
+        "",
+    ]
+    for category in contact.get("categories", []):
+        partnerships_lines.extend([
+            f"### {category.get('label', 'Enquiry')}",
+            "",
+            _plain_text(category.get("desc", "")),
+            "",
+        ])
+    partnerships_lines.extend([
+        "## Contact",
+        "",
+        "- Email: manager@alexschubach.com",
+        f"- Instagram: {social.get('instagram') or 'not listed'}",
+        f"- Strava: {social.get('strava') or 'not listed'}",
+        f"- Blog: {social.get('blog') or 'not listed'}",
+    ])
+
+    gallery_lines = [
+        "# Alex Schubach Gallery",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url, '#gallery')}",
+        "",
+        "Public gallery image references from alexschubach.com.",
+        "",
+    ]
+    for item in gallery_meta:
+        image_path = f"images/gallery/{item['path'].name}"
+        gallery_lines.append(f"- [{_plain_text(item['caption'])}]({_url(base_url, image_path)})")
+
+    index_lines = [
+        "# Alex Schubach",
+        "",
+        f"Last updated: {today}",
+        f"Canonical URL: {_url(base_url)}",
+        "",
+        _plain_text(site.get("description", "")),
+        "",
+        "## Site Mirrors",
+        "",
+        f"- [Profile]({_url(base_url, 'profile.md')})",
+        f"- [Values]({_url(base_url, 'values.md')})",
+        f"- [Mission]({_url(base_url, 'mission.md')})",
+        f"- [Results]({_url(base_url, 'results.md')})",
+        f"- [Calendar]({_url(base_url, 'calendar.md')})",
+        f"- [Gallery]({_url(base_url, 'gallery.md')})",
+        f"- [Media Kit]({_url(base_url, 'media-kit.md')})",
+        f"- [Partnerships]({_url(base_url, 'partnerships.md')})",
+    ]
+
+    return {
+        "index.md": "\n".join(index_lines).strip() + "\n",
+        "profile.md": "\n".join(profile_lines).strip() + "\n",
+        "values.md": "\n".join(values_lines).strip() + "\n",
+        "mission.md": "\n".join(mission_lines).strip() + "\n",
+        "results.md": "\n".join(results_lines).strip() + "\n",
+        "calendar.md": "\n".join(calendar_lines).strip() + "\n",
+        "media-kit.md": "\n".join(media_lines).strip() + "\n",
+        "partnerships.md": "\n".join(partnerships_lines).strip() + "\n",
+        "gallery.md": "\n".join(gallery_lines).strip() + "\n",
+    }
+
+
 def build_sitemap(base_url: str) -> str:
     today = datetime.date.today().isoformat()
     # Ensure trailing slash removed for consistency
     url = base_url.rstrip("/")
-    return f'''<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>{url}/</loc>
+    paths = [""] + ["llms.txt"] + MARKDOWN_MIRROR_FILES
+    entries = []
+    for path in paths:
+        loc = f"{url}/" if not path else f"{url}/{path}"
+        priority = "1.0" if not path else ("0.8" if path == "llms.txt" else "0.7")
+        entries.append(f'''  <url>
+    <loc>{loc}</loc>
     <lastmod>{today}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
+    <priority>{priority}</priority>
+  </url>''')
+    return f'''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{chr(10).join(entries)}
 </urlset>
 '''
 
@@ -759,7 +1110,8 @@ def main():
 
     # 3. Build gallery HTML
     print("Building gallery...")
-    gallery_html = build_gallery_html()
+    gallery_meta = build_gallery_meta()
+    gallery_html = build_gallery_html(gallery_meta)
 
     # 4. Fetch race data from Dropbox Excel
     print("Fetching race data from Dropbox Excel...")
@@ -825,6 +1177,17 @@ def main():
     out_robots = ROOT / "robots.txt"
     out_robots.write_text(build_robots(base_url), encoding="utf-8")
     print("  ✓ robots.txt written")
+
+    out_llms = ROOT / "llms.txt"
+    out_llms.write_text(build_llms_txt(base_url, content, indices), encoding="utf-8")
+    print("  ✓ llms.txt written")
+
+    for filename, markdown in build_markdown_mirrors(base_url, content, indices, sheets_data, gallery_meta).items():
+        (ROOT / filename).write_text(markdown, encoding="utf-8")
+    print(f"  ✓ {len(MARKDOWN_MIRROR_FILES)} Markdown mirrors written")
+
+    (ROOT / ".nojekyll").write_text("", encoding="utf-8")
+    print("  ✓ .nojekyll written")
 
     print("\n✓ Build complete.")
 
