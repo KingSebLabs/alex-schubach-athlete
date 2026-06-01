@@ -609,16 +609,75 @@ section { padding: 6rem 2.5rem; }
   .lightbox-next { right: 0; padding: 1.5rem; }
 }
 
-/* ===== PDF DOWNLOAD ===== */
+/* ===== MEDIA KIT / DOWNLOADS ===== */
 .pdf-section {
-  background: var(--accent);
+  background: var(--bg-dark);
   position: relative; overflow: hidden; padding: 0;
 }
 .pdf-section::before {
   content: ''; position: absolute; inset: 0;
-  background: linear-gradient(135deg, var(--accent) 0%, #c93a08 100%);
+  background: linear-gradient(135deg, rgba(232,73,15,0.98) 0%, rgba(201,58,8,0.98) 100%);
 }
 .pdf-section * { position: relative; z-index: 1; }
+.media-kit-panel {
+  max-width: 1180px; margin: 0 auto; text-align: left;
+  display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+  gap: 3rem; align-items: center;
+}
+.media-kit-copy { color: rgba(0,0,0,0.9); }
+.media-kit-copy .section-label { color: rgba(0,0,0,0.74); margin-bottom: 1.2rem; }
+.media-kit-copy .section-label::before { background: rgba(0,0,0,0.72); }
+.media-kit-title {
+  font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: 0.95; letter-spacing: 0.02em; margin-bottom: 1.25rem;
+}
+.media-kit-summary {
+  font-size: 1rem; line-height: 1.8; max-width: 720px;
+  color: rgba(0,0,0,0.82); margin-bottom: 1.5rem;
+}
+.media-kit-proof {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem; margin: 1.75rem 0;
+}
+.media-kit-proof-item {
+  border: 1px solid rgba(0,0,0,0.22); padding: 0.85rem 1rem;
+  font-size: 0.82rem; font-weight: 650; line-height: 1.55; color: rgba(0,0,0,0.86);
+  background: rgba(255,255,255,0.12);
+}
+.media-kit-fit-title {
+  font-size: 0.65rem; font-weight: 800; letter-spacing: 0.22em;
+  text-transform: uppercase; color: rgba(0,0,0,0.72); margin: 1.8rem 0 0.8rem;
+}
+.media-kit-tags { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-bottom: 1.6rem; }
+.media-kit-tag {
+  border: 1px solid rgba(0,0,0,0.28); padding: 0.45rem 0.65rem;
+  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: rgba(0,0,0,0.78); background: rgba(255,255,255,0.13);
+}
+.media-kit-actions {
+  display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; margin-top: 1.3rem;
+}
+.media-kit-actions .btn-white { color: var(--accent); }
+.media-kit-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  color: rgba(0,0,0,0.82); text-decoration: none;
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase;
+  border-bottom: 1px solid rgba(0,0,0,0.42); padding-bottom: 0.2rem;
+}
+.media-kit-photo-grid {
+  display: grid; grid-template-columns: 1.15fr 0.85fr; grid-template-rows: 220px 220px;
+  gap: 0.75rem; min-height: 452px;
+}
+.media-kit-photo {
+  position: relative; overflow: hidden; background: rgba(0,0,0,0.18); border: 1px solid rgba(0,0,0,0.2);
+}
+.media-kit-photo:first-child { grid-row: span 2; }
+.media-kit-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.media-kit-photo-caption {
+  position: absolute; left: 0.75rem; bottom: 0.75rem;
+  color: white; text-shadow: 0 1px 10px rgba(0,0,0,0.8);
+  font-size: 0.62rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase;
+}
 .pdf-tabs {
   display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
   background: var(--bg-dark);
@@ -658,6 +717,10 @@ section { padding: 6rem 2.5rem; }
 .pdf-column + .pdf-column { border-left: 1px solid rgba(0,0,0,0.2); }
 .pdf-column .pdf-subtitle { margin-bottom: 0; }
 @media (max-width: 768px) {
+  .media-kit-panel { grid-template-columns: 1fr; gap: 2rem; }
+  .media-kit-proof { grid-template-columns: 1fr; }
+  .media-kit-photo-grid { grid-template-rows: 260px 150px; min-height: auto; }
+  .media-kit-photo:first-child { grid-row: auto; grid-column: span 2; }
   .pdf-columns { flex-direction: column; gap: 2.5rem; }
   .pdf-column + .pdf-column { border-left: 0; border-top: 1px solid rgba(0,0,0,0.2); padding-top: 2.5rem; }
 }
@@ -980,7 +1043,7 @@ footer {
     <a href="#results">Results</a>
     <a href="#calendar">Calendar</a>
     <a href="#gallery">Gallery</a>
-    <a href="#pdf">Downloads</a>
+    <a href="#media-kit">Media Kit</a>
     <a href="#contact" class="nav-cta">Get in Touch</a>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -997,7 +1060,7 @@ footer {
     <div class="hero-tag">{{ hero.tag }}</div>
     <p class="hero-subtitle">{{ hero.subtitle }}</p>
     <div class="hero-actions">
-      <a href="#contact" class="btn-primary">Partner With Me <span class="btn-arrow">↗</span></a>
+      <a href="#media-kit" class="btn-primary">View Media Kit <span class="btn-arrow">↗</span></a>
       <a href="#results" class="btn-outline">View Performance</a>
     </div>
   </div>
@@ -1162,9 +1225,9 @@ footer {
   </div>
 </section>
 
-<!-- PDF DOWNLOAD -->
+<!-- MEDIA KIT / DOWNLOADS -->
 {% if pdf.enabled %}
-<section class="pdf-section" id="pdf">
+<section class="pdf-section" id="media-kit">
   <div class="pdf-tabs">
     <button class="pdf-tab active" data-tab="media">Media Kit</button>
     <button class="pdf-tab" data-tab="training">Training</button>
@@ -1172,12 +1235,48 @@ footer {
     <button class="pdf-tab" data-tab="selfdev">Self Development</button>
   </div>
   <div class="pdf-body">
-    <div class="pdf-title">DOWNLOADS</div>
     <div class="pdf-panel active" id="pdf-media">
-      <p class="pdf-subtitle">Full athlete profile — Detailed biography, mission, race results, upcoming calendar, partnership and contact details.</p>
-      <a href="{{ pdf.media_kit_url }}" class="btn-white" download target="_blank" rel="noopener noreferrer">↓ Download Media Kit</a>
+      <div class="media-kit-panel">
+        <div class="media-kit-copy">
+          <div class="section-label">For Sponsors &amp; Agencies</div>
+          <h2 class="media-kit-title">{{ media_kit.heading }}</h2>
+          <p class="media-kit-summary">{{ media_kit.summary }}</p>
+          <div class="media-kit-proof">
+            {%- for item in media_kit.proof_points %}
+            <div class="media-kit-proof-item">{{ item }}</div>
+            {%- endfor %}
+          </div>
+          <div class="media-kit-fit-title">Campaign Fit</div>
+          <div class="media-kit-tags">
+            {%- for item in media_kit.campaign_categories %}
+            <span class="media-kit-tag">{{ item }}</span>
+            {%- endfor %}
+          </div>
+          <p class="media-kit-summary">{{ media_kit.cta }}</p>
+          <div class="media-kit-actions">
+            <a href="{{ pdf.media_kit_url }}" class="btn-white" download target="_blank" rel="noopener noreferrer">↓ Download Media Kit</a>
+            <a href="#contact" class="media-kit-link">Partnership Enquiry ↗</a>
+            <a href="{{ social.instagram }}" class="media-kit-link" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+          </div>
+        </div>
+        <div class="media-kit-photo-grid" aria-label="Alex Schubach media kit photos">
+          <figure class="media-kit-photo">
+            <img src="images/identity.jpg" alt="Alex Schubach athlete profile portrait for sponsorship and media kit review" loading="lazy">
+            <figcaption class="media-kit-photo-caption">Profile</figcaption>
+          </figure>
+          <figure class="media-kit-photo">
+            <img src="images/gallery/6_Tre Loren - Filmmaker_Speed Work.jpg" alt="Alex Schubach speed work training photo by Tre Loren for performance brand campaigns" loading="lazy">
+            <figcaption class="media-kit-photo-caption">Training</figcaption>
+          </figure>
+          <figure class="media-kit-photo">
+            <img src="images/gallery/8_Tre Loren - Filmmaker_Hydrating.jpg" alt="Alex Schubach hydration and recovery photo by Tre Loren for sports nutrition campaigns" loading="lazy">
+            <figcaption class="media-kit-photo-caption">Hydration</figcaption>
+          </figure>
+        </div>
+      </div>
     </div>
     <div class="pdf-panel" id="pdf-training">
+      <div class="pdf-title">TRAINING DOWNLOADS</div>
       <div class="pdf-columns">
         <div class="pdf-column">
           <p class="pdf-subtitle">This training split is designed to build a powerful engine, strong legs, full-body strength, and unstoppable hybrid conditioning.</p>
@@ -1190,6 +1289,7 @@ footer {
       </div>
     </div>
     <div class="pdf-panel" id="pdf-meal">
+      <div class="pdf-title">NUTRITION DOWNLOADS</div>
       <div class="pdf-columns">
         <div class="pdf-column">
           <p class="pdf-subtitle">This daily nutrition plan is designed to fuel peak physical performance, sharpen mental clarity, and sustain high energy output throughout the day.</p>
@@ -1202,6 +1302,7 @@ footer {
       </div>
     </div>
     <div class="pdf-panel" id="pdf-selfdev">
+      <div class="pdf-title">SELF DEVELOPMENT</div>
       <p class="pdf-subtitle">This self-development framework is designed to elevate your mindset, improve daily structure, and drive continuous personal growth. It's time to rewire your mind and live in alignment with your values. Take control and transform your life.</p>
       <span class="btn-white btn-white--disabled">↓ Coming Soon</span>
     </div>

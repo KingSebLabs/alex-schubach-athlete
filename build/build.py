@@ -19,6 +19,7 @@ import json
 import datetime
 import requests
 from pathlib import Path
+from urllib.parse import quote
 
 import yaml
 from jinja2 import Environment, FileSystemLoader
@@ -113,6 +114,10 @@ def _md_table_escape(value: str) -> str:
 def _url(base_url: str, path: str = "") -> str:
     base = base_url.rstrip("/")
     return f"{base}/{path.lstrip('/')}" if path else f"{base}/"
+
+
+def _asset_url(base_url: str, path: str) -> str:
+    return _url(base_url, quote(path.lstrip("/"), safe="/#"))
 
 
 def _fmt_rich_cell(cell) -> str:
@@ -329,6 +334,17 @@ def _build_caption(stem: str) -> str:
         return name.replace('_', ' ').title()
 
 
+def _build_image_alt(stem: str) -> str:
+    """Build sponsor/search-friendly alt text from local gallery filenames."""
+    name = re.sub(r'^\d+[_\s]*', '', stem)
+    if ' - Filmmaker_' in name:
+        photographer, shot = name.split(' - Filmmaker_', 1)
+        shot_display = shot.replace('_', ' ').strip().lower()
+        return f"Alex Schubach {shot_display}, photographed by {photographer.strip()}"
+    shot_display = name.replace('_', ' ').strip().lower()
+    return f"Alex Schubach {shot_display}"
+
+
 def build_gallery_meta() -> list[dict]:
     """Scan images/gallery/ and return image metadata for HTML and Markdown outputs."""
     images = sorted(
@@ -347,7 +363,7 @@ def build_gallery_meta() -> list[dict]:
                 w, h = im.size
         except Exception:
             w, h = 800, 600
-        alt = img_path.stem.lstrip("0123456789").strip("_- ").replace("_", " ").title()
+        alt = _build_image_alt(img_path.stem)
         meta.append({"path": img_path, "alt": alt, "caption": _build_caption(img_path.stem), "w": w, "h": h})
     return meta
 
@@ -669,13 +685,74 @@ def build_race_tabs_and_panels(sheets_data: dict) -> tuple:
     return tabs_html + panels_html, calendar_html, CURRENT_YEAR
 
 
-def build_seo_tags(site: dict, social: dict, analytics: dict = None) -> str:
+def _local_image_dimensions(path: Path) -> tuple[int | None, int | None]:
+    try:
+        with Image.open(path) as im:
+            return im.size
+    except Exception:
+        return None, None
+
+
+def _image_object(base_url: str, rel_path: str, name: str, caption: str) -> dict:
+    width, height = _local_image_dimensions(ROOT / rel_path)
+    image_url = _asset_url(base_url, rel_path)
+    obj = {
+        "@type": "ImageObject",
+        "@id": f"{image_url}#image",
+        "url": image_url,
+        "contentUrl": image_url,
+        "name": name,
+        "caption": caption,
+    }
+    if width and height:
+        obj["width"] = width
+        obj["height"] = height
+    return obj
+
+
+def _key_image_objects(base_url: str, gallery_meta: list[dict] | None = None) -> list[dict]:
+    images = [
+        _image_object(
+            base_url,
+            "images/hero.jpg",
+            "Alex Schubach hero portrait",
+            "Alex Schubach, Tokyo-based endurance athlete and performance athlete.",
+        ),
+        _image_object(
+            base_url,
+            "images/identity.jpg",
+            "Alex Schubach athlete profile image",
+            "Alex Schubach athlete identity and performance profile image.",
+        ),
+        _image_object(
+            base_url,
+            "images/about.jpg",
+            "Alex Schubach training image",
+            "Alex Schubach training and endurance athlete profile image.",
+        ),
+    ]
+    for item in (gallery_meta or [])[:6]:
+        rel_path = f"images/gallery/{item['path'].name}"
+        images.append(_image_object(base_url, rel_path, item["alt"], _plain_text(item["caption"])))
+    return images
+
+
+def build_seo_tags(
+    site: dict,
+    social: dict,
+    analytics: dict = None,
+    gallery_meta: list[dict] | None = None,
+    pdf: dict | None = None,
+    media_kit: dict | None = None,
+) -> str:
     """Build Open Graph, Twitter Card, JSON-LD, and GSC verification tags."""
-    base_url = site.get("base_url", "")
+    base_url = site.get("base_url", "").rstrip("/")
     title = site.get("title", "Alex Schubach — Endurance Athlete")
     description = site.get("description", "")
     instagram = social.get("instagram", "#")
     strava = social.get("strava", "#")
+    blog = social.get("blog", "#")
+    og_image = f"{base_url}/images/hero.jpg"
 
     gsc_token = (analytics or {}).get("gsc_verification_token", "").strip()
     gsc_tag = f'  <meta name="google-site-verification" content="{gsc_token}">\n' if gsc_token else ""
@@ -688,53 +765,111 @@ def build_seo_tags(site: dict, social: dict, analytics: dict = None) -> str:
   <!-- Open Graph -->
   <meta property="og:title" content="{title_esc}">
   <meta property="og:description" content="{desc_esc}">
-  <meta property="og:image" content="{base_url}/images/hero.jpg">
-  <meta property="og:url" content="{base_url}">
+  <meta property="og:image" content="{og_image}">
+  <meta property="og:image:secure_url" content="{og_image}">
+  <meta property="og:image:alt" content="Alex Schubach, Tokyo-based endurance athlete and performance athlete">
+  <meta property="og:url" content="{base_url}/">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Alex Schubach">
+  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{title_esc}">
   <meta name="twitter:description" content="{desc_esc}">
-  <meta name="twitter:image" content="{base_url}/images/hero.jpg">'''
+  <meta name="twitter:image" content="{og_image}">
+  <meta name="twitter:image:alt" content="Alex Schubach, Tokyo-based endurance athlete and performance athlete">'''
 
-    same_as = [s for s in [instagram, strava] if s and s != "#"]
+    same_as = [s for s in [instagram, strava, blog] if s and s != "#"]
+    image_objects = _key_image_objects(base_url, gallery_meta)
+    media_kit_url = (pdf or {}).get("media_kit_url")
+    graph = [
+        {
+            "@type": "WebSite",
+            "@id": f"{base_url}/#website",
+            "name": "Alex Schubach",
+            "url": f"{base_url}/",
+            "inLanguage": "en",
+            "description": description,
+            "publisher": {"@id": f"{base_url}/#alex-schubach"},
+        },
+        {
+            "@type": ["Person", "Athlete"],
+            "@id": f"{base_url}/#alex-schubach",
+            "name": "Alex Schubach",
+            "alternateName": ["Alexander Schubach", "Alex the Athlete", "alextheathlete_", "alexschubach"],
+            "url": f"{base_url}/",
+            "image": {"@id": image_objects[1]["@id"]},
+            "jobTitle": "Endurance athlete, performance athlete, athlete model, and brand partner",
+            "description": description,
+            "homeLocation": {
+                "@type": "Place",
+                "name": "Tokyo, Japan",
+            },
+            "workLocation": {
+                "@type": "Place",
+                "name": "Japan and Asia-Pacific",
+            },
+            "hasOccupation": [
+                {"@type": "Occupation", "name": "Endurance Athlete"},
+                {"@type": "Occupation", "name": "Performance Athlete"},
+                {"@type": "Occupation", "name": "Athlete Model"},
+                {"@type": "Occupation", "name": "Brand Partner"},
+            ],
+            "knowsAbout": [
+                "endurance sport",
+                "trail running",
+                "road running",
+                "Hyrox",
+                "Spartan racing",
+                "ultra running",
+                "athlete modelling",
+                "brand partnerships",
+                "sports sponsorship",
+                "fitness content",
+                "outdoor performance",
+                "Japan and Asia-Pacific racing",
+            ],
+            "sameAs": same_as,
+            "mainEntityOfPage": {"@id": f"{base_url}/#website"},
+            "affiliation": {"@id": f"{base_url}/#brand-partnerships"},
+            "subjectOf": {"@id": f"{base_url}/#media-kit"},
+        },
+        {
+            "@type": ["Organization", "SportsOrganization"],
+            "@id": f"{base_url}/#brand-partnerships",
+            "name": "Alex Schubach Athlete Partnerships",
+            "url": f"{base_url}/#contact",
+            "email": "manager@alexschubach.com",
+            "description": _plain_text((media_kit or {}).get("summary", description)),
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "brand partnerships, sponsorships, athlete modelling, and media enquiries",
+                "email": "manager@alexschubach.com",
+                "areaServed": ["Japan", "Asia-Pacific"],
+                "availableLanguage": ["en"],
+            },
+            "sameAs": same_as,
+        },
+        {
+            "@type": "CreativeWork",
+            "@id": f"{base_url}/#media-kit",
+            "name": "Alex Schubach Athlete Media Kit",
+            "url": f"{base_url}/#media-kit",
+            "about": {"@id": f"{base_url}/#alex-schubach"},
+            "description": _plain_text((media_kit or {}).get("summary", "Alex Schubach media kit and brand partnership overview.")),
+            "inLanguage": "en",
+        },
+    ]
+    if media_kit_url:
+        graph[-1]["associatedMedia"] = {
+            "@type": "MediaObject",
+            "name": "Alex Schubach Media Kit PDF",
+            "contentUrl": _url(base_url, media_kit_url),
+            "encodingFormat": "application/pdf",
+        }
+    graph.extend(image_objects)
     jsonld_data = {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Alex Schubach",
-        "alternateName": ["Alexander Schubach", "Alex the Athlete", "alexschubach"],
-        "url": base_url,
-        "image": f"{base_url}/images/about.jpg",
-        "jobTitle": "Endurance athlete, performance athlete, athlete model, and brand partner",
-        "description": description,
-        "homeLocation": {
-            "@type": "Place",
-            "name": "Tokyo, Japan",
-        },
-        "workLocation": {
-            "@type": "Place",
-            "name": "Japan and Asia-Pacific",
-        },
-        "hasOccupation": [
-            {"@type": "Occupation", "name": "Endurance Athlete"},
-            {"@type": "Occupation", "name": "Performance Athlete"},
-            {"@type": "Occupation", "name": "Athlete Model"},
-            {"@type": "Occupation", "name": "Brand Partner"},
-        ],
-        "knowsAbout": [
-            "endurance sport",
-            "trail running",
-            "road running",
-            "Hyrox",
-            "Spartan racing",
-            "ultra running",
-            "athlete modelling",
-            "brand partnerships",
-            "sports sponsorship",
-            "fitness content",
-            "outdoor performance",
-            "Japan and Asia-Pacific racing",
-        ],
-        "sameAs": same_as,
+        "@graph": graph,
     }
     jsonld = (
         "  <!-- JSON-LD Structured Data -->\n"
@@ -792,7 +927,7 @@ def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
         f"- [Profile]({_url(base_url, 'profile.md')}): Athletic background, Tokyo location, disciplines, athlete modelling context, and brand partner positioning.",
         f"- [Results]({_url(base_url, 'results.md')}): Performance indices, personal bests, and race results.",
         f"- [Calendar]({_url(base_url, 'calendar.md')}): Upcoming races and target events.",
-        f"- [Media Kit]({_url(base_url, 'media-kit.md')}): Downloadable media kit and training/nutrition resources for partnership review.",
+        f"- [Media Kit]({_url(base_url, 'media-kit.md')}): Crawlable HTML media kit summary, campaign fit, key images, proof points, and same-domain PDF download.",
         f"- [Partnerships]({_url(base_url, 'partnerships.md')}): Sponsorship enquiries, athlete modelling briefs, media, collaborations, and management contact route.",
         f"- [Gallery]({_url(base_url, 'gallery.md')}): Public image references and visual profile.",
         f"- [Values]({_url(base_url, 'values.md')}): Alex's stated values.",
@@ -814,6 +949,7 @@ def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
         "",
         "- Sponsorship, ambassador, affiliate, product-testing, event, media, athlete modelling, and campaign enquiries.",
         f"- {_plain_text(positioning.get('brand_fit', 'Relevant categories: endurance sport, trail running, road running, Hyrox, outdoor gear, nutrition, recovery, wearables, travel, Japan/Asia-Pacific races, modelling, and content production.'))}",
+        "- Best-fit campaign categories include performance apparel and footwear, outdoor/trail/travel, nutrition/hydration/recovery, wearables and fitness tech, athlete modelling/editorial, and Japan/APAC race storytelling.",
         "",
         "## Contact",
         "",
@@ -853,6 +989,7 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
     pdf = content.get("pdf", {})
     social = content.get("social", {})
     positioning = content.get("positioning", {})
+    media_kit = content.get("media_kit", {})
     today = datetime.date.today().isoformat()
     itra_label = indices.get("itra") or "not listed"
     if indices.get("itra_level"):
@@ -994,11 +1131,38 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         "# Alex Schubach Media Kit and Downloads",
         "",
         f"Last updated: {today}",
-        f"Canonical URL: {_url(base_url, '#pdf')}",
+        f"Canonical URL: {_url(base_url, '#media-kit')}",
         "",
-        "Use these assets to review Alex Schubach's Tokyo-based endurance athlete profile for sponsorship, brand partnership, athlete modelling, performance, outdoor, nutrition, travel, and lifestyle opportunities.",
+        _plain_text(media_kit.get("summary", "Use these assets to review Alex Schubach's Tokyo-based endurance athlete profile for sponsorship, brand partnership, athlete modelling, performance, outdoor, nutrition, travel, and lifestyle opportunities.")),
+        "",
+        _plain_text(media_kit.get("cta", "")),
+        "",
+        "## Proof Points",
         "",
     ]
+    for item in media_kit.get("proof_points", []):
+        media_lines.append(f"- {_plain_text(item)}")
+
+    media_lines.extend(["", "## Campaign Fit", ""])
+    for item in media_kit.get("campaign_categories", []):
+        media_lines.append(f"- {_plain_text(item)}")
+
+    media_lines.extend(["", "## Partnership Deliverables", ""])
+    for item in media_kit.get("deliverables", []):
+        media_lines.append(f"- {_plain_text(item)}")
+
+    media_lines.extend([
+        "",
+        "## Key Image References",
+        "",
+        f"- [Alex Schubach athlete profile image]({_url(base_url, 'images/identity.jpg')})",
+        f"- [Alex Schubach training image]({_url(base_url, 'images/about.jpg')})",
+    ])
+    for item in gallery_meta[:4]:
+        image_path = f"images/gallery/{item['path'].name}"
+        media_lines.append(f"- [{_plain_text(item['alt'])}]({_url(base_url, image_path)})")
+
+    media_lines.extend(["", "## Downloads", ""])
     download_labels = {
         "media_kit_url": "Media Kit",
         "training_program_url": "Hybrid Training Split",
@@ -1009,6 +1173,14 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
     for key, label in download_labels.items():
         if pdf.get(key):
             media_lines.append(f"- [{label}]({_url(base_url, pdf[key])})")
+    media_lines.extend([
+        "",
+        "## Contact",
+        "",
+        "- Email: manager@alexschubach.com",
+        f"- Instagram: {social.get('instagram') or 'not listed'}",
+        f"- Strava: {social.get('strava') or 'not listed'}",
+    ])
 
     partnerships_lines = [
         "# Partner With Alex Schubach",
@@ -1097,23 +1269,55 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
     }
 
 
-def build_sitemap(base_url: str) -> str:
+def _sitemap_image_tags(base_url: str, images: list[dict]) -> str:
+    tags = []
+    for image_obj in images:
+        loc = html.escape(image_obj.get("url", ""), quote=False)
+        title = html.escape(str(image_obj.get("name", "")), quote=False)
+        caption = html.escape(str(image_obj.get("caption", "")), quote=False)
+        tags.append(
+            "    <image:image>\n"
+            f"      <image:loc>{loc}</image:loc>\n"
+            f"      <image:title>{title}</image:title>\n"
+            f"      <image:caption>{caption}</image:caption>\n"
+            "    </image:image>"
+        )
+    return "\n" + "\n".join(tags) if tags else ""
+
+
+def build_sitemap(base_url: str, gallery_meta: list[dict] | None = None) -> str:
     today = datetime.date.today().isoformat()
     # Ensure trailing slash removed for consistency
     url = base_url.rstrip("/")
     paths = [""] + ["llms.txt"] + MARKDOWN_MIRROR_FILES
+    key_images = _key_image_objects(url, gallery_meta)
+    gallery_images = []
+    for item in (gallery_meta or []):
+        rel_path = f"images/gallery/{item['path'].name}"
+        gallery_images.append(_image_object(url, rel_path, item["alt"], _plain_text(item["caption"])))
+
+    images_by_path = {
+        "": key_images,
+        "index.md": key_images[:3],
+        "media-kit.md": key_images,
+        "partnerships.md": key_images[:4],
+        "gallery.md": gallery_images,
+    }
     entries = []
     for path in paths:
         loc = f"{url}/" if not path else f"{url}/{path}"
         priority = "1.0" if not path else ("0.8" if path == "llms.txt" else "0.7")
+        image_tags = _sitemap_image_tags(url, images_by_path.get(path, []))
         entries.append(f'''  <url>
     <loc>{loc}</loc>
     <lastmod>{today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>{priority}</priority>
+{image_tags}
   </url>''')
     return f'''<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 {chr(10).join(entries)}
 </urlset>
 '''
@@ -1193,7 +1397,14 @@ def main():
         calendar_year = CURRENT_YEAR
 
     # 6. Build SEO and analytics tags
-    seo_tags = build_seo_tags(site, content.get("social", {}), analytics=content.get("analytics", {}))
+    seo_tags = build_seo_tags(
+        site,
+        content.get("social", {}),
+        analytics=content.get("analytics", {}),
+        gallery_meta=gallery_meta,
+        pdf=content.get("pdf", {}),
+        media_kit=content.get("media_kit", {}),
+    )
     analytics_tags = build_analytics_tags(content.get("analytics", {}))
 
     # 7. Render template
@@ -1207,6 +1418,7 @@ def main():
         about=content.get("about", {}),
         values=content.get("values", []),
         mission=content.get("mission", {}),
+        media_kit=content.get("media_kit", {}),
         indices=indices,
         contact=content.get("contact", {}),
         social=content.get("social", {}),
@@ -1227,7 +1439,7 @@ def main():
     print(f"  ✓ index.html written ({len(rendered) // 1024} KB)")
 
     out_sitemap = ROOT / "sitemap.xml"
-    out_sitemap.write_text(build_sitemap(base_url), encoding="utf-8")
+    out_sitemap.write_text(build_sitemap(base_url, gallery_meta), encoding="utf-8")
     print("  ✓ sitemap.xml written")
 
     out_robots = ROOT / "robots.txt"

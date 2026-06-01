@@ -13,6 +13,28 @@ positioning:
     - "1st overall at Spartan New Taipei Beast."
     - "UTMB and ITRA performance indices are refreshed during site builds when source profiles are reachable."
 
+media_kit:
+  heading: "ATHLETE MEDIA KIT"
+  summary: "A crawlable overview for sponsors, agencies, media teams, and brand partners reviewing Alex Schubach for athlete campaigns, athlete modelling, product storytelling, ambassador work, race activations, and endurance-performance content across Japan and Asia-Pacific."
+  proof_points:
+    - "Tokyo-based endurance and hybrid athlete competing across trail, road, Hyrox, and Spartan."
+    - "Sub-3 marathoner with a 2:56:19 marathon PB and 1:02:01 Hyrox PB."
+    - "UTMB World Series top-10 finisher and Spartan New Taipei Beast overall winner."
+    - "Visual assets available for performance, training, race, outdoor, and lifestyle contexts."
+  campaign_categories:
+    - "Performance apparel and footwear"
+    - "Outdoor, trail, and travel"
+    - "Nutrition, hydration, and recovery"
+    - "Wearables, fitness tech, and equipment"
+    - "Athlete modelling and editorial"
+    - "Japan and Asia-Pacific race storytelling"
+  deliverables:
+    - "Brand partnership and sponsorship enquiries"
+    - "Athlete modelling, campaign, and lookbook briefs"
+    - "Product testing, ambassador work, and launch support"
+    - "Media interviews, race storytelling, and content collaborations"
+  cta: "For current biography, proof points, photos, partnership fit, and campaign context, review the HTML summary here or download the same-domain PDF media kit."
+
 # ─── HERO ────────────────────────────────────────────────────────────────────
 hero:
   tag: "Built on discipline. Proven through performance."
