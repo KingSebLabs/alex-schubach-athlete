@@ -38,7 +38,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html sitemap.xml robots.txt llms.txt index.md profile.md results.md calendar.md media-kit.md partnerships.md gallery.md values.md mission.md .nojekyll
+          git add index.html sponsor-and-partnership-media-kit.html sitemap.xml robots.txt llms.txt index.md profile.md results.md calendar.md media-kit.md partnerships.md gallery.md values.md mission.md .nojekyll
           git diff --staged --quiet || git commit -m "Auto-build: daily refresh from Dropbox Excel [skip ci]"
           git restore .
           git pull --rebase

@@ -985,6 +985,7 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
     strava = social.get("strava") or ""
     media_pdf_url = _asset_url(base_url, pdf.get("media_kit_url", ""))
     hero_image = _asset_url(base_url, "images/identity.jpg")
+    analytics_tags = build_analytics_tags(content.get("analytics", {}))
 
     key_images = [
         {
@@ -1102,6 +1103,7 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
   <meta property="og:type" content="profile">
   <meta property="og:image" content="{html.escape(hero_image)}">
   <meta name="twitter:card" content="summary_large_image">
+{analytics_tags}
   <script type="application/ld+json">
 {json.dumps(jsonld_data, indent=2, ensure_ascii=False)}
   </script>
@@ -1206,6 +1208,22 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
       <p>Strava: <a href="{html.escape(strava)}">{html.escape(strava)}</a></p>
     </footer>
   </main>
+  <script>
+    (function() {{
+      function track(name, params) {{
+        if (typeof gtag === 'function') gtag('event', name, params || {{}});
+      }}
+
+      document.querySelectorAll('a[href$=".pdf"]').forEach(function(link) {{
+        link.addEventListener('click', function() {{
+          track('pdf_download', {{
+            label: link.textContent.trim(),
+            source_page: 'sponsor_and_partnership_media_kit'
+          }});
+        }});
+      }});
+    }})();
+  </script>
 </body>
 </html>
 '''

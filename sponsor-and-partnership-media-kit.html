@@ -12,6 +12,14 @@
   <meta property="og:type" content="profile">
   <meta property="og:image" content="https://alexschubach.com/images/identity.jpg">
   <meta name="twitter:card" content="summary_large_image">
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QJK7DMSV8B"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QJK7DMSV8B');
+  </script>
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -310,5 +318,21 @@ If you&#x27;re pushing limits and building something meaningful, I&#x27;m keen t
       <p>Strava: <a href="https://strava.app.link/5cOYQkeCQ1b">https://strava.app.link/5cOYQkeCQ1b</a></p>
     </footer>
   </main>
+  <script>
+    (function() {
+      function track(name, params) {
+        if (typeof gtag === 'function') gtag('event', name, params || {});
+      }
+
+      document.querySelectorAll('a[href$=".pdf"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          track('pdf_download', {
+            label: link.textContent.trim(),
+            source_page: 'sponsor_and_partnership_media_kit'
+          });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
