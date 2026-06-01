@@ -58,6 +58,62 @@ Tre Loren</image:caption>
     </image:image>
   </url>
   <url>
+    <loc>https://alexschubach.com/sponsor-and-partnership-media-kit</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+
+    <image:image>
+      <image:loc>https://alexschubach.com/images/hero.jpg</image:loc>
+      <image:title>Alex Schubach hero portrait</image:title>
+      <image:caption>Alex Schubach, Tokyo-based endurance athlete and performance athlete.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alexschubach.com/images/identity.jpg</image:loc>
+      <image:title>Alex Schubach athlete profile image</image:title>
+      <image:caption>Alex Schubach athlete identity and performance profile image.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alexschubach.com/images/about.jpg</image:loc>
+      <image:title>Alex Schubach training image</image:title>
+      <image:caption>Alex Schubach training and endurance athlete profile image.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alexschubach.com/images/gallery/1_Fuji%20Trail.jpg</image:loc>
+      <image:title>Alex Schubach fuji trail</image:title>
+      <image:caption>Fuji Trail</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alexschubach.com/images/gallery/2_Fuji%20Finish.jpg</image:loc>
+      <image:title>Alex Schubach fuji finish</image:title>
+      <image:caption>Fuji Finish</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alexschubach.com/images/gallery/3_Rio%20Kimura%20-%20Filmmaker_Head%20to%20Head.jpg</image:loc>
+      <image:title>Alex Schubach head to head, photographed by Rio Kimura</image:title>
+      <image:caption>Head To Head
+Rio Kimura</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alexschubach.com/images/gallery/4_Rio%20Kimura%20-%20Filmmaker_Track%20Work.JPG</image:loc>
+      <image:title>Alex Schubach track work, photographed by Rio Kimura</image:title>
+      <image:caption>Track Work
+Rio Kimura</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alexschubach.com/images/gallery/5_Tre%20Loren%20-%20Filmmaker_Preparation.jpg</image:loc>
+      <image:title>Alex Schubach preparation, photographed by Tre Loren</image:title>
+      <image:caption>Preparation
+Tre Loren</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://alexschubach.com/images/gallery/6_Tre%20Loren%20-%20Filmmaker_Speed%20Work.jpg</image:loc>
+      <image:title>Alex Schubach speed work, photographed by Tre Loren</image:title>
+      <image:caption>Speed Work
+Tre Loren</image:caption>
+    </image:image>
+  </url>
+  <url>
     <loc>https://alexschubach.com/llms.txt</loc>
     <lastmod>2026-06-01</lastmod>
     <changefreq>weekly</changefreq>

@@ -1,7 +1,8 @@
 """
 build.py
 --------
-Builds index.html, sitemap.xml, robots.txt, llms.txt, and Markdown mirrors from:
+Builds index.html, sponsor-and-partnership-media-kit.html, sitemap.xml, robots.txt,
+llms.txt, and Markdown mirrors from:
   - build/template.html        (Jinja2 HTML template)
   - content.yaml               (editable site content)
   - Dropbox XLSX (live)        (race results + calendar)
@@ -42,6 +43,8 @@ MARKDOWN_MIRROR_FILES = [
     "values.md",
     "mission.md",
 ]
+MEDIA_KIT_PAGE_SLUG = "sponsor-and-partnership-media-kit"
+MEDIA_KIT_PAGE_FILE = f"{MEDIA_KIT_PAGE_SLUG}.html"
 
 # ─── Dropbox Excel config ─────────────────────────────────────────────────────
 DROPBOX_XLSX_URL = (
@@ -780,7 +783,6 @@ def build_seo_tags(
 
     same_as = [s for s in [instagram, strava, blog] if s and s != "#"]
     image_objects = _key_image_objects(base_url, gallery_meta)
-    media_kit_url = (pdf or {}).get("media_kit_url")
     graph = [
         {
             "@type": "WebSite",
@@ -831,7 +833,6 @@ def build_seo_tags(
             "sameAs": same_as,
             "mainEntityOfPage": {"@id": f"{base_url}/#website"},
             "affiliation": {"@id": f"{base_url}/#brand-partnerships"},
-            "subjectOf": {"@id": f"{base_url}/#media-kit"},
         },
         {
             "@type": ["Organization", "SportsOrganization"],
@@ -849,23 +850,7 @@ def build_seo_tags(
             },
             "sameAs": same_as,
         },
-        {
-            "@type": "CreativeWork",
-            "@id": f"{base_url}/#media-kit",
-            "name": "Alex Schubach Athlete Media Kit",
-            "url": f"{base_url}/#media-kit",
-            "about": {"@id": f"{base_url}/#alex-schubach"},
-            "description": _plain_text((media_kit or {}).get("summary", "Alex Schubach media kit and brand partnership overview.")),
-            "inLanguage": "en",
-        },
     ]
-    if media_kit_url:
-        graph[-1]["associatedMedia"] = {
-            "@type": "MediaObject",
-            "name": "Alex Schubach Media Kit PDF",
-            "contentUrl": _url(base_url, media_kit_url),
-            "encodingFormat": "application/pdf",
-        }
     graph.extend(image_objects)
     jsonld_data = {
         "@context": "https://schema.org",
@@ -927,7 +912,8 @@ def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
         f"- [Profile]({_url(base_url, 'profile.md')}): Athletic background, Tokyo location, disciplines, athlete modelling context, and brand partner positioning.",
         f"- [Results]({_url(base_url, 'results.md')}): Performance indices, personal bests, and race results.",
         f"- [Calendar]({_url(base_url, 'calendar.md')}): Upcoming races and target events.",
-        f"- [Media Kit]({_url(base_url, 'media-kit.md')}): Crawlable HTML media kit summary, campaign fit, key images, proof points, and same-domain PDF download.",
+        f"- [Sponsor and Partnership Media Kit]({_url(base_url, MEDIA_KIT_PAGE_SLUG)}): Unlinked crawler-facing HTML media kit summary, campaign fit, key images, proof points, and same-domain PDF download.",
+        f"- [Media Kit Markdown]({_url(base_url, 'media-kit.md')}): Text mirror of the sponsor and partnership media kit.",
         f"- [Partnerships]({_url(base_url, 'partnerships.md')}): Sponsorship enquiries, athlete modelling briefs, media, collaborations, and management contact route.",
         f"- [Gallery]({_url(base_url, 'gallery.md')}): Public image references and visual profile.",
         f"- [Values]({_url(base_url, 'values.md')}): Alex's stated values.",
@@ -978,6 +964,251 @@ def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
     ])
 
     return "\n".join(lines).strip() + "\n"
+
+
+def _html_list(items: list[str]) -> str:
+    return "\n".join(f"        <li>{html.escape(_plain_text(item))}</li>" for item in items)
+
+
+def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_meta: list[dict]) -> str:
+    site = content.get("site", {})
+    social = content.get("social", {})
+    pdf = content.get("pdf", {})
+    positioning = content.get("positioning", {})
+    media_kit = content.get("media_kit", {})
+    contact = content.get("contact", {})
+
+    page_url = _url(base_url, MEDIA_KIT_PAGE_SLUG)
+    title = "Sponsor and Partnership Media Kit | Alex Schubach"
+    description = _plain_text(media_kit.get("summary", site.get("description", "")))
+    instagram = social.get("instagram") or ""
+    strava = social.get("strava") or ""
+    media_pdf_url = _asset_url(base_url, pdf.get("media_kit_url", ""))
+    hero_image = _asset_url(base_url, "images/identity.jpg")
+
+    key_images = [
+        {
+            "url": _asset_url(base_url, "images/identity.jpg"),
+            "alt": "Alex Schubach athlete profile portrait for sponsorship and partnership review",
+            "caption": "Profile portrait",
+        },
+        {
+            "url": _asset_url(base_url, "images/about.jpg"),
+            "alt": "Alex Schubach training image for endurance athlete campaign review",
+            "caption": "Training profile",
+        },
+    ]
+    for item in (gallery_meta or [])[:6]:
+        rel_path = f"images/gallery/{item['path'].name}"
+        key_images.append({
+            "url": _asset_url(base_url, rel_path),
+            "alt": item["alt"],
+            "caption": _plain_text(item["caption"]),
+        })
+
+    jsonld_data = {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "WebPage",
+                "@id": f"{page_url}#webpage",
+                "url": page_url,
+                "name": title,
+                "description": description,
+                "inLanguage": "en",
+                "about": {"@id": f"{base_url}/#alex-schubach"},
+                "primaryImageOfPage": {"@id": f"{hero_image}#image"},
+            },
+            {
+                "@type": ["Person", "Athlete"],
+                "@id": f"{base_url}/#alex-schubach",
+                "name": "Alex Schubach",
+                "alternateName": ["Alexander Schubach", "Alex the Athlete", "alextheathlete_", "alexschubach"],
+                "url": _url(base_url),
+                "image": hero_image,
+                "jobTitle": "Endurance athlete, performance athlete, athlete model, and brand partner",
+                "homeLocation": {"@type": "Place", "name": "Tokyo, Japan"},
+                "workLocation": {"@type": "Place", "name": "Japan and Asia-Pacific"},
+                "knowsAbout": [
+                    "trail running",
+                    "road running",
+                    "Hyrox",
+                    "Spartan racing",
+                    "athlete modelling",
+                    "brand partnerships",
+                    "sports sponsorship",
+                    "Japan and Asia-Pacific racing",
+                ],
+                "sameAs": [url for url in [instagram, strava, social.get("blog", "")] if url],
+            },
+            {
+                "@type": "CreativeWork",
+                "@id": f"{page_url}#media-kit",
+                "name": "Alex Schubach Sponsor and Partnership Media Kit",
+                "url": page_url,
+                "about": {"@id": f"{base_url}/#alex-schubach"},
+                "description": description,
+                "inLanguage": "en",
+                "associatedMedia": {
+                    "@type": "MediaObject",
+                    "name": "Alex Schubach Media Kit PDF",
+                    "contentUrl": media_pdf_url,
+                    "encodingFormat": "application/pdf",
+                },
+            },
+            *[
+                {
+                    "@type": "ImageObject",
+                    "@id": f"{image['url']}#image",
+                    "url": image["url"],
+                    "name": image["alt"],
+                    "caption": image["caption"],
+                }
+                for image in key_images
+            ],
+        ],
+    }
+
+    proof_points = _html_list(media_kit.get("proof_points", []))
+    campaign_categories = _html_list(media_kit.get("campaign_categories", []))
+    deliverables = _html_list(media_kit.get("deliverables", []))
+    highlights = _html_list(positioning.get("highlights", []))
+    image_cards = "\n".join(
+        f'''      <figure>
+        <img src="{html.escape(image["url"])}" alt="{html.escape(image["alt"])}" loading="lazy">
+        <figcaption>{html.escape(image["caption"])}</figcaption>
+      </figure>'''
+        for image in key_images[:6]
+    )
+    categories = "\n".join(
+        f'''      <article>
+        <h3>{html.escape(_plain_text(category.get("label", "Enquiry")))}</h3>
+        <p>{html.escape(_plain_text(category.get("desc", "")))}</p>
+      </article>'''
+        for category in contact.get("categories", [])
+    )
+
+    return f'''<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{html.escape(title)}</title>
+  <meta name="description" content="{html.escape(description)}">
+  <link rel="canonical" href="{html.escape(page_url)}">
+  <meta property="og:title" content="{html.escape(title)}">
+  <meta property="og:description" content="{html.escape(description)}">
+  <meta property="og:url" content="{html.escape(page_url)}">
+  <meta property="og:type" content="profile">
+  <meta property="og:image" content="{html.escape(hero_image)}">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+{json.dumps(jsonld_data, indent=2, ensure_ascii=False)}
+  </script>
+  <style>
+    :root {{ color-scheme: light; --ink:#151515; --muted:#5f5f5f; --line:#ded9d2; --paper:#f6f3ee; --accent:#e8490f; }}
+    * {{ box-sizing: border-box; }}
+    body {{ margin: 0; font-family: Inter, Arial, sans-serif; background: var(--paper); color: var(--ink); line-height: 1.65; }}
+    main {{ max-width: 1120px; margin: 0 auto; padding: 56px 24px 72px; }}
+    header {{ display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr); gap: 40px; align-items: center; margin-bottom: 56px; }}
+    h1, h2, h3 {{ line-height: 1.05; margin: 0; }}
+    h1 {{ font-size: clamp(2.8rem, 8vw, 6.2rem); letter-spacing: .02em; text-transform: uppercase; }}
+    h2 {{ font-size: clamp(1.7rem, 4vw, 3rem); text-transform: uppercase; margin-bottom: 18px; }}
+    h3 {{ font-size: 1rem; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 10px; }}
+    p {{ margin: 0 0 18px; color: var(--muted); }}
+    .eyebrow {{ color: var(--accent); font-weight: 800; letter-spacing: .18em; text-transform: uppercase; font-size: .74rem; margin-bottom: 14px; }}
+    .hero-image {{ width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border: 1px solid var(--line); }}
+    .actions {{ display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }}
+    .button {{ display: inline-flex; align-items: center; padding: 12px 16px; border: 1px solid var(--ink); color: var(--ink); text-decoration: none; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: .75rem; }}
+    .button.primary {{ background: var(--ink); color: white; }}
+    section {{ border-top: 1px solid var(--line); padding: 40px 0; }}
+    .grid {{ display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }}
+    ul {{ margin: 0; padding-left: 20px; color: var(--muted); }}
+    li {{ margin-bottom: 8px; }}
+    .photo-grid {{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }}
+    figure {{ margin: 0; background: white; border: 1px solid var(--line); }}
+    figure img {{ display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }}
+    figcaption {{ padding: 10px 12px; color: var(--muted); font-size: .82rem; }}
+    article {{ background: rgba(255,255,255,.42); border: 1px solid var(--line); padding: 18px; }}
+    footer {{ border-top: 1px solid var(--line); padding-top: 28px; color: var(--muted); font-size: .9rem; }}
+    @media (max-width: 760px) {{ header, .grid, .photo-grid {{ grid-template-columns: 1fr; }} main {{ padding: 36px 18px 56px; }} }}
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <div class="eyebrow">Sponsor and partnership review</div>
+        <h1>Alex Schubach</h1>
+        <p>{html.escape(description)}</p>
+        <p>{html.escape(_plain_text(positioning.get("brand_fit", "")))}</p>
+        <div class="actions">
+          <a class="button primary" href="{html.escape(media_pdf_url)}">Download PDF Media Kit</a>
+          <a class="button" href="{html.escape(instagram)}">Instagram</a>
+        </div>
+      </div>
+      <img class="hero-image" src="{html.escape(hero_image)}" alt="Alex Schubach athlete profile portrait">
+    </header>
+
+    <section>
+      <h2>Proof Points</h2>
+      <div class="grid">
+        <ul>
+{proof_points}
+        </ul>
+        <ul>
+{highlights}
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Campaign Fit</h2>
+      <div class="grid">
+        <ul>
+{campaign_categories}
+        </ul>
+        <ul>
+{deliverables}
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Key Photos</h2>
+      <div class="photo-grid">
+{image_cards}
+      </div>
+    </section>
+
+    <section>
+      <h2>Performance Facts</h2>
+      <ul>
+        <li>Based in Tokyo, Japan.</li>
+        <li>Disciplines: trail running, road running, Hyrox, Spartan, obstacle racing, and hybrid endurance.</li>
+        <li>UTMB Index: {html.escape(indices.get("utmb") or "not listed")}.</li>
+        <li>ITRA Index: {html.escape(indices.get("itra") or "not listed")}{html.escape(" (" + indices.get("itra_level", "") + ")" if indices.get("itra_level") else "")}.</li>
+        <li>Hyrox PB: {html.escape(indices.get("hyrox_pb") or "not listed")}.</li>
+        <li>Marathon PB: {html.escape(indices.get("road_marathon") or "not listed")}.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Enquiry Context</h2>
+      <div class="grid">
+{categories}
+      </div>
+    </section>
+
+    <footer>
+      <p>Partnership contact: manager@alexschubach.com</p>
+      <p>Instagram: <a href="{html.escape(instagram)}">{html.escape(instagram)}</a></p>
+      <p>Strava: <a href="{html.escape(strava)}">{html.escape(strava)}</a></p>
+    </footer>
+  </main>
+</body>
+</html>
+'''
 
 
 def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_data: dict, gallery_meta: list[dict]) -> dict:
@@ -1131,7 +1362,7 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         "# Alex Schubach Media Kit and Downloads",
         "",
         f"Last updated: {today}",
-        f"Canonical URL: {_url(base_url, '#media-kit')}",
+        f"Canonical URL: {_url(base_url, MEDIA_KIT_PAGE_SLUG)}",
         "",
         _plain_text(media_kit.get("summary", "Use these assets to review Alex Schubach's Tokyo-based endurance athlete profile for sponsorship, brand partnership, athlete modelling, performance, outdoor, nutrition, travel, and lifestyle opportunities.")),
         "",
@@ -1252,7 +1483,8 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         f"- [Results]({_url(base_url, 'results.md')})",
         f"- [Calendar]({_url(base_url, 'calendar.md')})",
         f"- [Gallery]({_url(base_url, 'gallery.md')})",
-        f"- [Media Kit]({_url(base_url, 'media-kit.md')})",
+        f"- [Sponsor and Partnership Media Kit]({_url(base_url, MEDIA_KIT_PAGE_SLUG)})",
+        f"- [Media Kit Markdown]({_url(base_url, 'media-kit.md')})",
         f"- [Partnerships]({_url(base_url, 'partnerships.md')})",
     ]
 
@@ -1289,7 +1521,7 @@ def build_sitemap(base_url: str, gallery_meta: list[dict] | None = None) -> str:
     today = datetime.date.today().isoformat()
     # Ensure trailing slash removed for consistency
     url = base_url.rstrip("/")
-    paths = [""] + ["llms.txt"] + MARKDOWN_MIRROR_FILES
+    paths = [""] + [MEDIA_KIT_PAGE_SLUG, "llms.txt"] + MARKDOWN_MIRROR_FILES
     key_images = _key_image_objects(url, gallery_meta)
     gallery_images = []
     for item in (gallery_meta or []):
@@ -1298,6 +1530,7 @@ def build_sitemap(base_url: str, gallery_meta: list[dict] | None = None) -> str:
 
     images_by_path = {
         "": key_images,
+        MEDIA_KIT_PAGE_SLUG: key_images,
         "index.md": key_images[:3],
         "media-kit.md": key_images,
         "partnerships.md": key_images[:4],
@@ -1437,6 +1670,11 @@ def main():
     out_html = ROOT / "index.html"
     out_html.write_text(rendered, encoding="utf-8")
     print(f"  ✓ index.html written ({len(rendered) // 1024} KB)")
+
+    out_media_kit = ROOT / MEDIA_KIT_PAGE_FILE
+    media_kit_page = build_media_kit_page(base_url, content, indices, gallery_meta)
+    out_media_kit.write_text(media_kit_page, encoding="utf-8")
+    print(f"  ✓ {MEDIA_KIT_PAGE_FILE} written")
 
     out_sitemap = ROOT / "sitemap.xml"
     out_sitemap.write_text(build_sitemap(base_url, gallery_meta), encoding="utf-8")

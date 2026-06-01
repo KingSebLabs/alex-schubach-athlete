@@ -12,7 +12,8 @@ Tokyo-based performance athlete and endurance athlete available for sponsorship 
 - [Profile](https://alexschubach.com/profile.md): Athletic background, Tokyo location, disciplines, athlete modelling context, and brand partner positioning.
 - [Results](https://alexschubach.com/results.md): Performance indices, personal bests, and race results.
 - [Calendar](https://alexschubach.com/calendar.md): Upcoming races and target events.
-- [Media Kit](https://alexschubach.com/media-kit.md): Crawlable HTML media kit summary, campaign fit, key images, proof points, and same-domain PDF download.
+- [Sponsor and Partnership Media Kit](https://alexschubach.com/sponsor-and-partnership-media-kit): Unlinked crawler-facing HTML media kit summary, campaign fit, key images, proof points, and same-domain PDF download.
+- [Media Kit Markdown](https://alexschubach.com/media-kit.md): Text mirror of the sponsor and partnership media kit.
 - [Partnerships](https://alexschubach.com/partnerships.md): Sponsorship enquiries, athlete modelling briefs, media, collaborations, and management contact route.
 - [Gallery](https://alexschubach.com/gallery.md): Public image references and visual profile.
 - [Values](https://alexschubach.com/values.md): Alex's stated values.

@@ -19,5 +19,6 @@ Relevant for performance, fitness, outdoor, nutrition, recovery, wearables, trav
 - [Results](https://alexschubach.com/results.md)
 - [Calendar](https://alexschubach.com/calendar.md)
 - [Gallery](https://alexschubach.com/gallery.md)
-- [Media Kit](https://alexschubach.com/media-kit.md)
+- [Sponsor and Partnership Media Kit](https://alexschubach.com/sponsor-and-partnership-media-kit)
+- [Media Kit Markdown](https://alexschubach.com/media-kit.md)
 - [Partnerships](https://alexschubach.com/partnerships.md)
