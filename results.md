@@ -1,6 +1,6 @@
 # Alex Schubach Results
 
-Last updated: 2026-06-02
+Last updated: 2026-06-03
 Canonical URL: https://alexschubach.com/#results
 
 ## Performance Athlete Summary
@@ -16,7 +16,7 @@ Tokyo-based performance athlete and endurance athlete available for sponsorship 
 ## Performance Indices and Personal Bests
 
 - UTMB Index: 644
-- ITRA Index: 648 (Advanced 3)
+- ITRA Index: 609 (Advanced 3)
 - Hyrox PB: 1:02:01
 - Marathon PB: 2:56:19
 - Half marathon PB: 1:21:07
@@ -30,6 +30,7 @@ Tokyo-based performance athlete and endurance athlete available for sponsorship 
 | 2026 | 9 May 2026 | Hyrox Hong Kong | Hyrox Men's Single - Open | — | 1:02:01 | Overall: 10th / 1380 Age Group: 4th / 359 |  | Hong Kong |
 | 2026 | 8 Mar 2026 | UTMB Kenting, Xtrail 25 | Trail 27km - 600m | — | 2:19:07 | Overall: 10th / 1079 Age Group 6th / 213 |  | Kenting, Taiwan |
 | 2026 | 4 May 2026 | Asics Tokyo Speed Race | Ekiden 21.2km | — | 1:04:08 | Team: 1st / 234 |  | Japan |
+| 2026 | 30 - 31 May 2026 | 12hr Solo Last Man Standing | 12hr Last Man Standing | — | 12hrs / 80.4km | Completed |  | Japan |
 | 2026 | 29 Mar 2026 | 18th Hatsune 30K Cup | Trail 30km - 2,000m | 30 km | 4:47:07 | Overall 6th wave: 2nd Age: 46th / 360 |  | Akiruno City, Japan |
 | 2026 | 18 Jan 2026 | Shibuya Ekiden | Ekiden 11.6km | — | 0:38:57 | Team: 7th / 80 |  | Japan |
 | 2026 | 15 Feb 2026 | Kyoto Marathon | Road 42.2km | 42.2 km | 2:56:19 | Overall: 511th / 12,325 Age: 73rd / 1,182 |  | Japan |

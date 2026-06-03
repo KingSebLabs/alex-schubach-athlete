@@ -1,6 +1,6 @@
 # Alex Schubach Race Calendar
 
-Last updated: 2026-06-02
+Last updated: 2026-06-03
 Canonical URL: https://alexschubach.com/#calendar
 
 Based in Tokyo, I compete in endurance races across Asia, with a focus on trail running in Japan. I want to shine a light on the depth and uniqueness of the running culture here, and inspire you to get after it in your own way. Anything you put your mind to, you can achieve.
@@ -15,7 +15,6 @@ Based in Tokyo, I compete in endurance races across Asia, with a focus on trail 
 | 2026 | 24 Jul 2026 | The 79th Fuji Mountain Race | Trail 21km - 3,000m | — | Yamanashi, Japan | Yes - Alex |
 | 2026 | 24 Oct 2026 | Spartan Porac | Spartan Beast - 21km | — | Philippines | Yes - Alex |
 | 2026 | 26 - 27 June 2026 | Deep Japan Ultra - Uonuma 80km | Trail / Ultra 80km - 4,000m | 80 km | Niigata, Japan | Yes - Alex |
-| 2026 | 30 - 31 May 2026 | 12hr Solo Last Man Standing | 12hr Last Man Standing | — | Japan | Yes - Alex |
 | 2026 | 30 Aug 2026 | City to Surf | Road 12km | — | Perth, Australia | Yes - Alex |
 | 2026 | 31 October - 1 Novemebr 2026 | Hyrox Shanghai | Hyrox Men's Single - Open | — | China |  |
 | 2026 | 4 Jul 2026 | Rough Water Swim - 1.6km | Open Water Swim | — | Kamakura, Japan | Yes - Alex |
