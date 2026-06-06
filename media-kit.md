@@ -1,6 +1,6 @@
 # Alex Schubach Media Kit and Downloads
 
-Last updated: 2026-06-05
+Last updated: 2026-06-06
 Canonical URL: https://alexschubach.com/sponsor-and-partnership-media-kit
 
 A crawlable overview for sponsors, agencies, media teams, and brand partners reviewing Alex Schubach for athlete campaigns, athlete modelling, product storytelling, ambassador work, race activations, and endurance-performance content across Japan and Asia-Pacific.
