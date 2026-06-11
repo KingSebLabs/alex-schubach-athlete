@@ -955,6 +955,11 @@ def build_llms_txt(base_url: str, content: dict, indices: dict) -> str:
         for category in contact.get("categories", []):
             lines.append(f"- {category.get('label', 'Enquiry')}: {_plain_text(category.get('desc', ''))}")
 
+    testimonials = content.get("testimonials", [])
+    if testimonials:
+        lines.extend(["", "## Partner Testimonials", ""])
+        lines.extend(_testimonial_md_lines(testimonials))
+
     lines.extend([
         "",
         "## Optional",
@@ -970,6 +975,27 @@ def _html_list(items: list[str]) -> str:
     return "\n".join(f"        <li>{html.escape(_plain_text(item))}</li>" for item in items)
 
 
+def _testimonial_attribution(testimonial: dict) -> str:
+    """Build 'Name, Title, Company' from a testimonial, skipping blanks."""
+    return ", ".join(part for part in [
+        _plain_text(testimonial.get("name", "")),
+        _plain_text(testimonial.get("title", "")),
+        _plain_text(testimonial.get("company", "")),
+    ] if part)
+
+
+def _testimonial_md_lines(testimonials: list) -> list:
+    """Markdown bullet lines for testimonials: - "quote" — Name, Title, Company."""
+    lines = []
+    for testimonial in testimonials:
+        quote = _plain_text(testimonial.get("quote", ""))
+        if not quote:
+            continue
+        attribution = _testimonial_attribution(testimonial)
+        lines.append(f'- "{quote}" — {attribution}' if attribution else f'- "{quote}"')
+    return lines
+
+
 def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_meta: list[dict]) -> str:
     site = content.get("site", {})
     social = content.get("social", {})
@@ -977,6 +1003,7 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
     positioning = content.get("positioning", {})
     media_kit = content.get("media_kit", {})
     contact = content.get("contact", {})
+    testimonials = content.get("testimonials", [])
 
     page_url = _url(base_url, MEDIA_KIT_PAGE_SLUG)
     title = "Sponsor and Partnership Media Kit | Alex Schubach"
@@ -1067,6 +1094,20 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
                 }
                 for image in key_images
             ],
+            *[
+                {
+                    "@type": "Review",
+                    "@id": f"{page_url}#review-{i + 1}",
+                    "author": {
+                        "@type": "Organization",
+                        "name": _plain_text(t.get("company", "")) or _plain_text(t.get("name", "")),
+                    },
+                    "reviewBody": _plain_text(t.get("quote", "")),
+                    "itemReviewed": {"@id": f"{base_url}/#alex-schubach"},
+                }
+                for i, t in enumerate(testimonials)
+                if _plain_text(t.get("quote", ""))
+            ],
         ],
     }
 
@@ -1088,6 +1129,23 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
       </article>'''
         for category in contact.get("categories", [])
     )
+    testimonial_cards = "\n".join(
+        f'''      <article>
+        <h3>{html.escape(_plain_text(t.get("company", "")))}</h3>
+        <p>&ldquo;{html.escape(_plain_text(t.get("quote", "")))}&rdquo;</p>
+        <p><strong>{html.escape(_plain_text(t.get("name", "")))}</strong>{html.escape((", " + _plain_text(t.get("title", ""))) if t.get("title") else "")}</p>
+      </article>'''
+        for t in testimonials
+        if _plain_text(t.get("quote", ""))
+    )
+    testimonials_section = f'''
+    <section>
+      <h2>Partner Testimonials</h2>
+      <div class="grid">
+{testimonial_cards}
+      </div>
+    </section>
+''' if testimonial_cards else ""
 
     return f'''<!doctype html>
 <html lang="en">
@@ -1163,7 +1221,7 @@ def build_media_kit_page(base_url: str, content: dict, indices: dict, gallery_me
         </ul>
       </div>
     </section>
-
+{testimonials_section}
     <section>
       <h2>Campaign Fit</h2>
       <div class="grid">
@@ -1275,6 +1333,7 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
     social = content.get("social", {})
     positioning = content.get("positioning", {})
     media_kit = content.get("media_kit", {})
+    testimonials = content.get("testimonials", [])
     today = datetime.date.today().isoformat()
     itra_label = indices.get("itra") or "not listed"
     if indices.get("itra_level"):
@@ -1436,6 +1495,10 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
     for item in media_kit.get("deliverables", []):
         media_lines.append(f"- {_plain_text(item)}")
 
+    if testimonials:
+        media_lines.extend(["", "## Partner Testimonials", ""])
+        media_lines.extend(_testimonial_md_lines(testimonials))
+
     media_lines.extend([
         "",
         "## Key Image References",
@@ -1493,6 +1556,10 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
             _plain_text(category.get("desc", "")),
             "",
         ])
+    if testimonials:
+        partnerships_lines.extend(["## Partner Testimonials", ""])
+        partnerships_lines.extend(_testimonial_md_lines(testimonials))
+        partnerships_lines.append("")
     partnerships_lines.extend([
         "## Contact",
         "",
