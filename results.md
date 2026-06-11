@@ -16,7 +16,7 @@ Tokyo-based performance athlete and endurance athlete available for sponsorship 
 ## Performance Indices and Personal Bests
 
 - UTMB Index: 644
-- ITRA Index: 648 (Advanced 3)
+- ITRA Index: 609 (Advanced 3)
 - Hyrox PB: 1:02:01
 - Marathon PB: 2:56:19
 - Half marathon PB: 1:21:07

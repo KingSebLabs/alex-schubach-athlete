@@ -1294,13 +1294,13 @@ footer > :last-child { justify-self: end; }
   <a href="#hero" class="nav-logo">ALEX<svg class="logo-spark" width="9" height="26"><use href="#bolt"/></svg>SCHUBACH</a>
   <div class="nav-links" id="navLinks">
     <div class="nav-group">
-      <a href="#about" class="nav-parent">About<span class="nav-caret">▾</span></a>
-      <div class="nav-menu"><a href="#about">Identity</a><a href="#values">Values</a><a href="#mission">Mission</a></div>
+      <a href="#about" class="nav-parent" aria-expanded="false" aria-controls="nav-menu-about">About<span class="nav-caret">▾</span></a>
+      <div class="nav-menu" id="nav-menu-about"><a href="#about">Identity</a><a href="#values">Values</a><a href="#mission">Mission</a></div>
     </div>
     <a href="#results">Results</a>
     <div class="nav-group">
-      <a href="#testimonials" class="nav-parent">Partnerships<span class="nav-caret">▾</span></a>
-      <div class="nav-menu"><a href="#testimonials">Testimonials</a><a href="#connect">Connect</a></div>
+      <a href="#testimonials" class="nav-parent" aria-expanded="false" aria-controls="nav-menu-partnerships">Partnerships<span class="nav-caret">▾</span></a>
+      <div class="nav-menu" id="nav-menu-partnerships"><a href="#testimonials">Testimonials</a><a href="#connect">Connect</a></div>
     </div>
     <a href="#gallery">Gallery</a>
     <a href="#calendar">Calendar</a>
@@ -1470,7 +1470,7 @@ footer > :last-child { justify-self: end; }
           <div class="index-badge-label">Index</div>
         </div>
         <div class="index-badge-right">
-          <div class="index-badge-value">648</div>
+          <div class="index-badge-value">609</div>
           <div class="index-badge-id">Advanced 3</div>
         </div>
       </div>
@@ -2978,15 +2978,21 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
   grid.parentNode.insertBefore(btn, grid.nextSibling);
   btn.addEventListener('click',function(){cards.forEach(function(c){c.style.display='';});btn.remove();});
 })();
-(function(){ /* close desktop dropdown after a nav item is clicked */
+(function(){ /* desktop dropdown: close after nav click + keep aria-expanded in sync */
   document.querySelectorAll('.nav-group').forEach(function(group){
+    var parent=group.querySelector('.nav-parent');
+    function exp(v){ if(parent) parent.setAttribute('aria-expanded', v?'true':'false'); }
     group.querySelectorAll('a').forEach(function(link){
       link.addEventListener('click',function(){
         group.classList.add('nav-closed');
         if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+        exp(false);
       });
     });
-    group.addEventListener('mouseleave',function(){group.classList.remove('nav-closed');});
+    group.addEventListener('mouseenter',function(){ if(window.innerWidth>768) exp(true); });
+    group.addEventListener('mouseleave',function(){ group.classList.remove('nav-closed'); if(window.innerWidth>768) exp(false); });
+    group.addEventListener('focusin',function(){ if(window.innerWidth>768) exp(true); });
+    group.addEventListener('focusout',function(){ if(window.innerWidth>768 && !group.contains(document.activeElement)) exp(false); });
   });
 })();
 (function(){ /* mobile: tap a parent header to expand/collapse its submenu (accordion) */
@@ -2998,7 +3004,8 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
     if(!parent||!navLinks.contains(parent)) return;
     e.preventDefault();                          // capture phase: runs before smooth-scroll/close
     e.stopPropagation();
-    parent.parentNode.classList.toggle('open');
+    var isOpen=parent.parentNode.classList.toggle('open');
+    parent.setAttribute('aria-expanded', isOpen?'true':'false');
   }, true);
 })();
 </script>
