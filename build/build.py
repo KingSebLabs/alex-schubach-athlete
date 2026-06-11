@@ -457,7 +457,8 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
 
         race_name = event.split("\n")[0].strip()
         race_date = date_str.split("\n")[0].strip() if date_str else ""
-        distance = col_distance or infer_distance(race_name)
+        distance_from_type = infer_distance(race_type)
+        distance = col_distance or (distance_from_type if distance_from_type != "—" else infer_distance(race_name))
 
         entry = {
             "name": race_name,
@@ -505,8 +506,14 @@ def infer_race_type(name: str) -> str:
 
 
 def infer_distance(name: str) -> str:
-    """Extract distance label from race name."""
+    """Extract distance label from race name or type text."""
     n = name.lower()
+    distance_match = re.search(r'(?<!\d)(\d+(?:\.\d+)?)\s*k(?:m)?\b', n)
+    if distance_match:
+        value = distance_match.group(1)
+        if "." in value:
+            value = value.rstrip("0").rstrip(".")
+        return f"{value} km"
     if "marathon" in n and "half" not in n:
         return "42.2 km"
     if "half marathon" in n or "half" in n:
