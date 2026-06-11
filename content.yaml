@@ -101,7 +101,7 @@ indices:
 
 # ─── CALENDAR ────────────────────────────────────────────────────────────────
 calendar:
-  intro: "Based in Tokyo, I compete in endurance races across Asia, with a focus on trail running in Japan. I want to shine a light on the depth and uniqueness of the running culture here, and inspire you to get after it in your own way. <strong>Anything you put your mind to, you can achieve.</strong>"
+  intro: "I compete in endurance races across Asia, with a focus on trail running in Japan. I want to shine a light on the depth and uniqueness of the running culture here, and inspire you to get after it in your own way. <strong>Anything you put your mind to, you can achieve.</strong>"
 
 # ─── CONTACT ─────────────────────────────────────────────────────────────────
 contact:
@@ -125,8 +125,39 @@ social:
   instagram: "https://www.instagram.com/alextheathlete_/"
   strava: "https://strava.app.link/5cOYQkeCQ1b"
   blog: "https://www.welcometojpn.com/blog/categories/race-blogs"
+  email: "manager@alexschubach.com"
   youtube: "#"
   linkedin: "#"
+
+# ─── TESTIMONIALS ─────────────────────────────────────────────────────────────
+# Shown 2-at-a-time in the carousel between Results and Connect.
+# badge: round | wordmark | wordmark-dark   ·   lang: ja  (optional, for JP quotes)
+testimonials:
+  - logo: "groundcontrol.png"
+    badge: "wordmark"
+    name: "MICHAEL"
+    title: "Executive Producer"
+    company: "Ground Control"
+    quote: "Coordinating the day with Alex was worldclass. Even with logistics changing constantly and a 4:15 a.m. call time confirmed the night before, nothing ever felt difficult. He was flexible, responsive, completely reliable, and professional from start to finish."
+  - logo: "ukekiden.png"
+    badge: "round"
+    name: "MICK"
+    title: "Executive Director"
+    company: "UK Ekiden Project"
+    quote: "On set, Alex was focused, easy to direct, and took feedback immediately. He remained professional through demanding takes and delivered real gold on camera. He and Sebastian brought fun, positive energy that kept everyone laughing and committed to the result."
+  - logo: "zamst.webp"
+    badge: "wordmark-dark"
+    name: "山田"
+    title: "Content Production Manager"
+    company: "Zamst (Sigmax Japan)"
+    lang: "ja"
+    quote: "Alexさんのポジティブ波動のおかげで我々も撮影クルーも過去1番といってもよいほど、楽しくかつプロフェッショナルな撮影ができました。本当に感謝しています。"
+  - logo: "fujicommunication.png"
+    badge: "round"
+    name: "高松"
+    title: "Producer"
+    company: "Fuji Communications"
+    quote: "Alex contributed far more than just his role as a model. His ideas and suggestions from an athlete's perspective provided valuable insight for the entire production team and helped us create a more authentic and compelling representation of the sport and the brand. I was also impressed by his professionalism and thoughtful consideration for everyone on set."
 
 # ─── PDF DOWNLOAD ─────────────────────────────────────────────────────────────
 pdf:

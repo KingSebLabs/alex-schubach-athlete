@@ -10,13 +10,14 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://formspree.io https://plausible.io https://www.google-analytics.com https://analytics.google.com; form-action https://formspree.io;">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 {{ seo_tags }}
 {{ analytics_tags }}
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
+  color-scheme: dark;
   --bg-dark: #0a0a0a;
   --bg-light: #f5f3f0;
   --text-light: #f5f3f0;
@@ -771,9 +772,11 @@ section { padding: 6rem 2.5rem; }
 /* ===== FOOTER ===== */
 footer {
   padding: 2rem 2.5rem; border-top: 1px solid rgba(255,255,255,0.06);
-  display: flex; justify-content: space-between; align-items: center;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem;
   font-size: 0.7rem; color: var(--grey-mid); letter-spacing: 0.05em;
 }
+footer > :nth-child(2) { justify-self: center; text-align: center; }
+footer > :last-child { justify-self: end; }
 
 /* ===== ANIMATIONS ===== */
 @keyframes fadeUp {
@@ -913,7 +916,8 @@ footer {
   .contact-form button[type="submit"] { padding: 0.85rem 1.5rem; touch-action: manipulation; }
 
   /* Footer */
-  footer { flex-direction: column; gap: 1rem; text-align: center; }
+  footer { grid-template-columns: 1fr; justify-items: center; gap: 1rem; text-align: center; }
+  footer > :last-child { justify-self: center; }
 }
 
 /* Sub-480px breakpoint for narrowest phones */
@@ -930,6 +934,90 @@ footer {
   @media (max-width: 768px) {
     .hero { min-height: 100vh; }
   }
+}
+
+/* ===== Testimonials + Connect (Design B) ===== */
+[lang="ja"]{font-family:'Noto Sans JP',var(--font-body);font-style:normal;}
+#testimonials .t-head{font-family:var(--font-display);font-size:clamp(2rem,4vw,2.75rem);letter-spacing:.03em;color:var(--text-light);line-height:1;margin:0 0 2.5rem;}
+#testimonials .tc-card{background:var(--grey-dark);border:1px solid var(--grey-border);border-radius:10px;padding:1.75rem;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:1.25rem;transition:background .4s,border-color .3s;}
+#testimonials .tc-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+#testimonials .tc-card:hover::before{transform:scaleX(1);}
+#testimonials .tc-card:hover{background:#222020;}
+#testimonials .tc-head{display:flex;align-items:center;gap:1.1rem;}
+#testimonials .tc-badge{flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#testimonials .tc-badge--round{width:76px;height:76px;border-radius:50%;background:#fff;border:1px solid rgba(255,255,255,.08);}
+#testimonials .tc-badge--round img{width:100%;height:100%;object-fit:contain;padding:14%;}
+#testimonials .tc-badge--wordmark{width:132px;height:76px;background:#fff;border:1px solid rgba(255,255,255,.08);padding:.5rem .7rem;}
+#testimonials .tc-badge--wordmark img{max-width:100%;max-height:100%;object-fit:contain;}
+#testimonials .tc-badge--wordmark-dark{background:#0a0a0a;border-color:var(--grey-border);padding:.55rem .65rem;}
+#testimonials .tc-meta{display:flex;flex-direction:column;gap:.15rem;}
+#testimonials .tc-name{font-family:'Bebas Neue','Noto Sans JP',sans-serif;font-size:1.5rem;letter-spacing:.05em;color:var(--text-light);line-height:1;}
+#testimonials .tc-title{font-style:italic;font-size:.9rem;color:var(--grey-mid);}
+#testimonials .tc-company{font-size:.82rem;font-weight:600;color:var(--text-light);}
+#testimonials .tc-quote{font-size:.95rem;line-height:1.7;color:rgba(245,243,240,.78);margin:0;}
+#testimonials .tc-quote::before{content:'\201C';font-family:var(--font-display);color:var(--accent);font-size:1.5em;line-height:0;margin-right:.1em;vertical-align:-.25em;display:inline-block;}
+#testimonials .tc-quote::after{content:'\201D';font-family:var(--font-display);color:var(--accent);font-size:1.5em;line-height:0;margin-left:.06em;vertical-align:-.25em;display:inline-block;}
+#testimonials .carousel{position:relative;}
+#testimonials .carousel-viewport{overflow:hidden;}
+#testimonials .carousel-track{display:flex;transition:transform .55s cubic-bezier(.4,0,.2,1);}
+#testimonials .carousel-page{flex:0 0 100%;min-width:0;display:flex;gap:1.5rem;}
+#testimonials .carousel-page>*{flex:1 1 0;min-width:0;}
+#testimonials .carousel-arrow{width:46px;height:46px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,.05);border:1px solid var(--grey-border);color:var(--text-light);display:flex;align-items:center;justify-content:center;font-size:1.6rem;line-height:1;cursor:pointer;transition:all .25s;font-family:var(--font-body);padding-bottom:3px;position:absolute;top:42%;transform:translateY(-50%);z-index:3;}
+#testimonials .carousel-arrow:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+#testimonials .carousel-arrow:disabled{opacity:0;pointer-events:none;}
+#testimonials .carousel-prev{left:-10px;}
+#testimonials .carousel-next{right:-10px;}
+#testimonials .carousel-dots{display:flex;gap:.5rem;align-items:center;justify-content:center;margin-top:1.75rem;}
+#testimonials .carousel-dot{width:8px;height:8px;border-radius:50%;background:var(--grey-border);border:none;padding:0;cursor:pointer;transition:all .25s;}
+#testimonials .carousel-dot:hover{background:var(--grey-mid);}
+#testimonials .carousel-dot.active{background:var(--accent);width:24px;border-radius:4px;}
+#testimonials .dB-connect{margin-top:3.5rem;border-top:1px solid var(--grey-border);padding-top:3rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;}
+#testimonials .dB-connect-left h3{font-family:var(--font-display);font-size:clamp(2rem,4vw,2.75rem);letter-spacing:.03em;line-height:1;margin-bottom:1.5rem;}
+#testimonials .connect-body{font-size:.95rem;line-height:1.8;color:var(--grey-mid);margin-bottom:2rem;}
+#testimonials .connect-body strong{color:var(--text-light);font-weight:600;}
+#testimonials .btn-connect{display:inline-flex;align-items:center;gap:.6rem;background:var(--accent);color:#fff;padding:.9rem 2rem;border:1px solid var(--accent);font-family:var(--font-body);font-size:.75rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:all .3s;white-space:nowrap;}
+#testimonials .btn-connect:hover{background:var(--accent-glow);border-color:var(--accent-glow);transform:translateY(-2px);}
+#testimonials .dB-connect-right{display:flex;flex-direction:column;gap:1rem;align-items:stretch;}
+#testimonials .dB-connect-right .social-bar{margin-top:.25rem;}
+#testimonials .contact-cat-item.open .cat-body{max-height:760px;}
+#testimonials .social-bar{display:flex;gap:1.5rem;flex-wrap:wrap;align-items:center;}
+#testimonials .social-link{display:inline-flex;align-items:center;gap:.45rem;}
+#testimonials .social-link svg{width:15px;height:15px;flex-shrink:0;}
+#testimonials .social-link svg.social-strava{width:13px;}
+@media (max-width:900px){ #testimonials .carousel-page{flex-direction:column;}#testimonials .carousel-page>*{flex:0 0 auto;}#testimonials .dB-connect{grid-template-columns:1fr;gap:2.5rem;}}
+@media (max-width:768px){ #testimonials .carousel-arrow{display:none;}#testimonials .carousel-dot{padding:6px;background-clip:content-box;box-sizing:content-box;}}
+@media (max-width:480px){ #testimonials .tc-head{flex-direction:column;align-items:flex-start;gap:.75rem;}#testimonials .social-bar{gap:.5rem;flex-wrap:nowrap;justify-content:space-between;width:100%;}#testimonials .social-link{font-size:.68rem;letter-spacing:.04em;gap:.35rem;white-space:nowrap;}#testimonials .social-link svg{width:13px;height:13px;}#testimonials .social-link svg.social-strava{width:12px;}}
+@media (prefers-reduced-motion:reduce){ #testimonials .carousel-track{transition:none;}}
+.flow-load-more{display:block;width:100%;margin:1.75rem auto 0;padding:1rem 1.5rem;background:transparent;border:1px solid var(--grey-border);color:var(--text-light);font-family:var(--font-body);font-size:.8rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:border-color .25s,color .25s,background .25s;}
+.flow-load-more:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,73,15,.05);}
+.race-item.flow-last{border-bottom:none;background:transparent;}
+/* Nav dropdowns */
+.nav-group{position:relative;display:flex;align-items:center;}
+.nav-group::after{content:'';position:absolute;top:100%;left:0;right:0;height:1rem;}
+.nav-parent{display:inline-flex;align-items:center;gap:.32rem;cursor:pointer;}
+.nav-caret{font-size:.55rem;line-height:1;opacity:.65;transition:transform .25s;}
+.nav-group:hover .nav-caret{transform:rotate(180deg);}
+.nav-menu{position:absolute;top:calc(100% + .7rem);left:-.85rem;min-width:172px;background:#101010;border:1px solid var(--grey-border);padding:.35rem 0;display:flex;flex-direction:column;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,visibility .2s;z-index:200;}
+.nav-group:hover .nav-menu,.nav-group:focus-within .nav-menu{opacity:1;visibility:visible;transform:translateY(0);}
+.nav-menu a{padding:.6rem 1.1rem!important;white-space:nowrap;}
+.nav-menu a:hover{color:var(--text-light)!important;background:rgba(232,73,15,.12);}
+@media (min-width:769px){.nav-group.nav-closed .nav-menu{opacity:0!important;visibility:hidden!important;transform:translateY(8px)!important;}}
+#connect{scroll-margin-top:90px;}
+#testimonials{scroll-margin-top:80px;}
+@media (max-width:768px){
+  .nav-links.open{max-height:820px;align-items:flex-start;}
+  .nav-group{flex-direction:column;align-items:flex-start;width:100%;}
+  .nav-group::after{display:none;}
+  .nav-parent{display:flex;justify-content:flex-start;align-items:center;width:100%;gap:.45rem;}
+  .nav-caret{display:inline-block;font-size:.7rem;opacity:.55;}
+  .nav-group:hover .nav-caret{transform:none;}
+  .nav-group.open .nav-caret{transform:rotate(180deg);opacity:.9;}
+  .nav-menu{position:static;opacity:1;visibility:visible;transform:none;background:transparent;min-width:0;
+    border:none;border-left:1px solid var(--grey-border);margin:.15rem 0 0 .15rem;padding:0 0 0 1rem;
+    max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .nav-group.open .nav-menu{max-height:260px;padding:.5rem 0 .65rem 1rem;}
+  .nav-menu a{padding:.4rem 0!important;font-size:.95em;color:var(--grey-mid)!important;}
+  .nav-menu a:hover{background:transparent;color:var(--text-light)!important;}
 }
 </style>
 
@@ -974,14 +1062,19 @@ footer {
 <nav id="nav">
   <a href="#hero" class="nav-logo">ALEX<svg class="logo-spark" width="9" height="26"><use href="#bolt"/></svg>SCHUBACH</a>
   <div class="nav-links" id="navLinks">
-    <a href="#about">About</a>
-    <a href="#values">Values</a>
-    <a href="#mission">Mission</a>
+    <div class="nav-group">
+      <a href="#about" class="nav-parent">About<span class="nav-caret">▾</span></a>
+      <div class="nav-menu"><a href="#about">Identity</a><a href="#values">Values</a><a href="#mission">Mission</a></div>
+    </div>
     <a href="#results">Results</a>
-    <a href="#calendar">Calendar</a>
+    <div class="nav-group">
+      <a href="#testimonials" class="nav-parent">Partnerships<span class="nav-caret">▾</span></a>
+      <div class="nav-menu"><a href="#testimonials">Testimonials</a><a href="#connect">Connect</a></div>
+    </div>
     <a href="#gallery">Gallery</a>
+    <a href="#calendar">Calendar</a>
     <a href="#pdf">Downloads</a>
-    <a href="#contact" class="nav-cta">Get in Touch</a>
+    <a href="#contact" class="nav-cta">Contact</a>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -1137,16 +1230,71 @@ footer {
   </div>
 </section>
 
-<!-- CALENDAR -->
-<section class="section-grey" id="calendar">
+<!-- TESTIMONIALS + CONNECT -->
+<section class="section-dark" id="testimonials">
   <div class="container">
-    <div class="reveal">
-      <div class="section-label">Upcoming</div>
-      <div class="section-title">{{ calendar_year }} EVENT CALENDAR</div>
+    <div class="section-label">Testimonials</div>
+    <h3 class="t-head">What are people saying</h3>
+    <div class="carousel" data-carousel tabindex="0" aria-roledescription="carousel" aria-label="Testimonials">
+      <div class="carousel-viewport">
+        <div class="carousel-track" data-track>
+          {% for page in testimonials|batch(2) %}
+          <div class="carousel-page">
+            {% for t in page %}
+            <article class="tc-card">
+              <div class="tc-head">
+                <div class="tc-badge {% if t.badge == 'round' %}tc-badge--round{% elif t.badge == 'wordmark-dark' %}tc-badge--wordmark tc-badge--wordmark-dark{% else %}tc-badge--wordmark{% endif %}"><img src="images/logos/{{ t.logo }}" alt="{{ t.company }}"></div>
+                <div class="tc-meta"><div class="tc-name">{{ t.name }}</div><div class="tc-title">{{ t.title }}</div><div class="tc-company">{{ t.company }}</div></div>
+              </div>
+              <p class="tc-quote"{% if t.lang %} lang="{{ t.lang }}"{% endif %}>{{ t.quote }}</p>
+            </article>
+            {% endfor %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <button class="carousel-arrow carousel-prev" data-prev aria-label="Previous testimonials">&#8249;</button>
+      <button class="carousel-arrow carousel-next" data-next aria-label="Next testimonials">&#8250;</button>
+      <div class="carousel-dots" data-dots></div>
     </div>
-    <p class="calendar-intro reveal">{{ calendar.intro }}</p>
-    <div class="calendar-grid">
-      {{ calendar_cards }}
+
+    <div class="dB-connect" id="connect">
+      <div class="dB-connect-left">
+        <div class="section-label">Connect</div>
+        <h3>{{ contact.heading }}</h3>
+        <p class="connect-body">{{ contact.body }}</p>
+        <a href="#contact" class="btn-connect">Connect</a>
+      </div>
+      <div class="dB-connect-right">
+        <div class="contact-cats">
+          {% for cat in contact.categories %}
+          <div class="contact-cat-item">
+            <div class="contact-cat">
+              {% if cat.label == "Brand Partnerships" %}
+              <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/handshake_icon.png" alt="" style="width:2rem;height:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+              {% elif cat.label == "Media Inquiries" %}
+              <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/camera_icon.png" alt="" style="width:2rem;height:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+              {% elif cat.label == "Collaborations" %}
+              <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/collab_icon.png" alt="" style="width:2rem;height:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+              {% else %}
+              <div style="width:1.75rem;height:1.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.6rem;">{{ cat.icon }}</div>
+              {% endif %}
+              <div class="cat-label">{{ cat.label }}</div>
+              <div class="cat-expand"></div>
+            </div>
+            <div class="cat-body">
+              <p>{{ cat.desc }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="social-bar">
+          <a href="{{ social.instagram }}" target="_blank" rel="noopener noreferrer" class="social-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram</a>
+          <a href="{{ social.strava }}" target="_blank" rel="noopener noreferrer" class="social-link"><svg class="social-strava" viewBox="0 0 24 24" fill="currentColor"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>Strava</a>
+          <a href="{{ social.blog }}" target="_blank" rel="noopener noreferrer" class="social-link"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="19" r="2.2"/><path d="M3 9.5a11.5 11.5 0 0 1 11.5 11.5h-3.1A8.4 8.4 0 0 0 3 12.6Z"/><path d="M3 3a18 18 0 0 1 18 18h-3.1A14.9 14.9 0 0 0 3 6.1Z"/></svg>Blog</a>
+          <a href="mailto:{{ social.email }}" class="social-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>Email</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1159,6 +1307,20 @@ footer {
       <div class="section-title">GALLERY</div>
     </div>
     {{ gallery_items }}
+  </div>
+</section>
+
+<!-- CALENDAR -->
+<section class="section-grey" id="calendar">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Upcoming</div>
+      <div class="section-title">{{ calendar_year }} EVENT CALENDAR</div>
+    </div>
+    <p class="calendar-intro reveal">{{ calendar.intro }}</p>
+    <div class="calendar-grid">
+      {{ calendar_cards }}
+    </div>
   </div>
 </section>
 
@@ -1212,41 +1374,13 @@ footer {
 <!-- CONTACT -->
 <section class="section-dark" id="contact">
   <div class="container">
-    <div class="contact-grid">
-      <div class="contact-info reveal">
-        <div class="section-label">Connect</div>
-        <h3>{{ contact.heading }}</h3>
-        <p>{{ contact.body }}</p>
-        <div class="contact-cats">
-          {% for cat in contact.categories %}
-          <div class="contact-cat-item">
-            <div class="contact-cat">
-              {% if cat.label == "Brand Partnerships" %}
-              <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/handshake_icon.png" alt="" style="width:2rem;height:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-              {% elif cat.label == "Media Inquiries" %}
-              <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/camera_icon.png" alt="" style="width:2rem;height:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-              {% elif cat.label == "Collaborations" %}
-              <div style="width:1.75rem;height:1.75rem;position:relative;flex-shrink:0;overflow:visible;"><img src="images/collab_icon.png" alt="" style="width:2rem;height:2rem;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-              {% else %}
-              <div style="width:1.75rem;height:1.75rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.6rem;">{{ cat.icon }}</div>
-              {% endif %}
-              <div class="cat-label">{{ cat.label }}</div>
-              <div class="cat-expand"></div>
-            </div>
-            <div class="cat-body">
-              <p>{{ cat.desc }}</p>
-            </div>
-          </div>
-          {% endfor %}
-        </div>
-        <div class="social-bar">
-          <a href="{{ social.instagram }}" class="social-link" target="_blank" rel="noopener noreferrer">Instagram</a>
-          <a href="{{ social.strava }}" class="social-link" target="_blank" rel="noopener noreferrer">Strava</a>
-          <a href="{{ social.blog }}" class="social-link" target="_blank" rel="noopener noreferrer">Blog</a>
-        </div>
-      </div>
-      <div class="reveal">
-        {% if contact.formspree_id %}
+    <div style="max-width:640px;margin:0 auto 2rem;text-align:center;">
+      <div class="section-label" style="display:inline-flex;">Contact</div>
+      <h3 style="font-family:var(--font-display);font-size:clamp(2rem,4vw,2.75rem);letter-spacing:.03em;line-height:1;margin:.5rem 0 1rem;color:var(--text-light);">SEND A MESSAGE</h3>
+      <p style="font-size:.95rem;line-height:1.8;color:var(--grey-mid);">Brand partnership, media, or collaboration — drop me a message and I'll get back to you.</p>
+    </div>
+    <div class="reveal" style="max-width:640px;margin:0 auto;">
+      {% if contact.formspree_id %}
         <form class="contact-form" action="https://formspree.io/f/{{ contact.formspree_id }}" method="POST">
           <input type="hidden" name="_subject" value="New message — alexschubach.com">
           <input type="hidden" name="_next" value="https://alexschubach.com/?submitted=true#contact">
@@ -1287,7 +1421,6 @@ footer {
         </div>
         {% endif %}
       </div>
-    </div>
   </div>
 </section>
 
@@ -1842,6 +1975,75 @@ document.querySelectorAll('.contact-form select').forEach(sel => {
       }
     });
   }, { passive: true });
+})();
+</script>
+
+<!-- Testimonials carousel + flow load-more + nav dropdown close -->
+<script>
+(function(){
+  function init(root){
+    var track=root.querySelector('[data-track]');
+    var pages=Array.prototype.slice.call(track.children);
+    var prev=root.querySelector('[data-prev]'),next=root.querySelector('[data-next]');
+    var dotsWrap=root.querySelector('[data-dots]'),n=pages.length,i=0;
+    var dots=pages.map(function(_,idx){var b=document.createElement('button');b.className='carousel-dot';b.type='button';b.setAttribute('aria-label','Go to page '+(idx+1));b.addEventListener('click',function(){go(idx);});dotsWrap.appendChild(b);return b;});
+    function upd(){dots.forEach(function(d,idx){d.classList.toggle('active',idx===i);});if(prev)prev.disabled=(i===0);if(next)next.disabled=(i===n-1);}
+    function go(idx){i=Math.max(0,Math.min(n-1,idx));track.style.transform='translateX(-'+(i*100)+'%)';upd();}
+    if(prev)prev.addEventListener('click',function(){go(i-1);});
+    if(next)next.addEventListener('click',function(){go(i+1);});
+    root.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){e.preventDefault();go(i-1);}else if(e.key==='ArrowRight'){e.preventDefault();go(i+1);}});
+    var x0=null;root.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+    root.addEventListener('touchend',function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;if(Math.abs(dx)>40){dx<0?go(i+1):go(i-1);}x0=null;});
+    upd();
+  }
+  document.querySelectorAll('[data-carousel]').forEach(init);
+})();
+(function(){ /* Race results: show 4 most recent per year, load more reveals rest */
+  document.querySelectorAll('.year-panel').forEach(function(panel){
+    var acc=panel.querySelector('.race-accordion'); if(!acc) return;
+    var items=Array.prototype.slice.call(acc.querySelectorAll(':scope > .race-item'));
+    if(items.length<=4) return;
+    items.slice(4).forEach(function(it){it.style.display='none';});
+    items[3].classList.add('flow-last');
+    var btn=document.createElement('button'); btn.type='button'; btn.className='flow-load-more';
+    btn.textContent='Load more race results';
+    acc.parentNode.insertBefore(btn, acc.nextSibling);
+    btn.addEventListener('click',function(){items.forEach(function(it){it.style.display='';});items[3].classList.remove('flow-last');btn.remove();});
+  });
+})();
+(function(){ /* Calendar (desktop): show 8 (2 rows), load more reveals rest. Mobile handled separately. */
+  if(window.innerWidth<=768) return;
+  var grid=document.querySelector('.calendar-grid'); if(!grid) return;
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.cal-card'));
+  if(cards.length<=8) return;
+  cards.slice(8).forEach(function(c){c.style.display='none';});
+  var btn=document.createElement('button'); btn.type='button'; btn.className='flow-load-more';
+  btn.textContent='Load more upcoming races';
+  grid.parentNode.insertBefore(btn, grid.nextSibling);
+  btn.addEventListener('click',function(){cards.forEach(function(c){c.style.display='';});btn.remove();});
+})();
+(function(){ /* close desktop dropdown after a nav item is clicked */
+  document.querySelectorAll('.nav-group').forEach(function(group){
+    group.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click',function(){
+        group.classList.add('nav-closed');
+        if(document.activeElement&&document.activeElement.blur)document.activeElement.blur();
+      });
+    });
+    group.addEventListener('mouseleave',function(){group.classList.remove('nav-closed');});
+  });
+})();
+(function(){ /* mobile: tap a parent header to expand/collapse its submenu (accordion) */
+  var navLinks=document.getElementById('navLinks');
+  if(!navLinks) return;
+  navLinks.addEventListener('click',function(e){
+    if(window.innerWidth>768) return;            // desktop keeps hover dropdowns
+    var parent=e.target.closest('.nav-parent');
+    if(!parent||!navLinks.contains(parent)) return;
+    e.preventDefault();                          // capture phase: runs before smooth-scroll/close
+    e.stopPropagation();
+    parent.parentNode.classList.toggle('open');
+  }, true);
 })();
 </script>
 </body>

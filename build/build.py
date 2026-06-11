@@ -1709,6 +1709,7 @@ def main():
         indices=indices,
         contact=content.get("contact", {}),
         social=content.get("social", {}),
+        testimonials=content.get("testimonials", []),
         pdf=content.get("pdf", {"enabled": False}),
         footer=content.get("footer", {}),
         seo_tags=seo_tags,
