@@ -41,6 +41,13 @@ Whether it's performance, storytelling, or building something within sport, trav
 
 If you're pushing limits and building something meaningful, I'm keen to work together.
 
+## Partner Testimonials
+
+- "Coordinating the day with Alex was worldclass. Even with logistics changing constantly and a 4:15 a.m. call time confirmed the night before, nothing ever felt difficult. He was flexible, responsive, completely reliable, and professional from start to finish." — MICHAEL, Executive Producer, Ground Control
+- "On set, Alex was focused, easy to direct, and took feedback immediately. He remained professional through demanding takes and delivered real gold on camera. He and Sebastian brought fun, positive energy that kept everyone laughing and committed to the result." — MICK, Executive Director, UK Ekiden Project
+- "Alexさんのポジティブ波動のおかげで我々も撮影クルーも過去1番といってもよいほど、楽しくかつプロフェッショナルな撮影ができました。本当に感謝しています。" — 山田, Content Production Manager, Zamst (Sigmax Japan)
+- "Alex contributed far more than just his role as a model. His ideas and suggestions from an athlete's perspective provided valuable insight for the entire production team and helped us create a more authentic and compelling representation of the sport and the brand. I was also impressed by his professionalism and thoughtful consideration for everyone on set." — 高松, Producer, Fuji Communications
+
 ## Contact
 
 - Email: manager@alexschubach.com
