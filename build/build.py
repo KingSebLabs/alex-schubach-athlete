@@ -1508,7 +1508,7 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
     ])
     for item in gallery_meta[:4]:
         image_path = f"images/gallery/{item['path'].name}"
-        media_lines.append(f"- [{_plain_text(item['alt'])}]({_url(base_url, image_path)})")
+        media_lines.append(f"- [{_plain_text(item['alt'])}]({_asset_url(base_url, image_path)})")
 
     media_lines.extend(["", "## Downloads", ""])
     download_labels = {
@@ -1580,7 +1580,7 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
     ]
     for item in gallery_meta:
         image_path = f"images/gallery/{item['path'].name}"
-        gallery_lines.append(f"- [{_plain_text(item['caption'])}]({_url(base_url, image_path)})")
+        gallery_lines.append(f"- [{_plain_text(item['caption'])}]({_asset_url(base_url, image_path)})")
 
     index_lines = [
         "# Alex Schubach",

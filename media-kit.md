@@ -1,6 +1,6 @@
 # Alex Schubach Media Kit and Downloads
 
-Last updated: 2026-06-11
+Last updated: 2026-06-12
 Canonical URL: https://alexschubach.com/sponsor-and-partnership-media-kit
 
 A crawlable overview for sponsors, agencies, media teams, and brand partners reviewing Alex Schubach for athlete campaigns, athlete modelling, product storytelling, ambassador work, race activations, and endurance-performance content across Japan and Asia-Pacific.
@@ -41,10 +41,10 @@ For current biography, proof points, photos, partnership fit, and campaign conte
 
 - [Alex Schubach athlete profile image](https://alexschubach.com/images/identity.jpg)
 - [Alex Schubach training image](https://alexschubach.com/images/about.jpg)
-- [Alex Schubach fuji trail](https://alexschubach.com/images/gallery/1_Fuji Trail.jpg)
-- [Alex Schubach fuji finish](https://alexschubach.com/images/gallery/2_Fuji Finish.jpg)
-- [Alex Schubach head to head, photographed by Rio Kimura](https://alexschubach.com/images/gallery/3_Rio Kimura - Filmmaker_Head to Head.jpg)
-- [Alex Schubach track work, photographed by Rio Kimura](https://alexschubach.com/images/gallery/4_Rio Kimura - Filmmaker_Track Work.JPG)
+- [Alex Schubach fuji trail](https://alexschubach.com/images/gallery/1_Fuji%20Trail.jpg)
+- [Alex Schubach fuji finish](https://alexschubach.com/images/gallery/2_Fuji%20Finish.jpg)
+- [Alex Schubach head to head, photographed by Rio Kimura](https://alexschubach.com/images/gallery/3_Rio%20Kimura%20-%20Filmmaker_Head%20to%20Head.jpg)
+- [Alex Schubach track work, photographed by Rio Kimura](https://alexschubach.com/images/gallery/4_Rio%20Kimura%20-%20Filmmaker_Track%20Work.JPG)
 
 ## Downloads
 
