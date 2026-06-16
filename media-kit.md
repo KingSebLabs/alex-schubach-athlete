@@ -1,6 +1,6 @@
 # Alex Schubach Media Kit and Downloads
 
-Last updated: 2026-06-15
+Last updated: 2026-06-16
 Canonical URL: https://alexschubach.com/sponsor-and-partnership-media-kit
 
 A crawlable overview for sponsors, agencies, media teams, and brand partners reviewing Alex Schubach for athlete campaigns, athlete modelling, product storytelling, ambassador work, race activations, and endurance-performance content across Japan and Asia-Pacific.
@@ -32,7 +32,7 @@ For current biography, proof points, photos, partnership fit, and campaign conte
 
 ## Partner Testimonials
 
-- "Coordinating the day with Alex was worldclass. Even with logistics changing constantly and a 4:15 a.m. call time confirmed the night before, nothing ever felt difficult. He was flexible, responsive, completely reliable, and professional from start to finish." — MICHAEL, Executive Producer, Ground Control
+- "We were fortunate to have Alex appear in our UK Ekiden promotional film. Shooting in Tokyo dawn during summer is not for the faint hearted. 3am call times, running through Tokyo's neon lights, performing for multiple shots, both Alex and Sebastian surpassed high expectations. They were consummate professionals, good sports, and brought enormous smiles! And the shots looked great. Very Grateful." — MICHAEL, Executive Producer, Ground Control
 - "On set, Alex was focused, easy to direct, and took feedback immediately. He remained professional through demanding takes and delivered real gold on camera. He and Sebastian brought fun, positive energy that kept everyone laughing and committed to the result." — MICK, Executive Director, UK Ekiden Project
 - "Alexさんのポジティブ波動のおかげで我々も撮影クルーも過去1番といってもよいほど、楽しくかつプロフェッショナルな撮影ができました。本当に感謝しています。" — 山田, Content Production Manager, Zamst (Sigmax Japan)
 - "Alex contributed far more than just his role as a model. His ideas and suggestions from an athlete's perspective provided valuable insight for the entire production team and helped us create a more authentic and compelling representation of the sport and the brand. I was also impressed by his professionalism and thoughtful consideration for everyone on set." — 高松, Producer, Fuji Communications
