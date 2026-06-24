@@ -1,6 +1,6 @@
 # Alex Schubach Results
 
-Last updated: 2026-06-23
+Last updated: 2026-06-24
 Canonical URL: https://alexschubach.com/#results
 
 ## Performance Athlete Summary
@@ -15,7 +15,7 @@ Tokyo-based performance athlete and endurance athlete available for sponsorship 
 
 ## Performance Indices and Personal Bests
 
-- UTMB Index: 644
+- UTMB Index: 648
 - ITRA Index: 648 (Advanced 3)
 - Hyrox PB: 1:02:01
 - Marathon PB: 2:56:19

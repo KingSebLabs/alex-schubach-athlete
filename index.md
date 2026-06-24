@@ -1,6 +1,6 @@
 # Alex Schubach
 
-Last updated: 2026-06-23
+Last updated: 2026-06-24
 Canonical URL: https://alexschubach.com/
 
 Alex Schubach (Alexander Schubach) is a Tokyo-based endurance athlete, trail runner, Hyrox competitor, performance athlete, athlete model, and brand partner for sport, fitness, outdoor, nutrition, travel, and lifestyle campaigns.
