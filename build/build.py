@@ -845,7 +845,7 @@ def build_seo_tags(
             "@type": ["Organization", "SportsOrganization"],
             "@id": f"{base_url}/#brand-partnerships",
             "name": "Alex Schubach Athlete Partnerships",
-            "url": f"{base_url}/#contact",
+            "url": f"{base_url}/#connect",
             "email": "manager@alexschubach.com",
             "description": _plain_text((media_kit or {}).get("summary", description)),
             "contactPoint": {
@@ -1541,7 +1541,7 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         "# Partner With Alex Schubach",
         "",
         f"Last updated: {today}",
-        f"Canonical URL: {_url(base_url, '#contact')}",
+        f"Canonical URL: {_url(base_url, '#connect')}",
         "",
         "## Partnership Positioning",
         "",

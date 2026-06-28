@@ -13,7 +13,6 @@ I compete in endurance races across Asia, with a focus on trail running in Japan
 | 2026 | 21 - 23 August 2026 | The Mill - Cadre Camp | Camp 3 days / 2 nights | — | Perth, Australia | Yes - Alex |
 | 2026 | 24 Jul 2026 | The 79th Fuji Mountain Race | Trail 21km - 3,000m | 21 km | Yamanashi, Japan | Yes - Alex |
 | 2026 | 24 Oct 2026 | Spartan Porac | Spartan Beast - 21km | 21 km | Philippines | Yes - Alex |
-| 2026 | 26 - 27 June 2026 | Deep Japan Ultra - Uonuma 80km | Trail / Ultra 80km - 4,000m | 80 km | Niigata, Japan | Yes - Alex |
 | 2026 | 30 Aug 2026 | City to Surf | Road 12km | 12 km | Perth, Australia | Yes - Alex |
 | 2026 | 31 October - 1 Novemebr 2026 | Hyrox Shanghai | Hyrox Men's Single - Open | — | China |  |
 | 2026 | 4 Jul 2026 | Rough Water Swim - 1.6km | Open Water Swim | 1.6 km | Kamakura, Japan | Yes - Alex |

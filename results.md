@@ -15,7 +15,7 @@ Tokyo-based performance athlete and endurance athlete available for sponsorship 
 
 ## Performance Indices and Personal Bests
 
-- UTMB Index: 648
+- UTMB Index: 644
 - ITRA Index: 648 (Advanced 3)
 - Hyrox PB: 1:02:01
 - Marathon PB: 2:56:19
@@ -32,6 +32,7 @@ Tokyo-based performance athlete and endurance athlete available for sponsorship 
 | 2026 | 4 May 2026 | Asics Tokyo Speed Race | Ekiden 21.2km | 21.2 km | 1:04:08 | Team: 1st / 234 |  | Japan |
 | 2026 | 30 - 31 May 2026 | 12hr Solo Last Man Standing | 12hr Last Man Standing | — | 12hrs / 80.4km | Completed |  | Japan |
 | 2026 | 29 Mar 2026 | 18th Hatsune 30K Cup | Trail 30km - 2,000m | 30 km | 4:47:07 | Overall 6th wave: 2nd Age: 46th / 360 |  | Akiruno City, Japan |
+| 2026 | 26 - 27 June 2026 | Deep Japan Ultra - Uonuma 80km | Trail / Ultra 80km - 4,000m | 80 km | 14:18:18 | Overall: 13th / 199 |  | Niigata, Japan |
 | 2026 | 20 Jun 2026 | UTMB Yamanaka, Kaga Spa 20k | Trail 20.7km - 650m | 20.7 km | 1:47:12 | Overall: 6th / 567 Age Group: 1st / 63 |  | Yamanaka, Japan |
 | 2026 | 18 Jan 2026 | Shibuya Ekiden | Ekiden 11.6km | 11.6 km | 0:38:57 | Team: 7th / 80 |  | Japan |
 | 2026 | 15 Feb 2026 | Kyoto Marathon | Road 42.2km | 42.2 km | 2:56:19 | Overall: 511th / 12,325 Age: 73rd / 1,182 |  | Japan |
