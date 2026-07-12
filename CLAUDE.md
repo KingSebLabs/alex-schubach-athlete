@@ -10,6 +10,14 @@
 - When merging a feature branch, expect conflicts in `index.html`/`sitemap.xml` — resolve by rebuilding: `git checkout <feature> -- index.html sitemap.xml && python3 build/build.py`
 - Push conflict resolution: `python3 build/build.py && git add index.html sitemap.xml robots.txt && GIT_EDITOR=true git rebase --continue && git push origin main`
 
+## Deployment
+- **GitHub Pages** serves the repo as static files: `CNAME` = `alexschubach.com`, `.nojekyll` present (no Jekyll processing)
+- The auto-build commits on `main` come from two workflows in `.github/workflows/`:
+  - `build-scheduled.yml` — daily cron `0 1 * * *` (1am UTC / 10am JST) + manual `workflow_dispatch`; pulls fresh race data from the Dropbox Excel, rebuilds, commits `Auto-build: daily refresh from Dropbox Excel [skip ci]`
+  - `build-on-push.yml` — on push to `main`; rebuilds and commits `Auto-build: update site [skip ci]`
+- Both workflows verify the build (title tag present, race cards present, output >100KB) before committing
+- `.venv-build/` is a local Python venv for running the build — local convenience only, not part of deployment
+
 ## SEO
 - All meta/OG/Twitter/JSON-LD tags are built in `build_seo_tags()` in `build.py`
 - `site.title` and `site.description` in `content.yaml` flow into `<title>`, meta description, OG, and Twitter card automatically
@@ -36,6 +44,8 @@
 
 ## Content
 - Social links live in `content.yaml` under `social:` — not in `template.html`
+- Content map — additional pages beyond `index.md`/`profile.md`/`results.md`/`values.md`/`mission.md`: `gallery.md`, `calendar.md`, `media-kit.md`, `partnerships.md`, `llms.txt`, `downloads/` (lead-magnet PDFs + media-kit PDF), `sponsor-and-partnership-media-kit.html` (generated, committed by the build workflows)
+- Homepage flow since the 2026-06-28 restructure (current state): **Connect sits above Testimonials**
 
 ## CSS quirk
 - `.cal-modal.open` and the gallery lightbox use `pointer-events: all` (non-standard but intentional) — don't change to `auto`
