@@ -14,6 +14,7 @@ Usage:
 
 import sys
 import io
+import time
 import re
 import html
 import json
@@ -223,22 +224,26 @@ def fetch_utmb_index(runner_url: str, fallback: str = "") -> str:
 def fetch_itra_index(runner_url: str, fallback_score: str = "", fallback_level: str = "") -> tuple[str, str]:
     """Fetch live ITRA Performance Index and level from runner's itra.run profile.
     Returns (score, level) e.g. ("609", "Advanced 3"). Falls back to provided values on error."""
-    try:
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-                          "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        }
-        resp = requests.get(runner_url, timeout=15, headers=headers)
-        resp.raise_for_status()
-        score_match = re.search(r'"performanceIndex":(\d+)', resp.text)
-        level_match = re.search(r'"(Advanced|Elite|Expert|Finisher|Recreational)-(\d+)"', resp.text)
-        score = score_match.group(1) if score_match else fallback_score
-        level = f"{level_match.group(1)} {level_match.group(2)}" if level_match else fallback_level
-        if score:
-            print(f"  ITRA Index fetched: {score} ({level})")
-        return score, level
-    except Exception as e:
-        print(f"  ⚠ Could not fetch ITRA index: {e}", file=sys.stderr)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
+    for attempt in range(1, 4):
+        try:
+            resp = requests.get(runner_url, timeout=15, headers=headers)
+            resp.raise_for_status()
+            score_match = re.search(r'"performanceIndex":(\d+)', resp.text)
+            level_match = re.search(r'"(Advanced|Elite|Expert|Finisher|Recreational)-(\d+)"', resp.text)
+            if score_match:
+                score = score_match.group(1)
+                level = f"{level_match.group(1)} {level_match.group(2)}" if level_match else fallback_level
+                print(f"  ITRA Index fetched: {score} ({level})")
+                return score, level
+            print(f"  ⚠ ITRA: performanceIndex not found in page (attempt {attempt}/3)", file=sys.stderr)
+        except Exception as e:
+            print(f"  ⚠ Could not fetch ITRA index (attempt {attempt}/3): {e}", file=sys.stderr)
+        time.sleep(2)
+    print(f"  ⚠ ITRA: all attempts failed — using fallback {fallback_score} ({fallback_level})", file=sys.stderr)
     return fallback_score, fallback_level
 
 
