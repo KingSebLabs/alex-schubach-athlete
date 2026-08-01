@@ -1,6 +1,6 @@
 # Alex Schubach Gallery
 
-Last updated: 2026-07-31
+Last updated: 2026-08-01
 Canonical URL: https://alexschubach.com/#gallery
 
 Public gallery image references from alexschubach.com.
