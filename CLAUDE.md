@@ -3,7 +3,8 @@
 ## Build
 - `python3 build/build.py` — rebuilds `index.html`, `sitemap.xml`, `robots.txt` (use `python3`, not `python`)
 - No test suite — a clean build is the verification step
-- `index.html`, `sitemap.xml`, `robots.txt` are **generated** — never hand-edit them
+- `index.html`, `sitemap.xml`, `robots.txt`, `races.json` are **generated** — never hand-edit them
+- `races.json` — machine-readable race-day feed (`[{date: "YYYY-MM-DD", name}]`, one entry per race day; multi-day sheet ranges expand, TBC dates skipped; NOT rewritten when the Dropbox fetch fails). Consumed by alex-analytics-dashboard (issue #3 race-day annotations). It is listed in both workflows' `git add` lines — keep it there or the feed silently stops updating
 
 ## Remote main
 - Remote `main` receives daily auto-build commits: `Auto-build: daily refresh from Dropbox Excel`
