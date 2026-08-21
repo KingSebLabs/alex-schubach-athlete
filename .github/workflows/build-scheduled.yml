@@ -27,10 +27,12 @@ jobs:
       - name: Verify build
         run: |
           python3 -c "
+          import json, os
           content = open('index.html').read()
           assert '<title>' in content, 'Missing title tag'
           assert 'race-item' in content, 'Missing race cards'
           assert len(content) > 100000, f'Output too small: {len(content)} bytes'
+          assert not os.path.exists('races.json') or isinstance(json.load(open('races.json')), list), 'races.json is not a JSON list'
           print('Build verified:', len(content), 'bytes')
           "
 
@@ -38,7 +40,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add index.html sponsor-and-partnership-media-kit.html sitemap.xml robots.txt llms.txt index.md profile.md results.md calendar.md media-kit.md partnerships.md gallery.md values.md mission.md .nojekyll
+          git add index.html sponsor-and-partnership-media-kit.html sitemap.xml robots.txt llms.txt races.json index.md profile.md results.md calendar.md media-kit.md partnerships.md gallery.md values.md mission.md .nojekyll
           git diff --staged --quiet || git commit -m "Auto-build: daily refresh from Dropbox Excel [skip ci]"
           git restore .
           git pull --rebase

@@ -488,6 +488,70 @@ def parse_race_rows(rows: list[dict]) -> tuple[list[dict], list[dict]]:
     return past, upcoming
 
 
+# Months keyed by their first three letters so misspellings in the workbook
+# ("Novemebr") still resolve to the right month.
+MONTH_BY_PREFIX = {
+    "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+    "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
+}
+
+# "7 Aug 2025" / "30 - 31 May 2026" / "31 October - 1 Novemebr 2026" / "30 Dec 2026 - 2 Jan 2027".
+# Month and year are optional on either side of a range and inherited from the other side.
+RACE_DATE_RE = re.compile(
+    r"^(\d{1,2})(?:\s+([A-Za-z]+))?(?:\s+(\d{4}))?"
+    r"(?:\s*[-–]\s*(\d{1,2})(?:\s+([A-Za-z]+))?(?:\s+(\d{4}))?)?$"
+)
+
+# Longest plausible race; anything wider is bad data, not a real multi-day event
+MAX_RACE_SPAN_DAYS = 30
+
+
+def parse_race_dates(date_str: str) -> list[datetime.date]:
+    """
+    Expand a sheet date string into every calendar day the race covers.
+
+    Returns [] for strings with no day number ("TBC December 2026"), unknown
+    months, or impossible dates ("31 June 2026").
+    """
+    match = RACE_DATE_RE.match((date_str or "").strip())
+    if not match:
+        return []
+    day1, mon1, year1, day2, mon2, year2 = match.groups()
+    mon1, mon2 = mon1 or mon2, mon2 or mon1
+    year1, year2 = year1 or year2, year2 or year1
+    if not mon1 or not year1:
+        return []
+    try:
+        start = datetime.date(int(year1), MONTH_BY_PREFIX[mon1[:3].lower()], int(day1))
+        end = start if day2 is None else datetime.date(int(year2), MONTH_BY_PREFIX[mon2[:3].lower()], int(day2))
+    except (KeyError, ValueError):
+        return []
+    span = (end - start).days
+    if span < 0 or span > MAX_RACE_SPAN_DAYS:
+        return [start]
+    return [start + datetime.timedelta(days=offset) for offset in range(span + 1)]
+
+
+def build_race_days(sheets_data: dict) -> list[dict]:
+    """
+    Flatten every parsed race into one {"date": "YYYY-MM-DD", "name": ...} entry
+    per race day — the machine-readable feed written to races.json. Past and
+    upcoming races are both included; consumers filter by their own window.
+    """
+    days = set()
+    for past, upcoming in sheets_data.values():
+        for race in past + upcoming:
+            name = race.get("name", "").strip()
+            if not name:
+                continue
+            dates = parse_race_dates(race.get("date", ""))
+            if not dates:
+                print(f"  ⚠ races.json: skipped '{name}' — no usable date ({race.get('date', '')!r})", file=sys.stderr)
+                continue
+            days.update((d.isoformat(), name) for d in dates)
+    return [{"date": date, "name": name} for date, name in sorted(days)]
+
+
 def infer_race_type(name: str) -> str:
     """Guess race type from name (fallback when RACE TYPE column is absent)."""
     n = name.lower()
@@ -1821,6 +1885,17 @@ def main():
     out_llms = ROOT / "llms.txt"
     out_llms.write_text(build_llms_txt(base_url, content, indices), encoding="utf-8")
     print("  ✓ llms.txt written")
+
+    # Only rewrite the race feed when the Dropbox fetch produced data — otherwise
+    # the previously committed races.json keeps serving instead of being blanked.
+    if sheets_data:
+        race_days = build_race_days(sheets_data)
+        (ROOT / "races.json").write_text(
+            json.dumps(race_days, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+        print(f"  ✓ races.json written ({len(race_days)} race days)")
+    else:
+        print("  ⚠ races.json not rewritten (race data unavailable)")
 
     for filename, markdown in build_markdown_mirrors(base_url, content, indices, sheets_data, gallery_meta).items():
         (ROOT / filename).write_text(markdown, encoding="utf-8")
