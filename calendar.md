@@ -1,6 +1,6 @@
 # Alex Schubach Race Calendar
 
-Last updated: 2026-08-22
+Last updated: 2026-08-23
 Canonical URL: https://alexschubach.com/#calendar
 
 I compete in endurance races across Asia, with a focus on trail running in Japan. I want to shine a light on the depth and uniqueness of the running culture here, and inspire you to get after it in your own way. Anything you put your mind to, you can achieve.
