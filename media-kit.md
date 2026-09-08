@@ -51,7 +51,7 @@ For current biography, proof points, photos, partnership fit, and campaign conte
 - [Media Kit](https://alexschubach.com/downloads/media-kit-alex-schubach-2026-v2.pdf)
 - [Hybrid Training Split](https://alexschubach.com/downloads/hybrid-training-split.pdf)
 - [Leg Conditioning Program](https://alexschubach.com/downloads/leg-conditioning-program.pdf)
-- [Maintenance Meal Plan](https://alexschubach.com/downloads/maintenance-meal-plan.pdf)
+- [Baseline Meal Plan](https://alexschubach.com/downloads/baseline-meal-plan.pdf)
 - [Electrolytes and Supplements](https://alexschubach.com/downloads/electrolytes-supplements.pdf)
 
 ## Contact
