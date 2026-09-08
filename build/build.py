@@ -1591,7 +1591,7 @@ def build_markdown_mirrors(base_url: str, content: dict, indices: dict, sheets_d
         "media_kit_url": "Media Kit",
         "training_program_url": "Hybrid Training Split",
         "leg_conditioning_url": "Leg Conditioning Program",
-        "meal_plan_url": "Maintenance Meal Plan",
+        "meal_plan_url": "Baseline Meal Plan",
         "supplements_url": "Electrolytes and Supplements",
     }
     for key, label in download_labels.items():
