@@ -1,6 +1,6 @@
 # Alex Schubach Results
 
-Last updated: 2026-09-12
+Last updated: 2026-09-13
 Canonical URL: https://alexschubach.com/#results
 
 ## Performance Athlete Summary
@@ -34,6 +34,7 @@ Tokyo-based performance athlete and endurance athlete available for sponsorship 
 | 2026 | 29 Mar 2026 | 18th Hatsune 30K Cup | Trail 30km - 2,000m | 30 km | 4:47:07 | Overall 6th wave: 2nd Age: 46th / 360 |  | Akiruno City, Japan |
 | 2026 | 26 - 27 June 2026 | Deep Japan Ultra - Uonuma 80km | Trail / Ultra 80km - 4,000m | 80 km | 14:18:18 | Overall: 13th / 199 |  | Niigata, Japan |
 | 2026 | 24 Jul 2026 | The 79th Fuji Mountain Race | Trail 21km - 3,000m | 21 km | 3:54:28 | Overall: 158th / 734 |  | Yamanashi, Japan |
+| 2026 | 21 - 23 August 2026 | The Mill - Cadre Camp | Camp 3 days / 2 nights | — | 3 D / 2 N | Completed |  | Perth, Australia |
 | 2026 | 20 Jun 2026 | UTMB Yamanaka, Kaga Spa 20k | Trail 20.7km - 650m | 20.7 km | 1:47:12 | Overall: 6th / 567 Age Group: 1st / 63 |  | Yamanaka, Japan |
 | 2026 | 18 Jan 2026 | Shibuya Ekiden | Ekiden 11.6km | 11.6 km | 0:38:57 | Team: 7th / 80 |  | Japan |
 | 2026 | 15 Feb 2026 | Kyoto Marathon | Road 42.2km | 42.2 km | 2:56:19 | Overall: 511th / 12,325 Age: 73rd / 1,182 |  | Japan |

@@ -104,10 +104,6 @@
     "name": "The Mill - Cadre Camp"
   },
   {
-    "date": "2026-09-13",
-    "name": "Hakuba International Classic 2026 - 29km"
-  },
-  {
     "date": "2026-09-19",
     "name": "Spartan Niigata"
   },
@@ -136,7 +132,35 @@
     "name": "UTMB Chiang Mai 50k"
   },
   {
-    "date": "2027-04-04",
-    "name": "Hiroshima Trail - 50K"
+    "date": "2026-12-20",
+    "name": "Adachi Friendly Half Marathon"
+  },
+  {
+    "date": "2027-01-23",
+    "name": "Angkor Ultra Trail"
+  },
+  {
+    "date": "2027-01-24",
+    "name": "Angkor Ultra Trail"
+  },
+  {
+    "date": "2027-02-11",
+    "name": "BYD HYROX Bangkok"
+  },
+  {
+    "date": "2027-02-12",
+    "name": "BYD HYROX Bangkok"
+  },
+  {
+    "date": "2027-02-13",
+    "name": "BYD HYROX Bangkok"
+  },
+  {
+    "date": "2027-02-14",
+    "name": "BYD HYROX Bangkok"
+  },
+  {
+    "date": "2027-04-10",
+    "name": "UTMB Hiroshima Trail 50K"
   }
 ]
