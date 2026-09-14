@@ -1,6 +1,6 @@
 # Alex Schubach Race Calendar
 
-Last updated: 2026-09-13
+Last updated: 2026-09-14
 Canonical URL: https://alexschubach.com/#calendar
 
 I compete in endurance races across Asia, with a focus on trail running in Japan. I want to shine a light on the depth and uniqueness of the running culture here, and inspire you to get after it in your own way. Anything you put your mind to, you can achieve.
@@ -14,6 +14,15 @@ I compete in endurance races across Asia, with a focus on trail running in Japan
 | 2026 | 31 October - 1 Novemebr 2026 | Hyrox Shanghai | Hyrox Men's Single - Open | — | China |  |
 | 2026 | 5 Dec 2026 | UTMB Chiang Mai 50k | Trail / Ultra 63km - 3,600m | 63 km | Thailand |  |
 | 2026 | 7 Nov 2026 | Diamond Trailrun | Trail 33km - 2,200m | 33 km | Katsuragi, Japan |  |
-| 2027 | 10 Apr 2027 | UTMB Hiroshima Trail 50K | Trail / Ultra 49km - 2,800m | 49 km | Japan |  |
-| 2027 | 11 - 14 February 2027 | BYD HYROX Bangkok | Hybrid | — |  |  |
-| 2027 | 23 - 24 January 2027 | Angkor Ultra Trail | Ultra | — |  |  |
+| 2027 | 10 Apr 2027 | UTMB Hiroshima Trail 50K | Trail / Ultra 49km - 2,800m | 49 km | Hiroshima, Japan | Yes Alex |
+| 2027 | 11 - 14 February 2027 | BYD HYROX Bangkok | Hyrox Men's Single - Open | — | Bangkok, Thailand |  |
+| 2027 | 21 Mar 2027 | Seoul Marathon | Road 42.2km | 42.2 km | Seoul Korea |  |
+| 2027 | 23 - 24 January 2027 | Angkor Ultra Trail | Trail / Ultra | — | Siem Reap, Cambodia |  |
+| 2027 | 25 - 27 June 2027 | Deep Japan Ultra 80k | Trail / Ultra 80km - 4,000m | 80 km | Niigata, Japan |  |
+| 2027 | Adventure | 1 of 1 | Road | — |  |  |
+| 2027 | Hyrox | 1 of 2 | Road | — |  |  |
+| 2027 | Road | 1 of 2 | Road | — |  |  |
+| 2027 | Spartan | 0 of 2 | Road | — |  |  |
+| 2027 | TBC August 2027 | Run Larapinta | Stage Race | — | Alice Springs, Australia |  |
+| 2027 | TBC September | FUGA Glacier Extreme Gongga 100 | Trail / Ultra 58.6km - 5,129m | 58.6 km | Sichuan, China |  |
+| 2027 | Trail | 4 of 5 | Road | — |  |  |
