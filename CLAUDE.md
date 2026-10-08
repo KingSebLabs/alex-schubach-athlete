@@ -1,15 +1,15 @@
 # Alex Schubach Athlete — Claude Notes
 
 ## Build
-- `python3 build/build.py` — rebuilds `index.html`, `sitemap.xml`, `robots.txt` (use `python3`, not `python`)
+- `python3 build/build.py` — rebuilds every generated file listed below (use `python3`, not `python`)
 - No test suite — a clean build is the verification step
-- `index.html`, `sitemap.xml`, `robots.txt`, `races.json` are **generated** — never hand-edit them
+- **Generated — never hand-edit:** `index.html`, `sponsor-and-partnership-media-kit.html`, `sitemap.xml`, `robots.txt`, `llms.txt`, `races.json`, and the Markdown mirrors (`index.md`, `profile.md`, `results.md`, `calendar.md`, `media-kit.md`, `partnerships.md`, `gallery.md`, `values.md`, `mission.md`). Edit their sources instead: `content.yaml`, `build/template.html`, the Dropbox Excel, `images/gallery/`
 - `races.json` — machine-readable race-day feed (`[{date: "YYYY-MM-DD", name}]`, one entry per race day; multi-day sheet ranges expand, TBC dates skipped; NOT rewritten when the Dropbox fetch fails). Consumed by alex-analytics-dashboard (issue #3 race-day annotations). It is listed in both workflows' `git add` lines — keep it there or the feed silently stops updating
 
 ## Remote main
 - Remote `main` receives daily auto-build commits: `Auto-build: daily refresh from Dropbox Excel`
 - When merging a feature branch, expect conflicts in `index.html`/`sitemap.xml` — resolve by rebuilding: `git checkout <feature> -- index.html sitemap.xml && python3 build/build.py`
-- Push conflict resolution: `python3 build/build.py && git add index.html sitemap.xml robots.txt && GIT_EDITOR=true git rebase --continue && git push origin main`
+- Push conflict resolution: `python3 build/build.py && git add index.html sponsor-and-partnership-media-kit.html sitemap.xml robots.txt llms.txt races.json index.md profile.md results.md calendar.md media-kit.md partnerships.md gallery.md values.md mission.md && GIT_EDITOR=true git rebase --continue && git push origin main` (the same generated files the workflows' `git add` lines commit)
 
 ## Deployment
 - **GitHub Pages** serves the repo as static files: `CNAME` = `alexschubach.com`, `.nojekyll` present (no Jekyll processing)
@@ -31,7 +31,6 @@
 - `_fmt_narrative(text)` does **not** HTML-escape its input — callers must pass already-escaped text
 - `_fmt_rich_cell(cell)` outputs pre-escaped HTML (safe to embed directly); includes `<strong>` and `<br>` tags
 - For columns not in `RICH_TEXT_COLS`, escape at render time: `_fmt_narrative(html.escape(value))`
-- `RICH_TEXT_COLS` values are passed through `_fmt_narrative` a second time at render in `build_race_card_html` — this is a known double-process (harmless, tracked as follow-up)
 
 ## SVG & logo assets
 - `images/logo.svg` is the loading screen logo (Canva export); letter fills use `#f5f3f0` (not black) for dark background
@@ -46,7 +45,7 @@
 ## Content
 - Social links live in `content.yaml` under `social:` — not in `template.html`
 - Content map — additional pages beyond `index.md`/`profile.md`/`results.md`/`values.md`/`mission.md`: `gallery.md`, `calendar.md`, `media-kit.md`, `partnerships.md`, `llms.txt`, `downloads/` (lead-magnet PDFs + media-kit PDF), `sponsor-and-partnership-media-kit.html` (generated, committed by the build workflows)
-- Homepage flow since the 2026-06-28 restructure (current state): **Connect sits above Testimonials**
+- Homepage flow: **Connect sits above Testimonials**
 
 ## CSS quirk
 - `.cal-modal.open` and the gallery lightbox use `pointer-events: all` (non-standard but intentional) — don't change to `auto`
