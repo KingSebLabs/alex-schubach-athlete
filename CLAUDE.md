@@ -9,7 +9,7 @@
 ## Remote main
 - Remote `main` receives daily auto-build commits: `Auto-build: daily refresh from Dropbox Excel`
 - When merging a feature branch, expect conflicts in `index.html`/`sitemap.xml` — resolve by rebuilding: `git checkout <feature> -- index.html sitemap.xml && python3 build/build.py`
-- Push conflict resolution: `python3 build/build.py && git add index.html sponsor-and-partnership-media-kit.html sitemap.xml robots.txt llms.txt races.json index.md profile.md results.md calendar.md media-kit.md partnerships.md gallery.md values.md mission.md && GIT_EDITOR=true git rebase --continue && git push origin main` (the same generated files the workflows' `git add` lines commit)
+- Push conflict resolution: `python3 build/build.py && git add index.html sponsor-and-partnership-media-kit.html sitemap.xml robots.txt llms.txt races.json index.md profile.md results.md calendar.md media-kit.md partnerships.md gallery.md values.md mission.md .nojekyll images/ && GIT_EDITOR=true git rebase --continue && git push origin main` (the same generated files the workflows' `git add` lines commit)
 
 ## Deployment
 - **GitHub Pages** serves the repo as static files: `CNAME` = `alexschubach.com`, `.nojekyll` present (no Jekyll processing)
