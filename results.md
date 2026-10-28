@@ -1,6 +1,6 @@
 # Alex Schubach Results
 
-Last updated: 2026-10-27
+Last updated: 2026-10-28
 Canonical URL: https://alexschubach.com/#results
 
 ## Performance Athlete Summary
