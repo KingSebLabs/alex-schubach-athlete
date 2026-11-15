@@ -1,6 +1,6 @@
 # Partner With Alex Schubach
 
-Last updated: 2026-11-14
+Last updated: 2026-11-15
 Canonical URL: https://alexschubach.com/#connect
 
 ## Partnership Positioning
